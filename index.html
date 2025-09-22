@@ -1,31 +1,64 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso BTC - Prototipo</title>
+    <title>Financial Harmony</title>
+    <!-- Favicon/logo -->
+    <link rel="icon" type="image/png" href="logo.png" />
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f4; }
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1749b1;
+            --primary-light: #e0eaff;
+            --bg: #f7fafd;
+            --sidebar: #fff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e5e7eb;
+            --card: #fff;
+            --accent: #f1f5f9;
+            --radius: 16px;
+            --shadow: 0 2px 8px #0001;
+            --transition: 0.2s;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
         .container { max-width: 1200px; margin: auto; }
-        .login { text-align: center; padding: 50px; background: white; border-radius: 10px; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .logo { width: 200px; height: auto; margin-bottom: 10px; }
+        .login { text-align: center; padding: 50px; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
         .dashboard { display: none; }
-        .section { margin: 20px 0; padding: 20px; background: white; border-radius: 10px; }
+        .section { margin: 20px 0; padding: 20px; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th, td { padding: 10px; border: 1px solid var(--border); text-align: left; }
         #news-feed { list-style: none; padding: 0; }
         #news-feed li { margin: 10px 0; }
         .steps { display: none; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #0056b3; }
+        button { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer; transition: background var(--transition); }
+        button:hover { background: var(--primary-hover); }
     </style>
     <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
-    <script src="https://www.tradingview.com/embed-widget/advanced-chart/"></script>
+    <!-- Correct TradingView script -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <!-- Auth0 SPA JS SDK -->
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
 </head>
 <body>
     <div class="container">
-        <!-- Página de Login (Portada) -->
+        <!-- Página de Inicio (Portada) -->
         <div id="login" class="login">
-            <h1>Bienvenido al Curso de BTC</h1>
+            <div class="header">
+                <img src="logo.png" alt="Financial Harmony Logo" class="logo">
+                <h1>Financial Harmony</h1>
+            </div>
             <p>Noticias Crypto en Tiempo Real:</p>
             <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,ripple,solana" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
             
@@ -36,22 +69,22 @@
             
             <div class="section">
                 <h2>Gráfico de Precios (TradingView)</h2>
-                <div id="tradingview-widget" style="height: 400px;"></div>
+                <div id="tradingview-widget" style="height: 400px; width: 100%;"></div>
             </div>
             
-            <form id="login-form">
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Contraseña" required>
-                <button type="submit">Iniciar Sesión (Simulado Auth0)</button>
-            </form>
+            <button id="login-button">Iniciar Sesión con Auth0</button>
         </div>
         
         <!-- Dashboard después de Login -->
         <div id="dashboard" class="dashboard">
-            <h1>Dashboard Crypto</h1>
+            <div class="header">
+                <img src="logo.png" alt="Financial Harmony Logo" class="logo">
+                <h1>Financial Harmony</h1>
+            </div>
+            <h2>Dashboard Crypto</h2>
             
             <div class="section">
-                <h2>Precios Principales Criptomonedas</h2>
+                <h3>Precios Principales Criptomonedas</h3>
                 <table id="prices-table">
                     <thead><tr><th>Moneda</th><th>Precio (USD)</th><th>Cambio 24h</th></tr></thead>
                     <tbody></tbody>
@@ -59,20 +92,20 @@
             </div>
             
             <div class="section">
-                <h2>Noticias Crypto</h2>
+                <h3>Noticias Crypto</h3>
                 <ul id="news-feed"></ul>
             </div>
             
-            <!-- Flujo de Pasos: Follows, Cuestionario, Link Telegram -->
+            <!-- Flujo de Pasos: Follows Sociales, Cuestionario sobre Curso de BTC, Link Telegram -->
             <div id="steps" class="steps">
-                <h2>Paso 1: Sigue las Redes Sociales</h2>
+                <h3>Paso 1: Sigue las Redes Sociales</h3>
                 <label><input type="checkbox" id="follow1"> Sigue Twitter/X de BTC</label><br>
                 <label><input type="checkbox" id="follow2"> Sigue Instagram de Crypto</label><br>
                 <label><input type="checkbox" id="follow3"> Sigue YouTube de Trading</label><br>
                 <button id="next-follow">Siguiente</button>
                 
                 <div id="quiz" style="display:none;">
-                    <h2>Paso 2: Cuestionario</h2>
+                    <h3>Paso 2: Cuestionario - Curso de BTC</h3>
                     <p>1. ¿Qué es Bitcoin? <input type="text" id="q1"></p>
                     <p>2. ¿Quién creó BTC? <input type="text" id="q2"></p>
                     <p>3. ¿Qué es Blockchain? <input type="text" id="q3"></p>
@@ -80,26 +113,68 @@
                 </div>
                 
                 <div id="telegram-link" style="display:none;">
-                    <h2>¡Listo! Únete al Grupo de Telegram</h2>
+                    <h3>¡Listo! Únete al Grupo de Telegram</h3>
                     <a href="https://t.me/tu_grupo_telegram" target="_blank">Ir al Curso en Telegram</a>
                 </div>
             </div>
+            
+            <button id="logout-button">Cerrar Sesión</button>
+            <div id="profile"></div>
         </div>
     </div>
 
     <script>
-        // Simular Login
-        document.getElementById('login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            document.getElementById('login').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            document.getElementById('steps').style.display = 'block';
-            loadPrices();
-            loadNews();
-            loadBtcInfo();
-            // Refrescar noticias cada 60 segundos
-            setInterval(loadNews, 60000);
+        let auth0Client;
+        let userProfile;
+
+        async function initAuth0() {
+            auth0Client = await createAuth0Client({
+                domain: 'TU_DOMAIN_AUTH0', // Ej. dev-XXXXX.us.auth0.com
+                clientId: 'TU_CLIENT_ID',
+                authorizationParams: {
+                    redirect_uri: window.location.origin
+                }
+            });
+
+            if (location.search.includes("code=") && location.search.includes("state=")) {
+                await auth0Client.handleRedirectCallback();
+                window.history.replaceState({}, document.title, "/");
+            }
+
+            const isAuthenticated = await auth0Client.isAuthenticated();
+            updateUI(isAuthenticated);
+
+            if (isAuthenticated) {
+                userProfile = await auth0Client.getUser();
+                updateUI(isAuthenticated);
+            }
+        }
+
+        function updateUI(isAuthenticated) {
+            document.getElementById('login').style.display = isAuthenticated ? 'none' : 'block';
+            document.getElementById('dashboard').style.display = isAuthenticated ? 'block' : 'none';
+
+            if (isAuthenticated) {
+                loadPrices();
+                loadNews();
+                loadBtcInfo();
+                setInterval(loadNews, 30000); // Actualiza noticias cada 30s para más "real time"
+            }
+        }
+
+        document.getElementById('login-button').addEventListener('click', async () => {
+            await auth0Client.loginWithRedirect();
         });
+
+        document.getElementById('logout-button').addEventListener('click', async () => {
+            await auth0Client.logout({
+                logoutParams: {
+                    returnTo: window.location.origin
+                }
+            });
+        });
+
+        initAuth0();
 
         // Cargar Precios en Tiempo Real (CoinGecko API)
         function loadPrices() {
@@ -113,12 +188,12 @@
                         tbody.innerHTML += row;
                     });
                 });
-            setTimeout(loadPrices, 30000); // Actualiza cada 30s
+            setTimeout(loadPrices, 30000);
         }
 
         // Cargar Noticias en Tiempo Real (NewsAPI.org - Reemplaza con tu API key)
         function loadNews() {
-            const apiKey = 'TU_API_KEY_AQUI'; // Obtén una gratis en https://newsapi.org/
+            const apiKey = 'TU_API_KEY_AQUI';
             fetch(`https://newsapi.org/v2/everything?q=bitcoin OR crypto&sortBy=publishedAt&language=es&pageSize=10&apiKey=${apiKey}`)
                 .then(res => res.json())
                 .then(data => {
@@ -148,9 +223,8 @@
                 });
         }
 
-        // Gráfico TradingView
+        // Gráfico TradingView - Configuración corregida
         new TradingView.widget({
-            "container_id": "tradingview-widget",
             "width": "100%",
             "height": 400,
             "symbol": "BINANCE:BTCUSDT",
@@ -162,7 +236,8 @@
             "toolbar_bg": "#f1f3f6",
             "enable_publishing": false,
             "allow_symbol_change": true,
-            "studies": ["MACD"]
+            "studies": ["MACD"],
+            "container_id": "tradingview-widget"
         });
 
         // Flujo de Pasos
