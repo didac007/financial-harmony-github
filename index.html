@@ -155,8 +155,8 @@
 
         async function initAuth0() {
             auth0Client = await createAuth0Client({
-                domain: 'TU_DOMAIN_AUTH0',
-                clientId: 'TU_CLIENT_ID',
+                domain: 'dev-uig5oc4olpwf4aw6.eu.auth0.com',
+                clientId: '6NLcS9SdNQWYPOFNlRYBQawxLQ1YiKxq',
                 authorizationParams: {
                     redirect_uri: window.location.origin
                 }
@@ -219,8 +219,8 @@
 
         // Cargar Noticias (arreglado para funcionar con API key real)
         function loadNews() {
-            const apiKey = 'TU_API_KEY_NEWSAPI'; // Reemplaza con tu key real de newsapi.org
-            if (!apiKey || apiKey === 'TU_API_KEY_NEWSAPI') {
+            const apiKey = ' 6a2f3e0ca4454b59a566896f49560316'; // Reemplaza con tu key real de newsapi.org
+            if (!apiKey || apiKey === ' 6a2f3e0ca4454b59a566896f49560316') {
                 document.getElementById('news-feed').innerHTML = '<li>Configura tu API key de NewsAPI para ver noticias.</li>';
                 return;
             }
@@ -292,3 +292,4 @@
     </script>
 </body>
 </html>
+
