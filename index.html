@@ -7,40 +7,65 @@
   <!-- Favicon/logo -->
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
-  <!-- RemixIcon for icons -->
+  <!-- RemixIcon for pro icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- TradingView Widget -->
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
   <!-- Auth0 SPA JS SDK -->
   <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
   <style>
     :root {
-      --primary: #f7931a; /* Bitcoin orange */
-      --primary-hover: #d87a16;
-      --primary-light: #fff3e0;
-      --bg: #ffffff;
-      --text: #4d4d4d;
-      --muted: #666666;
-      --border: #e5e5e5;
-      --card: #f9f9f9;
-      --accent: #0d579b; /* Bitcoin blue for accents */
+      --primary: #2563eb;
+      --primary-hover: #1749b1;
+      --primary-light: #e0eaff;
+      --bg: #f7fafd;
+      --sidebar: #fff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e5e7eb;
+      --card: #fff;
+      --accent: #f1f5f9;
       --radius: 16px;
-      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+      --shadow: 0 2px 8px #0001;
       --transition: 0.2s;
     }
     html, body { height: 100%; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       overflow: hidden;
       transition: background .3s, color .3s;
     }
-    /* Sidebar simplified */
+    body.dark {
+      --primary: #60a5fa;
+      --primary-hover: #3b82f6;
+      --primary-light: #1e3a8a;
+      --bg: #0f172a;
+      --sidebar: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #334155;
+      --card: #1e293b;
+      --accent: #475569;
+      --shadow: 0 2px 8px #0003;
+    }
+    body.dark .topbar {
+      background: linear-gradient(95deg, #1e3a8a 0%, #1e293b 90%);
+      border-bottom: 1px solid var(--border);
+    }
+    body.dark .help-panel { background: linear-gradient(160deg,#3b82f6 60%,#1e293b 120%); }
+    body.dark .help-bottom-bar { background: #1e293b; }
+    body.dark .help-links-list { background: #1e293b; border: 1px solid var(--border); }
+    body.dark .help-link-item:hover { background: #334155; }
+    body.dark .stat-card, body.dark .plan-card, body.dark .pay-modal, body.dark .chart-modal, body.dark .bot-modal, body.dark .help-modal, body.dark .exchange-modal { background: var(--card); }
+    body.dark .nav-tab.active, body.dark .nav-tab:hover { background: var(--primary-light); color: var(--primary); }
+    /* Sidebar */
     .sidebar {
       width: 80px;
-      background: var(--card);
+      background: var(--sidebar);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
@@ -50,7 +75,7 @@
       z-index: 2;
       position: fixed;
       height: 100vh;
-      transition: width var(--transition);
+      transition: width var(--transition), background var(--transition);
     }
     .sidebar .logo {
       width: 56px; height: 56px;
@@ -66,52 +91,179 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 16px;
     }
-    /* Topbar with logo and name */
-    .topbar {
-      position: fixed;
-      width: calc(100% - 80px);
+    .sidebar-item {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      color: var(--muted);
+      position: relative;
+    }
+    .sidebar-item:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .sidebar-item.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .sidebar-item i {
+      font-size: 24px;
+    }
+    .sidebar-item .tooltip {
+      position: absolute;
       left: 80px;
-      background: linear-gradient(95deg, var(--primary) 0%, #f5a623 90%);
-      height: 64px;
+      background: var(--card);
+      padding: 8px 16px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+      z-index: 3;
+      border: 1px solid var(--border);
+    }
+    .sidebar-item:hover .tooltip {
+      opacity: 1;
+    }
+    .sidebar-bottom {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .sidebar-bottom .sidebar-item {
+      width: 56px;
+      height: 56px;
+    }
+    .theme-toggle {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      transition: background var(--transition), color var(--transition);
+    }
+    .theme-toggle:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .theme-toggle i {
+      font-size: 24px;
+    }
+    /* Topbar */
+    .topbar {
+      height: 80px;
+      background: linear-gradient(95deg, #2563eb 0%, #3b82f6 90%);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       padding: 0 24px;
+      position: fixed;
+      width: calc(100% - 80px);
+      left: 80px;
       z-index: 1;
-      border-bottom: 1px solid var(--border);
       transition: background var(--transition);
     }
-    .topbar .header {
+    .topbar-content {
       display: flex;
       align-items: center;
-      gap: 12px;
-      color: #fff;
+      justify-content: space-between;
+      width: 100%;
     }
-    .topbar .header .logo-small {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
-    .topbar .header h1 {
+    .topbar-title {
       font-size: 24px;
       font-weight: 700;
-      margin: 0;
+      color: #fff;
     }
-    .topbar .profile {
-      margin-left: auto;
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      color: #fff;
+      font-weight: 600;
+    }
+    .nav-tab:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .nav-tab.active {
+      background: #fff;
+      color: var(--primary);
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 8px 16px;
+      gap: 8px;
+      width: 280px;
+      transition: background var(--transition);
+    }
+    .search-bar i {
+      color: #fff;
+      font-size: 18px;
+    }
+    .search-bar input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+    }
+    .search-bar input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    .profile {
       display: flex;
       align-items: center;
       gap: 12px;
+      cursor: pointer;
     }
-    .topbar .profile img {
+    .profile-pic {
       width: 40px;
       height: 40px;
       border-radius: 50%;
       background: #fff;
-      padding: 4px;
-      border: 1px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 16px;
     }
-    .topbar .profile .name { font-weight: 600; font-size: 16px; color: #fff; }
+    .profile-name {
+      font-weight: 600;
+      color: #fff;
+    }
+    .profile-arrow {
+      color: #fff;
+      font-size: 18px;
+    }
     /* Main Content */
     .main-content {
       margin-left: 80px;
@@ -120,19 +272,132 @@
       height: calc(100vh - 64px);
       transition: margin-left var(--transition);
     }
-    .main-content h2 { font-size: 24px; margin-bottom: 24px; color: var(--primary); }
-    .section { margin-bottom: 32px; background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
-    th { background: var(--primary-light); color: var(--text); }
-    #news-feed li { margin: 10px 0; }
-    #news-feed li a { color: var(--primary); text-decoration: none; }
-    #news-feed li a:hover { text-decoration: underline; }
-    .steps { background: var(--primary-light); padding: 20px; border-radius: var(--radius); margin-top: 20px; }
-    label { display: block; margin: 10px 0; font-size: 1.1em; color: var(--text); }
-    input[type="text"] { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-top: 5px; }
-    button { background: var(--primary); color: #fff; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition); }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .stat-card .icon {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--primary);
+    }
+    .stat-card .label { font-size: 14px; color: var(--muted); }
+    .stat-card .value { font-size: 24px; font-weight: 700; }
+    .stat-card .change { font-size: 14px; color: #22c55e; display: flex; align-items: center; gap: 4px; }
+    .stat-card .change.down { color: #ef4444; }
+    .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .plan-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .plan-card.active { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
+    .plan-card .name { font-size: 20px; font-weight: 600; }
+    .plan-card .price { font-size: 32px; font-weight: 700; }
+    .plan-card .price span { font-size: 14px; color: var(--muted); }
+    .plan-card .features { list-style: none; padding: 0; gap: 8px; display: flex; flex-direction: column; }
+    .plan-card .features li { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+    .plan-card .features li i { color: #22c55e; }
+    .plan-card button { margin-top: auto; }
+    .pay-modal, .chart-modal, .bot-modal, .help-modal, .exchange-modal { display: none; background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: 80%; max-width: 600px; }
+    .pay-modal.active, .chart-modal.active, .bot-modal.active, .help-modal.active, .exchange-modal.active { display: block; }
+    .modal-bg { display: none; display: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0005; z-index: 9; }
+    .modal-bg.active { display: block; }
+    .close-btn { position: absolute; top: 16px; right: 16px; cursor: pointer; color: var(--muted); font-size: 24px; }
+    .pay-modal form { display: flex; flex-direction: column; gap: 16px; }
+    .pay-modal input { padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
+    .chart-modal, .bot-modal { text-align: center; }
+    .chart-modal canvas { width: 100%; height: 300px; }
+    .bot-modal p { margin-bottom: 16px; }
+    .help-panel { background: linear-gradient(160deg,#2563eb 60%,#1749b1 120%); border-radius: var(--radius); padding: 32px; color: #fff; display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+    .help-top { display: flex; align-items: center; gap: 16px; }
+    .help-icon { width: 48px; height: 48px; background: #fff3; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    .help-title { font-size: 24px; font-weight: 700; }
+    .help-desc { font-size: 16px; opacity: 0.8; }
+    .help-bottom-bar { background: #fff3; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px; }
+    .help-bottom-bar input { flex: 1; padding: 12px; border: none; background: transparent; color: #fff; }
+    .help-bottom-bar input::placeholder { color: #fff; opacity: 0.6; }
+    .help-bottom-bar button { background: #fff; color: var(--primary); border-radius: 8px; padding: 8px 16px; font-weight: 600; }
+    .help-categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .help-category { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: var(--transition); }
+    .help-category:hover { transform: translateY(-2px); }
+    .help-category i { font-size: 24px; color: var(--primary); }
+    .help-category span { font-weight: 600; }
+    .help-modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0005; z-index: 9; }
+    .help-modal-bg.active { display: block; }
+    .help-modal { display: none; background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: 80%; max-width: 800px; }
+    .help-modal.active { display: block; }
+    .help-modal h2 { font-size: 24px; margin-bottom: 16px; }
+    .help-links-list { background: var(--accent); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+    .help-link-item { padding: 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background var(--transition); }
+    .help-link-item:last-child { border-bottom: none; }
+    .help-link-item:hover { background: var(--accent); }
+    .help-link-item i { font-size: 20px; color: var(--primary); }
+    .help-link-item span { flex: 1; }
+    .help-link-item .arrow { color: var(--muted); }
+    .exchange-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .exchange-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; }
+    .exchange-card img { width: 64px; height: 64px; border-radius: 12px; }
+    .exchange-card .name { font-weight: 600; }
+    .exchange-card .desc { font-size: 14px; color: var(--muted); }
+    .exchange-modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0005; z-index: 9; }
+    .exchange-modal-bg.active { display: block; }
+    .exchange-modal { display: none; background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: 80%; max-width: 600px; }
+    .exchange-modal.active { display: block; }
+    .exchange-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .exchange-item { background: var(--accent); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: var(--transition); border: 1px solid var(--border); }
+    .exchange-item.active { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
+    .exchange-item img { width: 48px; height: 48px; }
+    .exchange-item span { font-weight: 600; }
+    .exchange-form { display: none; flex-direction: column; gap: 16px; }
+    .exchange-form.active { display: flex; }
+    .exchange-form input { padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
+    .exchange-form button { background: var(--primary); color: #fff; }
+    .watchlist-section { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 32px; }
+    .watchlist-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .watchlist-search { display: flex; align-items: center; gap: 8px; flex: 1; background: var(--accent); border-radius: 8px; padding: 8px 16px; border: 1px solid var(--border); }
+    .watchlist-search i { color: var(--muted); }
+    .watchlist-search input { background: transparent; border: none; flex: 1; outline: none; }
+    .watchlist-add { background: var(--primary); color: #fff; border-radius: 8px; padding: 8px 16px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .watchlist-add:hover { background: var(--primary-hover); }
+    .watchlist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .watchlist-column { display: flex; flex-direction: column; gap: 8px; }
+    .watchlist-list { list-style: none; padding: 0; background: var(--accent); border-radius: 12px; border: 1px solid var(--border); min-height: 200px; }
+    .watchlist-item { padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+    .watchlist-item:last-child { border-bottom: none; }
+    .watchlist-item span { flex: 1; font-weight: 600; }
+    .remove-watchlist { background: #ef4444; color: #fff; border-radius: 6px; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: var(--transition); }
+    .remove-watchlist:hover { background: #dc2626; }
+    .available-coins { list-style: none; padding: 0; background: var(--accent); border-radius: 12px; border: 1px solid var(--border); min-height: 200px; }
+    .available-coins li { padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background var(--transition); }
+    .available-coins li:hover { background: var(--primary-light); }
+    .available-coins li:last-child { border-bottom: none; }
+    .available-coins li span { flex: 1; font-weight: 600; }
+    .available-coins li i { color: var(--muted); cursor: pointer; transition: color var(--transition); }
+    .available-coins li i.active { color: var(--primary); }
+    .steps { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 32px; }
+    label { display: block; margin-bottom: 10px; }
+    button { background: var(--primary); color: #fff; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; }
     button:hover { background: var(--primary-hover); }
+    #quiz, #telegram-link { display: none; margin-top: 20px; }
   </style>
   <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
 </head>
@@ -143,13 +408,18 @@
     </div>
   </div>
   <div class="topbar">
-    <div class="header">
-      <img src="logo.png" alt="Logo" class="logo-small">
-      <h1>Financial Harmony</h1>
-    </div>
-    <div class="profile">
-      <img src="default-profile.jpg" alt="Profile">
-      <span class="name">User</span>
+    <div class="topbar-content">
+      <div class="topbar-left">
+        <div class="topbar-title">Financial Harmony</div>
+      </div>
+      <div class="topbar-right">
+        <div class="profile">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Pic">
+          <div>
+            <div class="name">John Doe</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="main-content">
@@ -157,11 +427,24 @@
       <button id="login-button">Iniciar Sesión con Auth0</button>
     </div>
     <div id="dashboard" style="display: none;">
-      <h2>Dashboard Crypto</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="icon"><i class="ri-coin-line"></i></div>
+          <div class="label">Saldo Total</div>
+          <div class="value">$12,345.67</div>
+          <div class="change">+5.2% <i class="ri-arrow-up-line"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="icon"><i class="ri-line-chart-line"></i></div>
+          <div class="label">Ganancias/Pérdidas</div>
+          <div class="value">+$1,234.56</div>
+          <div class="change">+3.8% <i class="ri-arrow-up-line"></i></div>
+        </div>
+      </div>
       <div class="section">
-        <h3>Precios de Criptomonedas de Alto Volumen</h3>
+        <h3>Precios Principales de Criptomonedas</h3>
         <table id="prices-table">
-          <thead><tr><th>Moneda</th><th>Precio (USD)</th><th>Cambio 24h</th><th>Volumen 24h</th></tr></thead>
+          <thead><tr><th>Moneda</th><th>Precio (USD)</th><th>Cambio 24h</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -233,12 +516,12 @@
       document.getElementById('dashboard').style.display = isAuthenticated ? 'block' : 'none';
 
       if (isAuthenticated) {
-        loadTopVolumeCoins();
+        loadPrices();
         loadNews();
         loadBtcInfo();
-        setInterval(loadNews, 60000);
+        setInterval(loadNews, 30000); 
         document.querySelector('.profile .name').textContent = userProfile.name || 'User';
-        document.querySelector('.profile img').src = userProfile.picture || 'default-profile.jpg';
+        document.querySelector('.profile img').src = userProfile.picture || 'https://randomuser.me/api/portraits/men/32.jpg';
       }
     }
 
@@ -256,22 +539,22 @@
 
     initAuth0();
 
-    // Load top volume coins from CoinGecko
-    function loadTopVolumeCoins() {
-      fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=10&page=1')
+    // Cargar Precios
+    function loadPrices() {
+      fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,solana&order=market_cap_desc')
         .then(res => res.json())
         .then(data => {
           const tbody = document.querySelector('#prices-table tbody');
           tbody.innerHTML = '';
           data.forEach(coin => {
-            const row = `<tr><td>${coin.name}</td><td>$${coin.current_price.toFixed(2)}</td><td>${coin.price_change_percentage_24h.toFixed(2)}%</td><td>$${coin.total_volume.toLocaleString()}</td></tr>`;
+            const row = `<tr><td>${coin.name}</td><td>$${coin.current_price.toFixed(2)}</td><td>${coin.price_change_percentage_24h.toFixed(2)}%</td></tr>`;
             tbody.innerHTML += row;
           });
-        }).catch(err => console.error('Error loading coins:', err));
-      setTimeout(loadTopVolumeCoins, 60000); // Refresh every 60s
+        }).catch(err => console.error('Error loading prices:', err));
+      setTimeout(loadPrices, 30000);
     }
 
-    // Load News
+    // Cargar Noticias
     function loadNews() {
       const apiKey = '6a2f3e0ca4454b59a566896f49560316';
       fetch(`https://newsapi.org/v2/everything?q=bitcoin OR crypto&sortBy=publishedAt&language=es&pageSize=10&apiKey=${apiKey}`)
@@ -285,15 +568,15 @@
               feed.innerHTML += `<li><a href="${article.url}" target="_blank">${article.title}</a> - ${article.source.name} (${date})</li>`;
             });
           } else {
-            feed.innerHTML = '<li>No hay noticias disponibles.</li>';
+            feed.innerHTML = '<li>No hay noticias disponibles en este momento.</li>';
           }
         }).catch(err => {
           console.error('Error fetching news:', err);
-          document.getElementById('news-feed').innerHTML = '<li>Error al cargar noticias.</li>';
+          document.getElementById('news-feed').innerHTML = '<li>Error al cargar noticias. Verifica tu API key o conexión.</li>';
         });
     }
 
-    // Load BTC Info
+    // Info BTC
     function loadBtcInfo() {
       fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
         .then(res => res.json())
@@ -302,7 +585,7 @@
         }).catch(err => console.error('Error loading BTC info:', err));
     }
 
-    // TradingView Graph
+    // Gráfico TradingView
     new TradingView.widget({
       "width": "100%",
       "height": 400,
@@ -319,7 +602,7 @@
       "container_id": "tradingview-widget"
     });
 
-    // Steps Flow
+    // Flujo de Pasos
     document.getElementById('next-follow').addEventListener('click', () => {
       if (document.querySelectorAll('input[type="checkbox"]:checked').length === 3) {
         document.getElementById('quiz').style.display = 'block';
