@@ -1,22 +1,24 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Crypto Harmony - Verificación y Noticias</title>
+  <title>Financial Harmony - BTC Courses</title>
   <link rel="icon" type="image/png" href="https://i.imgur.com/6Z2b4cV.png" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
   <style>
     :root {
       --primary: #FFD700; /* Oro para crypto */
       --primary-hover: #FFAC1C;
       --primary-light: #FFFACD;
-      --bg: linear-gradient(135deg, #1E90FF, #00BFFF); /* Azul crypto vibrante */
-      --text: #000;
-      --muted: #333;
+      --text: #FFF;
+      --muted: #EEE;
       --border: #FFD700;
-      --card: #FFFFFF;
+      --card: rgba(255,255,255,0.1);
       --accent: #F0E68C;
       --radius: 16px;
       --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -25,38 +27,83 @@
 
     body {
       font-family: 'Inter', Arial, sans-serif;
-      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 20px;
+      padding: 0;
       margin: 0;
       overflow-x: hidden;
+      background: linear-gradient(180deg, #6a1b9a 0%, #ab47bc 50%, #ff8a80 100%);
+      position: relative;
     }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: var(--card);
-      padding: 30px;
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ab47bc" fill-opacity="0.5" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x bottom;
+      z-index: 0;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 20px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .left img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .left h1 {
+      font-size: 2.5em;
+      margin: 0;
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #login, #logout {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      padding: 8px 16px;
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      cursor: pointer;
     }
 
-    h1, h2, h3 {
-      color: var(--primary);
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    #profile {
+      color: var(--text);
     }
 
-    /* Ticker infinito */
     .ticker {
-      background: #000;
+      background: rgba(0,0,0,0.5);
       color: #FFF;
-      padding: 10px 0;
+      padding: 5px 10px;
       overflow: hidden;
       white-space: nowrap;
-      margin-bottom: 20px;
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      width: 300px;
     }
 
     .ticker ul {
@@ -78,13 +125,35 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* Noticias */
-    .news-section {
-      margin-top: 40px;
+    .hero-content img {
+      width: 300px;
+      height: auto;
+      margin: 20px 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .news-section, .charts-section, .verification-section {
+      background: var(--card);
+      padding: 20px;
+      border-radius: var(--radius);
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+    }
+
+    h2 {
+      color: var(--primary);
+      text-align: center;
     }
 
     .news-item {
-      background: var(--accent);
+      background: rgba(255,255,255,0.2);
       padding: 15px;
       margin-bottom: 15px;
       border-radius: var(--radius);
@@ -107,6 +176,10 @@
       font-weight: bold;
     }
 
+    #marketChart {
+      max-height: 400px;
+    }
+
     /* Verificación y Cuestionario */
     .social-list { list-style: none; padding: 0; margin: 0; }
     .social-item { margin-bottom: 12px; display: flex; align-items: center; }
@@ -114,7 +187,7 @@
     .social-link { color: var(--primary); text-decoration: none; font-weight: bold; }
     .quiz-question { margin-bottom: 18px; }
     .quiz-option { display: block; margin-bottom: 6px; }
-    #telegram-link { display: none; background: var(--primary-light); padding: 16px; border-radius: var(--radius); margin-top: 24px; box-shadow: var(--shadow); }
+    #telegram-link { display: none; background: var(--primary-light); padding: 16px; border-radius: var(--radius); margin-top: 24px; box-shadow: var(--shadow); color: #000; }
     #telegram-link a { color: var(--primary-hover); font-weight: 600; font-size: 1.2em; }
 
     button#verify-quiz {
@@ -132,95 +205,147 @@
     button#verify-quiz:hover {
       background: var(--primary-hover);
     }
-
-    /* Temas crypto: agregar backgrounds o icons */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://source.unsplash.com/random/1920x1080/?crypto,bitcoin') no-repeat center/cover;
-      opacity: 0.1;
-      z-index: -1;
-    }
   </style>
 </head>
 <body>
+  <div class="hero">
+    <nav>
+      <div class="left">
+        <img src="https://i.imgur.com/6Z2b4cV.png" alt="Logo">
+        <h1>Financial Harmony</h1>
+      </div>
+      <div class="right">
+        <button id="login">Iniciar Sesión</button>
+        <button id="logout" style="display: none;">Cerrar Sesión</button>
+        <div id="profile" style="display: none;"></div>
+        <div class="ticker">
+          <ul id="ticker-list"></ul>
+        </div>
+      </div>
+    </nav>
+    <div class="hero-content">
+      <img src="https://pngimg.com/uploads/bitcoin/small/bitcoin_PNG48.png" alt="Bitcoin Coin">
+    </div>
+  </div>
+
   <div class="container">
-    <h1>Crypto Harmony - Verificación para Acceso al Curso BTC</h1>
-    <p>Para acceder al curso, sigue todos los perfiles en redes sociales a continuación y marca las casillas una vez que lo hayas hecho. Luego, responde correctamente al cuestionario. Una vez completadas todas las tareas, se revelará el enlace de Telegram.</p>
+    <div class="verification-section">
+      <h2>BTC Courses - Verificación</h2>
+      <p>Para acceder al curso, sigue todos los perfiles en redes sociales a continuación y marca las casillas una vez que lo hayas hecho. Luego, responde correctamente al cuestionario. Una vez completadas todas las tareas, se revelará el enlace de Telegram.</p>
 
-    <ul class="social-list">
-      <li class="social-item">
-        <input type="checkbox" class="follow-check" data-social="x">
-        Sigue en X: <a href="https://x.com/financialharmon" target="_blank" class="social-link">@financialharmon</a>
-      </li>
-      <li class="social-item">
-        <input type="checkbox" class="follow-check" data-social="youtube">
-        Sigue en YouTube: <a href="https://www.youtube.com/@FinancialHarmony-z1n" target="_blank" class="social-link">@FinancialHarmony-z1n</a>
-      </li>
-      <li class="social-item">
-        <input type="checkbox" class="follow-check" data-social="instagram">
-        Sigue en Instagram: <a href="https://www.instagram.com/jrfinancialharmony" target="_blank" class="social-link">jrfinancialharmony</a>
-      </li>
-      <li class="social-item">
-        <input type="checkbox" class="follow-check" data-social="tiktok">
-        Sigue en TikTok: <a href="https://www.tiktok.com/@financial.harmony0" target="_blank" class="social-link">financial.harmony0</a>
-      </li>
-    </ul>
+      <ul class="social-list">
+        <li class="social-item">
+          <input type="checkbox" class="follow-check" data-social="x">
+          Sigue en X: <a href="https://x.com/financialharmon" target="_blank" class="social-link">@financialharmon</a>
+        </li>
+        <li class="social-item">
+          <input type="checkbox" class="follow-check" data-social="youtube">
+          Sigue en YouTube: <a href="https://www.youtube.com/@FinancialHarmony-z1n" target="_blank" class="social-link">@FinancialHarmony-z1n</a>
+        </li>
+        <li class="social-item">
+          <input type="checkbox" class="follow-check" data-social="instagram">
+          Sigue en Instagram: <a href="https://www.instagram.com/jrfinancialharmony" target="_blank" class="social-link">jrfinancialharmony</a>
+        </li>
+        <li class="social-item">
+          <input type="checkbox" class="follow-check" data-social="tiktok">
+          Sigue en TikTok: <a href="https://www.tiktok.com/@financial.harmony0" target="_blank" class="social-link">financial.harmony0</a>
+        </li>
+      </ul>
 
-    <h3>Cuestionario BTC</h3>
-    <div class="quiz-question">
-      <p>1. ¿Qué significa BTC?</p>
-      <label class="quiz-option"><input type="radio" name="q1" value="a"> a) Bitcoin</label>
-      <label class="quiz-option"><input type="radio" name="q1" value="b"> b) Bytecoin</label>
-      <label class="quiz-option"><input type="radio" name="q1" value="c"> c) Bitcash</label>
-    </div>
-    <div class="quiz-question">
-      <p>2. ¿Quién creó Bitcoin?</p>
-      <label class="quiz-option"><input type="radio" name="q2" value="a"> a) Elon Musk</label>
-      <label class="quiz-option"><input type="radio" name="q2" value="b"> b) Satoshi Nakamoto</label>
-      <label class="quiz-option"><input type="radio" name="q2" value="c"> c) Vitalik Buterin</label>
-    </div>
-    <div class="quiz-question">
-      <p>3. ¿Cuál es el suministro máximo de BTC?</p>
-      <label class="quiz-option"><input type="radio" name="q3" value="a"> a) 21 millones</label>
-      <label class="quiz-option"><input type="radio" name="q3" value="b"> b) Ilimitado</label>
-      <label class="quiz-option"><input type="radio" name="q3" value="c"> c) 100 millones</label>
-    </div>
-    <div class="quiz-question">
-      <p>4. ¿Qué es el halving de Bitcoin?</p>
-      <label class="quiz-option"><input type="radio" name="q4" value="a"> a) Reducción a la mitad de la recompensa por minado</label>
-      <label class="quiz-option"><input type="radio" name="q4" value="b"> b) Duplicación de la recompensa</label>
-      <label class="quiz-option"><input type="radio" name="q4" value="c"> c) Cambio en el algoritmo</label>
-    </div>
-    <div class="quiz-question">
-      <p>5. ¿En qué año se creó Bitcoin?</p>
-      <label class="quiz-option"><input type="radio" name="q5" value="a"> a) 2009</label>
-      <label class="quiz-option"><input type="radio" name="q5" value="b"> b) 2010</label>
-      <label class="quiz-option"><input type="radio" name="q5" value="c"> c) 2008</label>
+      <h3>Cuestionario BTC</h3>
+      <div class="quiz-question">
+        <p>1. ¿Qué significa BTC?</p>
+        <label class="quiz-option"><input type="radio" name="q1" value="a"> a) Bitcoin</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="b"> b) Bytecoin</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="c"> c) Bitcash</label>
+      </div>
+      <div class="quiz-question">
+        <p>2. ¿Quién creó Bitcoin?</p>
+        <label class="quiz-option"><input type="radio" name="q2" value="a"> a) Elon Musk</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="b"> b) Satoshi Nakamoto</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="c"> c) Vitalik Buterin</label>
+      </div>
+      <div class="quiz-question">
+        <p>3. ¿Cuál es el suministro máximo de BTC?</p>
+        <label class="quiz-option"><input type="radio" name="q3" value="a"> a) 21 millones</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="b"> b) Ilimitado</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="c"> c) 100 millones</label>
+      </div>
+      <div class="quiz-question">
+        <p>4. ¿Qué es el halving de Bitcoin?</p>
+        <label class="quiz-option"><input type="radio" name="q4" value="a"> a) Reducción a la mitad de la recompensa por minado</label>
+        <label class="quiz-option"><input type="radio" name="q4" value="b"> b) Duplicación de la recompensa</label>
+        <label class="quiz-option"><input type="radio" name="q4" value="c"> c) Cambio en el algoritmo</label>
+      </div>
+      <div class="quiz-question">
+        <p>5. ¿En qué año se creó Bitcoin?</p>
+        <label class="quiz-option"><input type="radio" name="q5" value="a"> a) 2009</label>
+        <label class="quiz-option"><input type="radio" name="q5" value="b"> b) 2010</label>
+        <label class="quiz-option"><input type="radio" name="q5" value="c"> c) 2008</label>
+      </div>
+
+      <button id="verify-quiz">Verificar y Revelar Enlace</button>
+      <div id="telegram-link">
+        <p>¡Felicidades! Aquí está el enlace de Telegram: <a href="https://t.me/yourgroup" target="_blank">Unirse al Grupo</a></p>
+      </div>
     </div>
 
-    <button id="verify-quiz">Verificar y Revelar Enlace</button>
-    <div id="telegram-link">
-      <p>¡Felicidades! Aquí está el enlace de Telegram: <a href="https://t.me/yourgroup" target="_blank">Unirse al Grupo</a></p>
+    <div class="news-section">
+      <h2>Noticias de Criptomonedas</h2>
+      <div id="news-list"></div>
     </div>
-  </div>
 
-  <!-- Ticker Infinito -->
-  <div class="ticker">
-    <ul id="ticker-list"></ul>
-  </div>
-
-  <!-- Sección de Noticias -->
-  <div class="container news-section">
-    <h2>Noticias de Criptomonedas</h2>
-    <div id="news-list"></div>
+    <div class="charts-section">
+      <h2>Crecimiento del Mercado Crypto (Precio de BTC último año)</h2>
+      <canvas id="marketChart"></canvas>
+    </div>
   </div>
 
   <script>
+    // Auth0 Integration
+    auth0.createAuth0Client({
+      domain: "dev-uig5oc4olpwf4aw6.eu.auth0.com",
+      clientId: "6NLcS9SdNQWYPOFNlRYBQawxLQ1YiKxq",
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }).then(async (auth0Client) => {
+      const loginButton = document.getElementById("login");
+      loginButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth0Client.loginWithRedirect();
+      });
+
+      if (location.search.includes("state=") && (location.search.includes("code=") || location.search.includes("error="))) {
+        await auth0Client.handleRedirectCallback();
+        window.history.replaceState({}, document.title, "/");
+      }
+
+      const logoutButton = document.getElementById("logout");
+      logoutButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth0Client.logout();
+      });
+
+      const isAuthenticated = await auth0Client.isAuthenticated();
+      const userProfile = await auth0Client.getUser();
+
+      const profileElement = document.getElementById("profile");
+
+      loginButton.style.display = isAuthenticated ? "none" : "inline-block";
+      logoutButton.style.display = isAuthenticated ? "inline-block" : "none";
+
+      if (isAuthenticated) {
+        profileElement.style.display = "inline-block";
+        profileElement.innerHTML = `
+          <p>${userProfile.name}</p>
+          <img src="${userProfile.picture}" style="width: 40px; border-radius: 50%;" />
+        `;
+      } else {
+        profileElement.style.display = "none";
+      }
+    });
+
     // Verificación del Curso
     const followChecks = document.querySelectorAll('.follow-check');
     const verifyButton = document.getElementById('verify-quiz');
@@ -241,7 +366,7 @@
       }
     });
 
-    // Fetch Top 10 por Volumen para Ticker
+    // Ticker Infinito
     fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=10&page=1')
       .then(r => r.json())
       .then(data => {
@@ -251,17 +376,15 @@
           li.textContent = `${coin.symbol.toUpperCase()}: $${coin.current_price.toFixed(2)} (${coin.price_change_percentage_24h.toFixed(2)}%)`;
           tickerList.appendChild(li);
         });
-        // Duplicar para efecto infinito
-        tickerList.innerHTML += tickerList.innerHTML;
+        tickerList.innerHTML += tickerList.innerHTML; // Duplicar para infinito
       });
 
-    // Fetch Noticias (usando una API de noticias crypto, aquí uso placeholder con CoinGecko news si disponible, o alternativa)
-    // Nota: CoinGecko no tiene /news directo, uso una alternativa como CryptoPanic API
-    fetch('https://cryptopanic.com/api/v1/posts/?auth_token=your_token_if_needed&public=true&kind=news') // Reemplaza con tu API key si es necesario
+    // Noticias
+    fetch('https://cryptopanic.com/api/v1/posts/?public=true&kind=news')
       .then(r => r.json())
       .then(data => {
         const newsList = document.getElementById('news-list');
-        data.results.slice(0, 5).forEach(news => { // Mostrar 5 noticias
+        data.results.slice(0, 5).forEach(news => {
           const div = document.createElement('div');
           div.classList.add('news-item');
           div.innerHTML = `
@@ -273,6 +396,38 @@
       })
       .catch(() => {
         document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde.</p>';
+      });
+
+    // Gráfico de Crecimiento (BTC como proxy)
+    fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365')
+      .then(r => r.json())
+      .then(data => {
+        const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+        const prices = data.prices.map(p => p[1]);
+        new Chart(document.getElementById('marketChart'), {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Precio de BTC (USD)',
+              data: prices,
+              borderColor: var(--primary),
+              backgroundColor: 'rgba(255, 215, 0, 0.2)',
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: false
+              }
+            }
+          }
+        });
+      })
+      .catch(() => {
+        document.getElementById('marketChart').getContext('2d').fillText('No se pudieron cargar los datos.', 10, 50);
       });
   </script>
 </body>
