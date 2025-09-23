@@ -1,717 +1,1425 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Financial Harmony - BTC Courses</title>
-  <link rel="shortcut icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <script src="https://s3.tradingview.com/tv.js"></script>
-  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
-  <style>
-    :root {
-      --primary: #FFD700; /* Oro para crypto */
-      --primary-hover: #FFAC1C;
-      --primary-light: #FFFACD;
-      --text: #333; /* Cambiado a oscuro para contraste con verdes claros */
-      --muted: #555;
-      --border: #4CAF50;
-      --card: rgba(255,255,255,0.8);
-      --accent: #A5D6A7;
-      --radius: 16px;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      --transition: 0.3s;
-    }
-    body {
-      font-family: 'Inter', Arial, sans-serif;
-      color: var(--text);
-      min-height: 100vh;
-      padding: 0;
-      margin: 0;
-      overflow-x: hidden;
-      position: relative;
-      animation: colorChange 30s infinite alternate;
-    }
-    @keyframes colorChange {
-      0% { background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%); }
-      50% { background: linear-gradient(180deg, #DCEDC8 0%, #C5E1A5 50%, #AED581 100%); }
-      100% { background: linear-gradient(180deg, #F1F8E9 0%, #DCE775 50%, #CDDC39 100%); }
-    }
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 200%; /* Para loop horizontal infinito */
-      height: 100%;
-      background-image: url('https://raw.githubusercontent.com/didac007/financial-harmony-github/main/new_wave.png'); /* Reemplaza con la URL de tu nueva imagen de ola verde subida a GitHub */
-      background-repeat: repeat-x;
-      background-position: top left;
-      background-size: auto 100%;
-      z-index: 0;
-      opacity: 0.3; /* Suave para tranquilidad */
-      animation: waveFlow 60s linear infinite;
-    }
-    @keyframes waveFlow {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-    .hero {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 20px;
-    }
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-    }
-    .left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .left img {
-      width: auto;
-      height: 50px; /* Ajustado para preservar proporción y tamaño adecuado */
-    }
-    .left h1 {
-      font-size: 2.5em;
-      margin: 0;
-      color: var(--text);
-    }
-    .right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    #login, #logout {
-      background: var(--primary);
-      color: #000;
-      border: none;
-      padding: 8px 16px;
-      border-radius: var(--radius);
-      cursor: pointer;
-    }
-    #profile {
-      color: var(--text);
-    }
-    .ticker {
-      background: rgba(0,128,0,0.2); /* Verde suave */
-      color: #FFF;
-      padding: 10px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      margin: 20px auto;
-      border-radius: var(--radius);
-      max-width: 1200px;
-      display: block;
-    }
-    .ticker ul {
-      display: inline-block;
-      animation: ticker 60s linear infinite;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .ticker li {
-      display: inline-block;
-      margin-right: 30px;
-      font-weight: bold;
-    }
-    @keyframes ticker {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .bitcoin-logo-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 20px 0;
-    }
-    .bitcoin-symbol {
-      width: 300px; /* Ajustado al tamaño original aproximado */
-      height: 300px;
-      background: transparent; /* Fondo transparente */
-      border-radius: 50%; /* Forma circular, pero sin fondo visible */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 240px; /* Tamaño del símbolo ₿ ajustado */
-      color: var(--primary); /* Color dorado */
-      border: none; /* Sin borde */
-      box-shadow: none; /* Sin sombra */
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    .info-sections {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    .info-card {
-      background: var(--card);
-      padding: 20px;
-      border-radius: var(--radius);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-    }
-    .info-card h3 {
-      color: #388E3C; /* Verde oscuro */
-      margin-bottom: 10px;
-    }
-    .info-card p {
-      color: var(--muted);
-    }
-    .info-card button, .more-card button {
-      background: #66BB6A; /* Verde suave */
-      color: #FFF;
-      border: none;
-      padding: 10px;
-      border-radius: var(--radius);
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .more-info {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    .more-card {
-      background: var(--card);
-      padding: 20px;
-      border-radius: var(--radius);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-    }
-    .more-card h3 {
-      color: #388E3C;
-      margin-bottom: 10px;
-    }
-    .more-card p {
-      color: var(--muted);
-    }
-    #trends-card {
-      position: relative;
-      overflow: hidden;
-    }
-    .slider {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-    }
-    .slide {
-      min-width: 100%;
-      box-sizing: border-box;
-      padding: 10px;
-      background: rgba(76,175,80,0.1); /* Verde claro */
-      border-radius: var(--radius);
-      cursor: pointer;
-    }
-    .slide h4 {
-      margin: 0 0 5px;
-      color: #2E7D32;
-    }
-    .slide p {
-      margin: 0;
-      font-size: 0.9em;
-    }
-    #new-listings {
-      margin-top: 10px;
-      font-size: 0.8em;
-      color: #4CAF50;
-    }
-    .news-section, .charts-section, .verification-section {
-      background: var(--card);
-      padding: 20px;
-      border-radius: var(--radius);
-      margin-bottom: 40px;
-      backdrop-filter: blur(10px);
-    }
-    h2 {
-      color: #388E3C;
-      text-align: center;
-    }
-    .news-item {
-      background: rgba(255,255,255,0.2);
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .news-item h4 {
-      margin: 0 0 10px;
-      color: #388E3C;
-    }
-    .news-item p {
-      margin: 0;
-      color: var(--muted);
-    }
-    .news-item a {
-      color: #4CAF50;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    #btc-chart, #eth-chart, #sol-chart {
-      height: 300px;
-      margin-bottom: 20px;
-    }
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 100;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-      padding-top: 60px;
-    }
-    .modal-content {
-      background-color: var(--card);
-      margin: 5% auto;
-      padding: 20px;
-      border: 1px solid var(--border);
-      width: 80%;
-      max-width: 600px;
-      border-radius: var(--radius);
-      backdrop-filter: blur(10px);
-    }
-    .close {
-      color: var(--text);
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: var(--primary);
-      text-decoration: none;
-      cursor: pointer;
-    }
-    /* Verificación y Cuestionario */
-    .verification-section {
-      display: none; /* Oculto inicialmente */
-    }
-    #quiz {
-      margin-top: 20px;
-    }
-    .question {
-      margin-bottom: 20px;
-    }
-    .question h4 {
-      margin-bottom: 10px;
-    }
-    .option {
-      display: block;
-      margin-bottom: 5px;
-    }
-    #submit-quiz {
-      background: #66BB6A;
-      color: #FFF;
-      border: none;
-      padding: 10px 20px;
-      border-radius: var(--radius);
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    #quiz-result {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <nav>
-    <div class="left">
-      <img src="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/logo.png" alt="Logo">
-      <h1>Financial Harmony</h1>
-    </div>
-    <div class="right">
-      <button id="login">Iniciar Sesión</button>
-      <button id="logout" style="display:none;">Cerrar Sesión</button>
-      <span id="profile" style="display:none;"></span>
-    </div>
-  </nav>
-  <div class="hero">
-    <div class="hero-content">
-      <div class="bitcoin-logo-container">
-        <div class="bitcoin-symbol">₿</div>
-      </div>
-    </div>
-  </div>
-  <div class="container">
-    <div class="ticker">
-      <ul id="ticker-list"></ul>
-    </div>
-    <div class="info-sections">
-      <div class="info-card" data-section="crypto-economy">
-        <h3>Conéctate con la Economía Cripto</h3>
-        <p>Aprende los fundamentos del mundo de las criptomonedas y cómo Bitcoin está revolucionando las finanzas.</p>
-        <button class="more-info-btn">Más Info</button>
-      </div>
-      <div class="info-card" data-section="financial-skills">
-        <h3>Fomentando Habilidades Financieras</h3>
-        <p>Desarrolla estrategias para invertir en BTC de manera segura y efectivo.</p>
-        <button class="more-info-btn">Más Info</button>
-      </div>
-      <div class="info-card" data-section="withdraw-earnings">
-        <h3>Retira tus Ganancias con Confianza</h3>
-        <p>Guías paso a paso para manejar tus activos y maximizar retornos.</p>
-        <button class="more-info-btn">Más Info</button>
-      </div>
-    </div>
-    <div class="more-info">
-      <div class="more-card" data-section="discover-btc">
-        <h3>Descubre BTC</h3>
-        <p>Explora el origen y características de Bitcoin.</p>
-        <button class="more-info-btn">Más Info</button>
-      </div>
-      <div class="more-card" data-section="continue-learning">
-        <h3>Continúa Aprendiendo</h3>
-        <p>Avanza en tu educación financiera con cursos avanzados.</p>
-        <button class="more-info-btn">Más Info</button>
-      </div>
-      <div class="more-card" data-section="practical-tips">
-        <h3>Consejos Prácticos</h3>
-        <p>Consejos para principiantes y expertos en cripto.</p>
-        <button class="more-info-btn">Más Info</button>
-      </div>
-      <div class="more-card" id="trends-card">
-        <h3>Tendencias</h3>
-        <div class="slider" id="news-slider"></div>
-        <div id="new-listings"></div>
-      </div>
-    </div>
-    <div class="news-section">
-      <h2>Noticias Cripto</h2>
-      <div id="news-list"></div>
-    </div>
-    <div class="charts-section">
-      <h2>Gráficos en Tiempo Real</h2>
-      <div id="btc-chart"></div>
-      <div id="eth-chart"></div>
-      <div id="sol-chart"></div>
-    </div>
-    <div class="verification-section">
-      <h2>Verificación de Conocimientos</h2>
-      <p>Completa este cuestionario para verificar tu comprensión sobre Bitcoin.</p>
-      <div id="quiz">
-        <div class="question">
-          <h4>1. ¿Quién creó Bitcoin?</h4>
-          <label class="option"><input type="radio" name="q1" value="a"> a) Satoshi Nakamoto</label>
-          <label class="option"><input type="radio" name="q1" value="b"> b) Elon Musk</label>
-          <label class="option"><input type="radio" name="q1" value="c"> c) Vitalik Buterin</label>
-        </div>
-        <div class="question">
-          <h4>2. ¿Cuál es el suministro máximo de Bitcoin?</h4>
-          <label class="option"><input type="radio" name="q2" value="a"> a) 21 millones</label>
-          <label class="option"><input type="radio" name="q2" value="b"> b) 100 millones</label>
-          <label class="option"><input type="radio" name="q2" value="c"> c) Ilimitado</label>
-        </div>
-        <div class="question">
-          <h4>3. ¿Qué es el halving de Bitcoin?</h4>
-          <label class="option"><input type="radio" name="q3" value="a"> a) Reducción a la mitad de la recompensa por bloque</label>
-          <label class="option"><input type="radio" name="q3" value="b"> b) Duplicación del suministro</label>
-          <label class="option"><input type="radio" name="q3" value="c"> c) Actualización del protocolo</label>
-        </div>
-        <button id="submit-quiz">Enviar Respuestas</button>
-        <div id="quiz-result"></div>
-      </div>
-    </div>
-  </div>
-  <!-- Modal para Más Info -->
-  <div id="info-modal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2 id="modal-title"></h2>
-      <p id="modal-text"></p>
-    </div>
-  </div>
-  <!-- Modal para Noticias -->
-  <div id="news-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-news">&times;</span>
-      <h2 id="news-modal-title"></h2>
-      <p id="news-modal-text"></p>
-      <a id="news-modal-link" href="#" target="_blank">Leer más</a>
-    </div>
-  </div>
-  <script>
-    // Auth0 Configuration
-    const auth0 = new auth0.Auth0Client({
-      domain: 'dev-0j5f8y7a3e6q9w0t.us.auth0.com',
-      clientId: 'G3n2z7A2F4y9j0K5v8L3p6Q1r4T7u9V2',
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    });
-    const loginBtn = document.getElementById('login');
-    const logoutBtn = document.getElementById('logout');
-    const profileSpan = document.getElementById('profile');
-    const verificationSection = document.querySelector('.verification-section');
-    async function updateUI() {
-      const isAuthenticated = await auth0.isAuthenticated();
-      if (isAuthenticated) {
-        loginBtn.style.display = 'none';
-        logoutBtn.style.display = 'inline-block';
-        const user = await auth0.getUser();
-        profileSpan.textContent = `Hola, ${user.name}`;
-        profileSpan.style.display = 'inline-block';
-        verificationSection.style.display = 'block';
-      } else {
-        loginBtn.style.display = 'inline-block';
-        logoutBtn.style.display = 'none';
-        profileSpan.style.display = 'none';
-        verificationSection.style.display = 'none';
-      }
-    }
-    loginBtn.addEventListener('click', async () => {
-      await auth0.loginWithRedirect();
-    });
-    logoutBtn.addEventListener('click', async () => {
-      await auth0.logout({
-        logoutParams: {
-          returnTo: window.location.origin
-        }
-      });
-    });
-    (async () => {
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-        if (code && state) {
-          await auth0.handleRedirectCallback();
-          window.history.replaceState({}, document.title, "/");
-        }
-        await updateUI();
-      } catch (e) {
-        console.error('Error en Auth0:', e);
-        alert('Error al iniciar sesión. Verifica tus credenciales de Auth0 o la configuración.');
-      }
-    })();
-    // Ticker Infinito
-    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=10&page=1')
-      .then(r => r.json())
-      .then(data => {
-        const tickerList = document.getElementById('ticker-list');
-        let content = '';
-        data.forEach(coin => {
-          content += `<li>${coin.symbol.toUpperCase()}: $${coin.current_price.toFixed(2)} (${coin.price_change_percentage_24h.toFixed(2)}%)</li>`;
-        });
-        tickerList.innerHTML = content + content; // Duplicar para infinito
-      })
-      .catch(error => console.error('Error fetching ticker:', error));
-    // Noticias para slider en Tendencias y sección de noticias
-    fetch('https://newsapi.org/v2/everything?q=cryptocurrency&language=es&sortBy=publishedAt&apiKey=6a2f3e0ca4454b59a566896f49560316')
-      .then(r => {
-        if (!r.ok) {
-          throw new Error('Error en la respuesta de News API: ' + r.statusText);
-        }
-        return r.json();
-      })
-      .then(data => {
-        if (data.status !== 'ok') {
-          throw new Error('Error en los datos de News API: ' + data.message);
-        }
-        const newsList = document.getElementById('news-list');
-        const slider = document.getElementById('news-slider');
-        data.articles.slice(0, 5).forEach((news, index) => {
-          // Sección de noticias
-          const div = document.createElement('div');
-          div.classList.add('news-item');
-          div.innerHTML = `
-            <h4>${news.title}</h4>
-            <p>${news.description || 'Sin descripción disponible'} - ${news.publishedAt}</p>
-            <a href="${news.url}" target="_blank">Leer más</a>
-          `;
-          newsList.appendChild(div);
-          // Slider en Tendencias
-          const slide = document.createElement('div');
-          slide.classList.add('slide');
-          slide.dataset.title = news.title;
-          slide.dataset.text = news.description || 'Sin descripción disponible' + ' - ' + news.publishedAt;
-          slide.dataset.url = news.url;
-          slide.innerHTML = `
-            <h4>${news.title}</h4>
-            <p>${news.publishedAt}</p>
-          `;
-          slider.appendChild(slide);
-        });
-        let currentSlide = 0;
-        const slides = slider.querySelectorAll('.slide');
-        const slideCount = slides.length;
-        function showSlide(index) {
-          slider.style.transform = `translateX(-${index * 100}%)`;
-        }
-        setInterval(() => {
-          currentSlide = (currentSlide + 1) % slideCount;
-          showSlide(currentSlide);
-        }, 5000); // Cambia cada 5 segundos
-        // Click en slide para modal
-        slides.forEach(slide => {
-          slide.addEventListener('click', () => {
-            document.getElementById('news-modal-title').textContent = slide.dataset.title;
-            document.getElementById('news-modal-text').textContent = slide.dataset.text;
-            document.getElementById('news-modal-link').href = slide.dataset.url;
-            document.getElementById('news-modal').style.display = 'block';
-          });
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching news:', error);
-        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Verifica tu clave API de News API (puede estar expirada o inválida) o la conexión. Puedes reemplazar la clave en el fetch con una nueva de https://newsapi.org/.</p>';
-      });
-    // New Listings
-    fetch('https://api.coingecko.com/api/v3/coins/list/new')
-      .then(r => r.json())
-      .then(data => {
-        const newListings = document.getElementById('new-listings');
-        newListings.innerHTML = '<h4>Listados Nuevos:</h4>';
-        data.slice(0, 5).forEach(coin => {
-          newListings.innerHTML += `<p>${coin.id} (${coin.symbol.toUpperCase()})</p>`;
-        });
-      })
-      .catch(error => console.error('Error fetching new listings:', error));
-    // Gráficos en tiempo real
-    new TradingView.widget({
-      "container_id": "btc-chart",
-      "width": "100%",
-      "height": "300",
-      "symbol": "BINANCE:BTCUSDT",
-      "interval": "1",
-      "timezone": "Etc/UTC",
-      "theme": "light",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true
-    });
-    new TradingView.widget({
-      "container_id": "eth-chart",
-      "width": "100%",
-      "height": "300",
-      "symbol": "BINANCE:ETHUSDT",
-      "interval": "1",
-      "timezone": "Etc/UTC",
-      "theme": "light",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true
-    });
-    new TradingView.widget({
-      "container_id": "sol-chart",
-      "width": "100%",
-      "height": "300",
-      "symbol": "BINANCE:SOLUSDT",
-      "interval": "1",
-      "timezone": "Etc/UTC",
-      "theme": "light",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true
-    });
-    // Modal Logic para info
-    const modal = document.getElementById("info-modal");
-    const modalTitle = document.getElementById("modal-title");
-    const modalText = document.getElementById("modal-text");
-    const closeBtn = document.getElementsByClassName("close")[0];
-    const sectionContents = {
-      "crypto-economy": {
-        title: "Conéctate con la Economía Cripto",
-        text: "La economía cripto se basa en monedas digitales como Bitcoin, que utilizan criptografía para transacciones seguras. Operan en redes descentralizadas con tecnología blockchain. Incluye comercio, minería, DeFi y NFTs, ofreciendo inclusión financiera e innovación global."
-      },
-      "financial-skills": {
-        title: "Fomentando Habilidades Financieras",
-        text: "Desarrollar habilidades financieras para invertir en cripto implica entender la gestión de riesgos, diversificación, análisis técnico y investigación fundamental. Estrategias clave incluyen promedio de costo en dólares, órdenes stop-loss y mantenerse informado sobre tendencias del mercado."
-      },
-      "withdraw-earnings": {
-        title: "Retira tus Ganancias con Confianza",
-        text: "Para retirar ganancias de cripto de manera segura, usa exchanges confiables como Coinbase, habilita 2FA, almacena en wallets de hardware y verifica direcciones. Considera implicaciones fiscales y usa transferencias bancarias o tarjetas de débito cripto."
-      },
-      "discover-btc": {
-        title: "Descubre BTC",
-        text: "Bitcoin fue inventado en 2008 por Satoshi Nakamoto y lanzado en 2009. Es una criptomoneda descentralizada que usa blockchain para transacciones P2P sin intermediarios. Características clave: consenso proof-of-work, suministro limitado de 21 millones y eventos de halving. Puedes descargar el whitepaper original en español aquí: <a href='https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf' target='_blank'>Descargar PDF</a>"
-      },
-      "continue-learning": {
-        title: "Continúa Aprendiendo",
-        text: "Desarrollaremos este contenido próximamente en Financial Harmony."
-      },
-      "practical-tips": {
-        title: "Consejos Prácticos",
-        text: "Consejos prácticos incluyen no invertir más de lo que puedes perder, investigar bien, usar wallets seguros, diversificar y estar al día con noticias. Para expertos, considera estrategias avanzadas como trading de opciones y bots algorítmicos."
-      }
-    };
-    document.querySelectorAll('.more-info-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const section = btn.parentElement.dataset.section;
-        const content = sectionContents[section];
-        if (content) {
-          modalTitle.textContent = content.title;
-          modalText.innerHTML = content.text;
-          modal.style.display = "block";
-        }
-      });
-    });
-    closeBtn.onclick = () => {
-      modal.style.display = "none";
-    };
-    window.onclick = (event) => {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-    // News Modal Logic
-    const newsModal = document.getElementById("news-modal");
-    const newsCloseBtn = document.getElementsByClassName("close-news")[0];
-    newsCloseBtn.onclick = () => {
-      newsModal.style.display = "none";
-    };
-    window.onclick = (event) => {
-      if (event.target == newsModal) {
-        newsModal.style.display = "none";
-      } else if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-    // Cuestionario Logic
-    const submitQuiz = document.getElementById('submit-quiz');
-    const quizResult = document.getElementById('quiz-result');
-    const correctAnswers = { q1: 'a', q2: 'a', q3: 'a' };
-    submitQuiz.addEventListener('click', () => {
-      let score = 0;
-      const questions = document.querySelectorAll('.question');
-      questions.forEach((q, index) => {
-        const selected = q.querySelector(`input[name="q${index+1}"]:checked`);
-        if (selected && selected.value === correctAnswers[`q${index+1}`]) {
-          score++;
-        }
-      });
-      quizResult.textContent = `Puntuación: ${score} / ${questions.length}`;
-    });
-  </script>
-</body>
-</html>
 
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+  <title>Financial Harmony - BTC Courses</title>
+
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
+
+  <link rel="icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <script src="https://s3.tradingview.com/tv.js"></script>
+
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+
+  <style>
+
+    :root {
+
+      --primary: #FFD700; /* Oro para crypto */
+
+      --primary-hover: #FFAC1C;
+
+      --primary-light: #FFFACD;
+
+      --text: #333; /* Cambiado a oscuro para contraste con verdes claros */
+
+      --muted: #555;
+
+      --border: #4CAF50;
+
+      --card: rgba(255,255,255,0.8);
+
+      --accent: #A5D6A7;
+
+      --radius: 16px;
+
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+      --transition: 0.3s;
+
+    }
+
+    body {
+
+      font-family: 'Inter', Arial, sans-serif;
+
+      color: var(--text);
+
+      min-height: 100vh;
+
+      padding: 0;
+
+      margin: 0;
+
+      overflow-x: hidden;
+
+      position: relative;
+
+      animation: colorChange 30s infinite alternate;
+
+    }
+
+    @keyframes colorChange {
+
+      0% { background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%); }
+
+      50% { background: linear-gradient(180deg, #DCEDC8 0%, #C5E1A5 50%, #AED581 100%); }
+
+      100% { background: linear-gradient(180deg, #F1F8E9 0%, #DCE775 50%, #CDDC39 100%); }
+
+    }
+
+    body::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 200%; /* Para loop horizontal infinito */
+
+      height: 100%;
+
+      background-image: url('https://raw.githubusercontent.com/didac007/financial-harmony-github/main/new_wave.png'); /* Reemplaza con la URL de tu nueva imagen de ola verde subida a GitHub */
+
+      background-repeat: repeat-x;
+
+      background-position: top left;
+
+      background-size: auto 100%;
+
+      z-index: 0;
+
+      opacity: 0.3; /* Suave para tranquilidad */
+
+      animation: waveFlow 60s linear infinite;
+
+    }
+
+    @keyframes waveFlow {
+
+      0% {
+
+        transform: translateX(0);
+
+      }
+
+      100% {
+
+        transform: translateX(-50%);
+
+      }
+
+    }
+
+    .hero {
+
+      position: relative;
+
+      z-index: 1;
+
+      text-align: center;
+
+      padding: 20px;
+
+    }
+
+    nav {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      padding: 10px 20px;
+
+    }
+
+    .left {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+    .left img {
+
+      width: auto;
+
+      height: 50px; /* Ajustado para preservar proporción y tamaño adecuado */
+
+    }
+
+    .left h1 {
+
+      font-size: 2.5em;
+
+      margin: 0;
+
+      color: var(--text);
+
+    }
+
+    .right {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+    #login, #logout {
+
+      background: var(--primary);
+
+      color: #000;
+
+      border: none;
+
+      padding: 8px 16px;
+
+      border-radius: var(--radius);
+
+      cursor: pointer;
+
+    }
+
+    #profile {
+
+      color: var(--text);
+
+    }
+
+    .ticker {
+
+      background: rgba(0,128,0,0.2); /* Verde suave */
+
+      color: #FFF;
+
+      padding: 10px 0;
+
+      overflow: hidden;
+
+      white-space: nowrap;
+
+      margin: 20px auto;
+
+      border-radius: var(--radius);
+
+      max-width: 1200px;
+
+      display: block;
+
+    }
+
+    .ticker ul {
+
+      display: inline-block;
+
+      animation: ticker 60s linear infinite;
+
+      list-style: none;
+
+      padding: 0;
+
+      margin: 0;
+
+    }
+
+    .ticker li {
+
+      display: inline-block;
+
+      margin-right: 30px;
+
+      font-weight: bold;
+
+    }
+
+    @keyframes ticker {
+
+      0% { transform: translateX(0); }
+
+      100% { transform: translateX(-50%); }
+
+    }
+
+    .hero-content img {
+
+      width: 300px;
+
+      height: auto;
+
+      margin: 20px 0;
+
+    }
+
+    .container {
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 20px;
+
+      position: relative;
+
+      z-index: 1;
+
+    }
+
+    .info-sections {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+      gap: 20px;
+
+      margin-bottom: 40px;
+
+    }
+
+    .info-card {
+
+      background: var(--card);
+
+      padding: 20px;
+
+      border-radius: var(--radius);
+
+      backdrop-filter: blur(10px);
+
+      box-shadow: var(--shadow);
+
+    }
+
+    .info-card h3 {
+
+      color: #388E3C; /* Verde oscuro */
+
+      margin-bottom: 10px;
+
+    }
+
+    .info-card p {
+
+      color: var(--muted);
+
+    }
+
+    .info-card button, .more-card button {
+
+      background: #66BB6A; /* Verde suave */
+
+      color: #FFF;
+
+      border: none;
+
+      padding: 10px;
+
+      border-radius: var(--radius);
+
+      cursor: pointer;
+
+      margin-top: 10px;
+
+    }
+
+    .more-info {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+      gap: 20px;
+
+      margin-bottom: 40px;
+
+    }
+
+    .more-card {
+
+      background: var(--card);
+
+      padding: 20px;
+
+      border-radius: var(--radius);
+
+      backdrop-filter: blur(10px);
+
+      box-shadow: var(--shadow);
+
+    }
+
+    .more-card h3 {
+
+      color: #388E3C;
+
+      margin-bottom: 10px;
+
+    }
+
+    .more-card p {
+
+      color: var(--muted);
+
+    }
+
+    #trends-card {
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+    .slider {
+
+      display: flex;
+
+      transition: transform 0.5s ease-in-out;
+
+    }
+
+    .slide {
+
+      min-width: 100%;
+
+      box-sizing: border-box;
+
+      padding: 10px;
+
+      background: rgba(76,175,80,0.1); /* Verde claro */
+
+      border-radius: var(--radius);
+
+      cursor: pointer;
+
+    }
+
+    .slide h4 {
+
+      margin: 0 0 5px;
+
+      color: #2E7D32;
+
+    }
+
+    .slide p {
+
+      margin: 0;
+
+      font-size: 0.9em;
+
+    }
+
+    #new-listings {
+
+      margin-top: 10px;
+
+      font-size: 0.8em;
+
+      color: #4CAF50;
+
+    }
+
+    .news-section, .charts-section, .verification-section {
+
+      background: var(--card);
+
+      padding: 20px;
+
+      border-radius: var(--radius);
+
+      margin-bottom: 40px;
+
+      backdrop-filter: blur(10px);
+
+    }
+
+    h2 {
+
+      color: #388E3C;
+
+      text-align: center;
+
+    }
+
+    .news-item {
+
+      background: rgba(255,255,255,0.2);
+
+      padding: 15px;
+
+      margin-bottom: 15px;
+
+      border-radius: var(--radius);
+
+      box-shadow: var(--shadow);
+
+    }
+
+    .news-item h4 {
+
+      margin: 0 0 10px;
+
+      color: #388E3C;
+
+    }
+
+    .news-item p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+    }
+
+    .news-item a {
+
+      color: #4CAF50;
+
+      text-decoration: none;
+
+      font-weight: bold;
+
+    }
+
+    #btc-chart, #eth-chart, #sol-chart {
+
+      height: 300px;
+
+      margin-bottom: 20px;
+
+    }
+
+    /* Modal */
+
+    .modal {
+
+      display: none;
+
+      position: fixed;
+
+      z-index: 100;
+
+      left: 0;
+
+      top: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      overflow: auto;
+
+      background-color: rgba(0,0,0,0.4);
+
+      padding-top: 60px;
+
+    }
+
+    .modal-content {
+
+      background-color: var(--card);
+
+      margin: 5% auto;
+
+      padding: 20px;
+
+      border: 1px solid var(--border);
+
+      width: 80%;
+
+      max-width: 600px;
+
+      border-radius: var(--radius);
+
+      backdrop-filter: blur(10px);
+
+    }
+
+    .close {
+
+      color: var(--text);
+
+      float: right;
+
+      font-size: 28px;
+
+      font-weight: bold;
+
+    }
+
+    .close:hover,
+
+    .close:focus {
+
+      color: var(--primary);
+
+      text-decoration: none;
+
+      cursor: pointer;
+
+    }
+
+    /* Verificación y Cuestionario */
+
+    .verification-section {
+
+      display: none;
+
+    }
+
+    .social-list { list-style: none; padding: 0; margin: 0; }
+
+    .social-item { margin-bottom: 12px; display: flex; align-items: center; }
+
+    .social-item input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+
+    .social-link { color: #4CAF50; text-decoration: none; font-weight: bold; }
+
+    .quiz-question { margin-bottom: 18px; }
+
+    .quiz-option { display: block; margin-bottom: 6px; }
+
+    #telegram-link { display: none; background: #DCEDC8; padding: 16px; border-radius: var(--radius); margin-top: 24px; box-shadow: var(--shadow); color: #000; }
+
+    #telegram-link a { color: #388E3C; font-weight: 600; font-size: 1.2em; }
+
+    button#verify-quiz {
+
+      background: #66BB6A;
+
+      color: #FFF;
+
+      border: none;
+
+      padding: 12px 24px;
+
+      border-radius: var(--radius);
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: background var(--transition);
+
+      margin-top: 20px;
+
+    }
+
+    button#verify-quiz:hover {
+
+      background: #4CAF50;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="hero">
+
+    <nav>
+
+      <div class="left">
+
+        <img src="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/logo.png" alt="Financial Harmony Logo">
+
+        <h1>Financial Harmony</h1>
+
+      </div>
+
+      <div class="right">
+
+        <button id="login">Iniciar Sesión</button>
+
+        <button id="logout" style="display: none;">Cerrar Sesión</button>
+
+        <div id="profile" style="display: none;"></div>
+
+      </div>
+
+    </nav>
+
+    <div class="hero-content">
+
+      <img src="https://pngimg.com/uploads/bitcoin/small/bitcoin_PNG48.png" alt="Bitcoin Coin">
+
+    </div>
+
+    <div class="ticker">
+
+      <ul id="ticker-list"></ul>
+
+    </div>
+
+  </div>
+
+  <div class="container">
+
+    <div class="info-sections">
+
+      <div class="info-card" data-section="crypto-economy">
+
+        <h3>Conéctate con la Economía Cripto</h3>
+
+        <p>Aprende los fundamentos del mundo de las criptomonedas y cómo Bitcoin está revolucionando las finanzas.</p>
+
+        <button class="more-info-btn">Más Info</button>
+
+      </div>
+
+      <div class="info-card" data-section="financial-skills">
+
+        <h3>Fomentando Habilidades Financieras</h3>
+
+        <p>Desarrolla estrategias para invertir en BTC de manera segura y efectivo.</p>
+
+        <button class="more-info-btn">Más Info</button>
+
+      </div>
+
+      <div class="info-card" data-section="withdraw-earnings">
+
+        <h3>Retira tus Ganancias con Confianza</h3>
+
+        <p>Guías paso a paso para manejar tus activos y maximizar retornos.</p>
+
+        <button class="more-info-btn">Más Info</button>
+
+      </div>
+
+    </div>
+
+    <div class="more-info">
+
+      <div class="more-card" data-section="discover-btc">
+
+        <h3>Descubre BTC</h3>
+
+        <p>Explora la historia y tecnología detrás de Bitcoin.</p>
+
+        <button class="more-info-btn">Más Info</button>
+
+      </div>
+
+      <div class="more-card" data-section="continue-learning">
+
+        <h3>Continúa Aprendiendo</h3>
+
+        <p>Cursos avanzados sobre trading y análisis.</p>
+
+        <button class="more-info-btn">Más Info</button>
+
+      </div>
+
+      <div class="more-card" id="trends-card" data-section="trends">
+
+        <h3>Tendencias</h3>
+
+        <div class="slider" id="news-slider"></div>
+
+        <div id="new-listings"></div>
+
+      </div>
+
+      <div class="more-card" data-section="practical-tips">
+
+        <h3>Consejos Prácticos</h3>
+
+        <p>Tips para principiantes y expertos en crypto.</p>
+
+        <button class="more-info-btn">Más Info</button>
+
+      </div>
+
+    </div>
+
+    <div class="news-section">
+
+      <h2>Noticias de Criptomonedas</h2>
+
+      <div id="news-list"></div>
+
+    </div>
+
+    <div class="charts-section">
+
+      <h2>Mercado Crypto</h2>
+
+      <div id="btc-chart"></div>
+
+      <div id="eth-chart"></div>
+
+      <div id="sol-chart"></div>
+
+    </div>
+
+    <div class="verification-section" id="verification-section">
+
+      <h2>BTC Courses - Verificación</h2>
+
+      <p>Para acceder al curso, sigue todos los perfiles en redes sociales a continuación y marca las casillas una vez que lo hayas hecho. Luego, responde correctamente al cuestionario. Una vez completadas todas las tareas, se revelará el enlace de Telegram.</p>
+
+      <ul class="social-list">
+
+        <li class="social-item">
+
+          <input type="checkbox" class="follow-check" data-social="x">
+
+          Sigue en X: <a href="https://x.com/financialharmon" target="_blank" class="social-link">@financialharmon</a>
+
+        </li>
+
+        <li class="social-item">
+
+          <input type="checkbox" class="follow-check" data-social="youtube">
+
+          Sigue en YouTube: <a href="https://www.youtube.com/@FinancialHarmony-z1n" target="_blank" class="social-link">@FinancialHarmony-z1n</a>
+
+        </li>
+
+        <li class="social-item">
+
+          <input type="checkbox" class="follow-check" data-social="instagram">
+
+          Sigue en Instagram: <a href="https://www.instagram.com/jrfinancialharmony" target="_blank" class="social-link">jrfinancialharmony</a>
+
+        </li>
+
+        <li class="social-item">
+
+          <input type="checkbox" class="follow-check" data-social="tiktok">
+
+          Sigue en TikTok: <a href="https://www.tiktok.com/@financial.harmony0" target="_blank" class="social-link">financial.harmony0</a>
+
+        </li>
+
+        <li class="social-item">
+
+          <input type="checkbox" class="follow-check" data-social="facebook">
+
+          Sigue en Facebook: <a href="https://www.facebook.com/profile.php?id=61557229689374" target="_blank" class="social-link">Perfil de Facebook</a>
+
+        </li>
+
+      </ul>
+
+      <h3>Cuestionario BTC</h3>
+
+      <div class="quiz-question">
+
+        <p>1. ¿Qué significa BTC?</p>
+
+        <label class="quiz-option"><input type="radio" name="q1" value="a"> a) Bitcoin</label>
+
+        <label class="quiz-option"><input type="radio" name="q1" value="b"> b) Bytecoin</label>
+
+        <label class="quiz-option"><input type="radio" name="q1" value="c"> c) Bitcash</label>
+
+      </div>
+
+      <div class="quiz-question">
+
+        <p>2. ¿Quién creó Bitcoin?</p>
+
+        <label class="quiz-option"><input type="radio" name="q2" value="a"> a) Elon Musk</label>
+
+        <label class="quiz-option"><input type="radio" name="q2" value="b"> b) Satoshi Nakamoto</label>
+
+        <label class="quiz-option"><input type="radio" name="q2" value="c"> c) Vitalik Buterin</label>
+
+      </div>
+
+      <div class="quiz-question">
+
+        <p>3. ¿Cuál es el suministro máximo de BTC?</p>
+
+        <label class="quiz-option"><input type="radio" name="q3" value="a"> a) 21 millones</label>
+
+        <label class="quiz-option"><input type="radio" name="q3" value="b"> b) Ilimitado</label>
+
+        <label class="quiz-option"><input type="radio" name="q3" value="c"> c) 100 millones</label>
+
+      </div>
+
+      <div class="quiz-question">
+
+        <p>4. ¿Qué es el halving de Bitcoin?</p>
+
+        <label class="quiz-option"><input type="radio" name="q4" value="a"> a) Reducción a la mitad de la recompensa por minado</label>
+
+        <label class="quiz-option"><input type="radio" name="q4" value="b"> b) Duplicación de la recompensa</label>
+
+        <label class="quiz-option"><input type="radio" name="q4" value="c"> c) Cambio en el algoritmo</label>
+
+      </div>
+
+      <div class="quiz-question">
+
+        <p>5. ¿En qué año se creó Bitcoin?</p>
+
+        <label class="quiz-option"><input type="radio" name="q5" value="a"> a) 2009</label>
+
+        <label class="quiz-option"><input type="radio" name="q5" value="b"> b) 2010</label>
+
+        <label class="quiz-option"><input type="radio" name="q5" value="c"> c) 2008</label>
+
+      </div>
+
+      <button id="verify-quiz">Verificar y Revelar Enlace</button>
+
+      <div id="telegram-link">
+
+        <p>¡Felicidades! Aquí está el enlace de Telegram: <a href="https://t.me/yourgroup" target="_blank">Unirse al Grupo</a></p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal -->
+
+  <div id="info-modal" class="modal">
+
+    <div class="modal-content">
+
+      <span class="close">&times;</span>
+
+      <h2 id="modal-title"></h2>
+
+      <p id="modal-text"></p>
+
+    </div>
+
+  </div>
+
+  <!-- News Modal -->
+
+  <div id="news-modal" class="modal">
+
+    <div class="modal-content">
+
+      <span class="close-news">&times;</span>
+
+      <h2 id="news-modal-title"></h2>
+
+      <p id="news-modal-text"></p>
+
+      <a id="news-modal-link" target="_blank">Leer más</a>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    // Auth0 Integration
+
+    auth0.createAuth0Client({
+
+      domain: "dev-uig5oc4olpwf4aw6.eu.auth0.com",
+
+      clientId: "6NLcS9SdNQWYPOFNlRYBQawxLQ1YiKxq",
+
+      authorizationParams: {
+
+        redirect_uri: window.location.origin
+
+      }
+
+    }).then(async (auth0Client) => {
+
+      const loginButton = document.getElementById("login");
+
+      loginButton.addEventListener("click", (e) => {
+
+        e.preventDefault();
+
+        auth0Client.loginWithRedirect();
+
+      });
+
+      if (location.search.includes("state=") && (location.search.includes("code=") || location.search.includes("error="))) {
+
+        await auth0Client.handleRedirectCallback();
+
+        window.history.replaceState({}, document.title, "/");
+
+      }
+
+      const logoutButton = document.getElementById("logout");
+
+      logoutButton.addEventListener("click", (e) => {
+
+        e.preventDefault();
+
+        auth0Client.logout();
+
+      });
+
+      const isAuthenticated = await auth0Client.isAuthenticated();
+
+      const userProfile = await auth0Client.getUser();
+
+      const profileElement = document.getElementById("profile");
+
+      const verificationSection = document.getElementById("verification-section");
+
+      loginButton.style.display = isAuthenticated ? "none" : "inline-block";
+
+      logoutButton.style.display = isAuthenticated ? "inline-block" : "none";
+
+      if (isAuthenticated) {
+
+        profileElement.style.display = "inline-block";
+
+        profileElement.innerHTML = `
+
+          <p>${userProfile.name}</p>
+
+          <img src="${userProfile.picture}" style="width: 40px; border-radius: 50%;" />
+
+        `;
+
+        verificationSection.style.display = "block";
+
+      } else {
+
+        profileElement.style.display = "none";
+
+        verificationSection.style.display = "none";
+
+      }
+
+    });
+
+    // Verificación del Curso
+
+    const followChecks = document.querySelectorAll('.follow-check');
+
+    const verifyButton = document.getElementById('verify-quiz');
+
+    const telegramLink = document.getElementById('telegram-link');
+
+    if (verifyButton) {
+
+      verifyButton.addEventListener('click', () => {
+
+        const allChecked = Array.from(followChecks).every(c => c.checked);
+
+        const q1 = document.querySelector('input[name="q1"]:checked')?.value === 'a';
+
+        const q2 = document.querySelector('input[name="q2"]:checked')?.value === 'b';
+
+        const q3 = document.querySelector('input[name="q3"]:checked')?.value === 'a';
+
+        const q4 = document.querySelector('input[name="q4"]:checked')?.value === 'a';
+
+        const q5 = document.querySelector('input[name="q5"]:checked')?.value === 'a';
+
+        if (allChecked && q1 && q2 && q3 && q4 && q5) {
+
+          telegramLink.style.display = 'block';
+
+        } else {
+
+          alert('Por favor, completa todas las tareas sociales y responde correctamente al cuestionario.');
+
+        }
+
+      });
+
+    }
+
+    // Ticker Infinito
+
+    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=10&page=1')
+
+      .then(r => r.json())
+
+      .then(data => {
+
+        const tickerList = document.getElementById('ticker-list');
+
+        let content = '';
+
+        data.forEach(coin => {
+
+          content += `<li>${coin.symbol.toUpperCase()}: $${coin.current_price.toFixed(2)} (${coin.price_change_percentage_24h.toFixed(2)}%)</li>`;
+
+        });
+
+        tickerList.innerHTML = content + content; // Duplicar para infinito
+
+      })
+
+      .catch(error => console.error('Error fetching ticker:', error));
+
+    // Noticias para slider en Tendencias y sección de noticias
+
+    fetch('https://newsapi.org/v2/everything?q=cryptocurrency&sortBy=publishedAt&apiKey=6a2f3e0ca4454b59a566896f49560316')
+
+      .then(r => r.json())
+
+      .then(data => {
+
+        const newsList = document.getElementById('news-list');
+
+        const slider = document.getElementById('news-slider');
+
+        data.articles.slice(0, 5).forEach((news, index) => {
+
+          // Sección de noticias
+
+          const div = document.createElement('div');
+
+          div.classList.add('news-item');
+
+          div.innerHTML = `
+
+            <h4>${news.title}</h4>
+
+            <p>${news.publishedAt} - <a href="${news.url}" target="_blank">Leer más</a></p>
+
+          `;
+
+          newsList.appendChild(div);
+
+          // Slider en Tendencias
+
+          const slide = document.createElement('div');
+
+          slide.classList.add('slide');
+
+          slide.dataset.title = news.title;
+
+          slide.dataset.text = news.publishedAt;
+
+          slide.dataset.url = news.url;
+
+          slide.innerHTML = `
+
+            <h4>${news.title}</h4>
+
+            <p>${news.publishedAt}</p>
+
+          `;
+
+          slider.appendChild(slide);
+
+        });
+
+        let currentSlide = 0;
+
+        const slides = slider.querySelectorAll('.slide');
+
+        const slideCount = slides.length;
+
+        function showSlide(index) {
+
+          slider.style.transform = `translateX(-${index * 100}%)`;
+
+        }
+
+        setInterval(() => {
+
+          currentSlide = (currentSlide + 1) % slideCount;
+
+          showSlide(currentSlide);
+
+        }, 5000); // Cambia cada 5 segundos
+
+        // Click en slide para modal
+
+        slides.forEach(slide => {
+
+          slide.addEventListener('click', () => {
+
+            document.getElementById('news-modal-title').textContent = slide.dataset.title;
+
+            document.getElementById('news-modal-text').textContent = slide.dataset.text;
+
+            document.getElementById('news-modal-link').href = slide.dataset.url;
+
+            document.getElementById('news-modal').style.display = 'block';
+
+          });
+
+        });
+
+      })
+
+      .catch(error => {
+
+        console.error('Error fetching news:', error);
+
+        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde.</p>';
+
+      });
+
+    // New Listings
+
+    fetch('https://api.coingecko.com/api/v3/coins/list/new')
+
+      .then(r => r.json())
+
+      .then(data => {
+
+        const newListings = document.getElementById('new-listings');
+
+        newListings.innerHTML = '<h4>Listados Nuevos:</h4>';
+
+        data.slice(0, 5).forEach(coin => {
+
+          newListings.innerHTML += `<p>${coin.id} (${coin.symbol.toUpperCase()})</p>`;
+
+        });
+
+      })
+
+      .catch(error => console.error('Error fetching new listings:', error));
+
+    // Gráficos en tiempo real
+
+    new TradingView.widget({
+
+      "container_id": "btc-chart",
+
+      "width": "100%",
+
+      "height": "300",
+
+      "symbol": "BINANCE:BTCUSDT",
+
+      "interval": "1",
+
+      "timezone": "Etc/UTC",
+
+      "theme": "light",
+
+      "style": "1",
+
+      "locale": "es",
+
+      "toolbar_bg": "#f1f3f6",
+
+      "enable_publishing": false,
+
+      "allow_symbol_change": true
+
+    });
+
+    new TradingView.widget({
+
+      "container_id": "eth-chart",
+
+      "width": "100%",
+
+      "height": "300",
+
+      "symbol": "BINANCE:ETHUSDT",
+
+      "interval": "1",
+
+      "timezone": "Etc/UTC",
+
+      "theme": "light",
+
+      "style": "1",
+
+      "locale": "es",
+
+      "toolbar_bg": "#f1f3f6",
+
+      "enable_publishing": false,
+
+      "allow_symbol_change": true
+
+    });
+
+    new TradingView.widget({
+
+      "container_id": "sol-chart",
+
+      "width": "100%",
+
+      "height": "300",
+
+      "symbol": "BINANCE:SOLUSDT",
+
+      "interval": "1",
+
+      "timezone": "Etc/UTC",
+
+      "theme": "light",
+
+      "style": "1",
+
+      "locale": "es",
+
+      "toolbar_bg": "#f1f3f6",
+
+      "enable_publishing": false,
+
+      "allow_symbol_change": true
+
+    });
+
+    // Modal Logic para info
+
+    const modal = document.getElementById("info-modal");
+
+    const modalTitle = document.getElementById("modal-title");
+
+    const modalText = document.getElementById("modal-text");
+
+    const closeBtn = document.getElementsByClassName("close")[0];
+
+    const sectionContents = {
+
+      "crypto-economy": {
+
+        title: "Conéctate con la Economía Cripto",
+
+        text: "La economía cripto se basa en monedas digitales como Bitcoin, que utilizan criptografía para transacciones seguras. Operan en redes descentralizadas con tecnología blockchain. Incluye comercio, minería, DeFi y NFTs, ofreciendo inclusión financiera e innovación global."
+
+      },
+
+      "financial-skills": {
+
+        title: "Fomentando Habilidades Financieras",
+
+        text: "Desarrollar habilidades financieras para invertir en cripto implica entender la gestión de riesgos, diversificación, análisis técnico y investigación fundamental. Estrategias clave incluyen promedio de costo en dólares, órdenes stop-loss y mantenerse informado sobre tendencias del mercado."
+
+      },
+
+      "withdraw-earnings": {
+
+        title: "Retira tus Ganancias con Confianza",
+
+        text: "Para retirar ganancias de cripto de manera segura, usa exchanges confiables como Coinbase, habilita 2FA, almacena en wallets de hardware y verifica direcciones. Considera implicaciones fiscales y usa transferencias bancarias o tarjetas de débito cripto."
+
+      },
+
+      "discover-btc": {
+
+        title: "Descubre BTC",
+
+        text: "Bitcoin fue inventado en 2008 por Satoshi Nakamoto y lanzado en 2009. Es una criptomoneda descentralizada que usa blockchain para transacciones P2P sin intermediarios. Características clave: consenso proof-of-work, suministro limitado de 21 millones y eventos de halving. Puedes descargar el whitepaper original en español aquí: <a href='https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf' target='_blank'>Descargar PDF</a>"
+
+      },
+
+      "continue-learning": {
+
+        title: "Continúa Aprendiendo",
+
+        text: "Desarrollaremos este contenido próximamente en Financial Harmony."
+
+      },
+
+      "practical-tips": {
+
+        title: "Consejos Prácticos",
+
+        text: "Consejos prácticos incluyen no invertir más de lo que puedes perder, investigar bien, usar wallets seguros, diversificar y estar al día con noticias. Para expertos, considera estrategias avanzadas como trading de opciones y bots algorítmicos."
+
+      }
+
+    };
+
+    document.querySelectorAll('.more-info-btn').forEach(btn => {
+
+      btn.addEventListener('click', () => {
+
+        const section = btn.parentElement.dataset.section;
+
+        const content = sectionContents[section];
+
+        if (content) {
+
+          modalTitle.textContent = content.title;
+
+          modalText.innerHTML = content.text;
+
+          modal.style.display = "block";
+
+        }
+
+      });
+
+    });
+
+    closeBtn.onclick = () => {
+
+      modal.style.display = "none";
+
+    };
+
+    window.onclick = (event) => {
+
+      if (event.target == modal) {
+
+        modal.style.display = "none";
+
+      }
+
+    };
+
+    // News Modal Logic
+
+    const newsModal = document.getElementById("news-modal");
+
+    const newsCloseBtn = document.getElementsByClassName("close-news")[0];
+
+    newsCloseBtn.onclick = () => {
+
+      newsModal.style.display = "none";
+
+    };
+
+    window.onclick = (event) => {
+
+      if (event.target == newsModal) {
+
+        newsModal.style.display = "none";
+
+      } else if (event.target == modal) {
+
+        modal.style.display = "none";
+
+      }
+
+    };
+
+  </script>
+
+</body>
+
+</html>
