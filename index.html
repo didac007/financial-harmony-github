@@ -14,13 +14,13 @@
       --primary: #FFD700; /* Oro para crypto */
       --primary-hover: #FFAC1C;
       --primary-light: #FFFACD;
-      --text: #FFF;
-      --muted: #EEE;
-      --border: #FFD700;
-      --card: rgba(255,255,255,0.1);
-      --accent: #F0E68C;
+      --text: #333; /* Cambiado a oscuro para contraste con verdes claros */
+      --muted: #555;
+      --border: #4CAF50;
+      --card: rgba(255,255,255,0.8);
+      --accent: #A5D6A7;
       --radius: 16px;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       --transition: 0.3s;
     }
 
@@ -31,8 +31,14 @@
       padding: 0;
       margin: 0;
       overflow-x: hidden;
-      background: linear-gradient(180deg, #6a1b9a 0%, #ab47bc 50%, #ff8a80 100%);
       position: relative;
+      animation: colorChange 30s infinite alternate;
+    }
+
+    @keyframes colorChange {
+      0% { background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%); }
+      50% { background: linear-gradient(180deg, #DCEDC8 0%, #C5E1A5 50%, #AED581 100%); }
+      100% { background: linear-gradient(180deg, #F1F8E9 0%, #DCE775 50%, #CDDC39 100%); }
     }
 
     body::before {
@@ -42,7 +48,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ab47bc" fill-opacity="0.5" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%234CAF50" fill-opacity="0.3" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
       background-repeat: repeat-x;
       background-position: bottom left;
       background-size: 1440px auto;
@@ -87,6 +93,7 @@
     .left h1 {
       font-size: 2.5em;
       margin: 0;
+      color: var(--text);
     }
 
     .right {
@@ -109,7 +116,7 @@
     }
 
     .ticker {
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,128,0,0.2); /* Verde suave */
       color: #FFF;
       padding: 10px 0;
       overflow: hidden;
@@ -169,7 +176,7 @@
     }
 
     .info-card h3 {
-      color: var(--primary);
+      color: #388E3C; /* Verde oscuro */
       margin-bottom: 10px;
     }
 
@@ -178,8 +185,8 @@
     }
 
     .info-card button, .more-card button {
-      background: var(--primary);
-      color: #000;
+      background: #66BB6A; /* Verde suave */
+      color: #FFF;
       border: none;
       padding: 10px;
       border-radius: var(--radius);
@@ -203,7 +210,7 @@
     }
 
     .more-card h3 {
-      color: var(--primary);
+      color: #388E3C;
       margin-bottom: 10px;
     }
 
@@ -211,8 +218,33 @@
       color: var(--muted);
     }
 
-    #chart-card {
-      height: 250px;
+    #trends-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      background: rgba(76,175,80,0.1); /* Verde claro */
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+
+    .slide h4 {
+      margin: 0 0 5px;
+      color: #2E7D32;
+    }
+
+    .slide p {
+      margin: 0;
+      font-size: 0.9em;
     }
 
     .news-section, .charts-section, .verification-section {
@@ -224,7 +256,7 @@
     }
 
     h2 {
-      color: var(--primary);
+      color: #388E3C;
       text-align: center;
     }
 
@@ -238,7 +270,7 @@
 
     .news-item h4 {
       margin: 0 0 10px;
-      color: var(--primary-hover);
+      color: #388E3C;
     }
 
     .news-item p {
@@ -247,7 +279,7 @@
     }
 
     .news-item a {
-      color: var(--primary);
+      color: #4CAF50;
       text-decoration: none;
       font-weight: bold;
     }
@@ -303,15 +335,15 @@
     .social-list { list-style: none; padding: 0; margin: 0; }
     .social-item { margin-bottom: 12px; display: flex; align-items: center; }
     .social-item input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    .social-link { color: var(--primary); text-decoration: none; font-weight: bold; }
+    .social-link { color: #4CAF50; text-decoration: none; font-weight: bold; }
     .quiz-question { margin-bottom: 18px; }
     .quiz-option { display: block; margin-bottom: 6px; }
-    #telegram-link { display: none; background: var(--primary-light); padding: 16px; border-radius: var(--radius); margin-top: 24px; box-shadow: var(--shadow); color: #000; }
-    #telegram-link a { color: var(--primary-hover); font-weight: 600; font-size: 1.2em; }
+    #telegram-link { display: none; background: #DCEDC8; padding: 16px; border-radius: var(--radius); margin-top: 24px; box-shadow: var(--shadow); color: #000; }
+    #telegram-link a { color: #388E3C; font-weight: 600; font-size: 1.2em; }
 
     button#verify-quiz {
-      background: var(--primary);
-      color: #000;
+      background: #66BB6A;
+      color: #FFF;
       border: none;
       padding: 12px 24px;
       border-radius: var(--radius);
@@ -322,7 +354,7 @@
     }
 
     button#verify-quiz:hover {
-      background: var(--primary-hover);
+      background: #4CAF50;
     }
   </style>
 </head>
@@ -377,9 +409,9 @@
         <p>Cursos avanzados sobre trading y análisis.</p>
         <button class="more-info-btn">Más Info</button>
       </div>
-      <div class="more-card" id="chart-card" data-section="trends">
+      <div class="more-card" id="trends-card" data-section="trends">
         <h3>Tendencias</h3>
-        <div id="mini-chart-container"></div>
+        <div class="slider" id="news-slider"></div>
       </div>
       <div class="more-card" data-section="practical-tips">
         <h3>Consejos Prácticos</h3>
@@ -469,6 +501,16 @@
     </div>
   </div>
 
+  <!-- News Modal -->
+  <div id="news-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-news">&times;</span>
+      <h2 id="news-modal-title"></h2>
+      <p id="news-modal-text"></p>
+      <a id="news-modal-link" target="_blank">Leer más</a>
+    </div>
+  </div>
+
   <script>
     // Auth0 Integration
     auth0.createAuth0Client({
@@ -552,12 +594,14 @@
       })
       .catch(error => console.error('Error fetching ticker:', error));
 
-    // Noticias - Usando CryptoPanic para fiabilidad
+    // Noticias para slider en Tendencias y sección de noticias
     fetch('https://cryptopanic.com/api/v1/posts/?public=true&kind=news')
       .then(r => r.json())
       .then(data => {
         const newsList = document.getElementById('news-list');
-        data.results.slice(0, 5).forEach(news => {
+        const slider = document.getElementById('news-slider');
+        data.results.slice(0, 5).forEach((news, index) => {
+          // Sección de noticias
           const div = document.createElement('div');
           div.classList.add('news-item');
           div.innerHTML = `
@@ -565,6 +609,41 @@
             <p>${news.published_at} - <a href="${news.url}" target="_blank">Leer más</a></p>
           `;
           newsList.appendChild(div);
+
+          // Slider en Tendencias
+          const slide = document.createElement('div');
+          slide.classList.add('slide');
+          slide.dataset.title = news.title;
+          slide.dataset.text = news.published_at;
+          slide.dataset.url = news.url;
+          slide.innerHTML = `
+            <h4>${news.title}</h4>
+            <p>${news.published_at}</p>
+          `;
+          slider.appendChild(slide);
+        });
+
+        let currentSlide = 0;
+        const slides = slider.querySelectorAll('.slide');
+        const slideCount = slides.length;
+
+        function showSlide(index) {
+          slider.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        setInterval(() => {
+          currentSlide = (currentSlide + 1) % slideCount;
+          showSlide(currentSlide);
+        }, 5000); // Cambia cada 5 segundos
+
+        // Click en slide para modal
+        slides.forEach(slide => {
+          slide.addEventListener('click', () => {
+            document.getElementById('news-modal-title').textContent = slide.dataset.title;
+            document.getElementById('news-modal-text').textContent = slide.dataset.text;
+            document.getElementById('news-modal-link').href = slide.dataset.url;
+            document.getElementById('news-modal').style.display = 'block';
+          });
         });
       })
       .catch(error => {
@@ -580,7 +659,7 @@
       "symbol": "BINANCE:BTCUSDT",
       "interval": "D",
       "timezone": "Etc/UTC",
-      "theme": "dark",
+      "theme": "light", /* Cambiado a light para verdes */
       "style": "1",
       "locale": "es",
       "toolbar_bg": "#f1f3f6",
@@ -592,24 +671,7 @@
       "popup_height": "650"
     });
 
-    // Mini Chart con TradingView para tendencias
-    new TradingView.widget({
-      "container_id": "mini-chart-container",
-      "width": "100%",
-      "height": "200",
-      "symbol": "BINANCE:BTCUSDT",
-      "interval": "1D",
-      "timezone": "Etc/UTC",
-      "theme": "dark",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "hide_side_toolbar": true,
-      "allow_symbol_change": true
-    });
-
-    // Modal Logic
+    // Modal Logic para info
     const modal = document.getElementById("info-modal");
     const modalTitle = document.getElementById("modal-title");
     const modalText = document.getElementById("modal-text");
@@ -618,27 +680,27 @@
     const sectionContents = {
       "crypto-economy": {
         title: "Conéctate con la Economía Cripto",
-        text: "La economía cripto se basa en monedas digitales como Bitcoin, que utilizan criptografía para transacciones seguras. Operan en redes descentralizadas con tecnología blockchain. Incluye comercio, minería, DeFi y NFTs, ofreciendo inclusión financiera e innovación global. "
+        text: "La economía cripto se basa en monedas digitales como Bitcoin, que utilizan criptografía para transacciones seguras. Operan en redes descentralizadas con tecnología blockchain. Incluye comercio, minería, DeFi y NFTs, ofreciendo inclusión financiera e innovación global."
       },
       "financial-skills": {
         title: "Fomentando Habilidades Financieras",
-        text: "Desarrollar habilidades financieras para invertir en cripto implica entender la gestión de riesgos, diversificación, análisis técnico y investigación fundamental. Estrategias clave incluyen promedio de costo en dólares, órdenes stop-loss y mantenerse informado sobre tendencias del mercado. "
+        text: "Desarrollar habilidades financieras para invertir en cripto implica entender la gestión de riesgos, diversificación, análisis técnico y investigación fundamental. Estrategias clave incluyen promedio de costo en dólares, órdenes stop-loss y mantenerse informado sobre tendencias del mercado."
       },
       "withdraw-earnings": {
         title: "Retira tus Ganancias con Confianza",
-        text: "Para retirar ganancias de cripto de manera segura, usa exchanges confiables como Coinbase, habilita 2FA, almacena en wallets de hardware y verifica direcciones. Considera implicaciones fiscales y usa transferencias bancarias o tarjetas de débito cripto. "
+        text: "Para retirar ganancias de cripto de manera segura, usa exchanges confiables como Coinbase, habilita 2FA, almacena en wallets de hardware y verifica direcciones. Considera implicaciones fiscales y usa transferencias bancarias o tarjetas de débito cripto."
       },
       "discover-btc": {
         title: "Descubre BTC",
-        text: "Bitcoin fue inventado en 2008 por Satoshi Nakamoto y lanzado en 2009. Es una criptomoneda descentralizada que usa blockchain para transacciones P2P sin intermediarios. Características clave: consenso proof-of-work, suministro limitado de 21 millones y eventos de halving. "
+        text: "Bitcoin fue inventado en 2008 por Satoshi Nakamoto y lanzado en 2009. Es una criptomoneda descentralizada que usa blockchain para transacciones P2P sin intermediarios. Características clave: consenso proof-of-work, suministro limitado de 21 millones y eventos de halving. Puedes descargar el whitepaper original en español aquí: <a href='https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf' target='_blank'>Descargar PDF</a>"
       },
       "continue-learning": {
         title: "Continúa Aprendiendo",
-        text: "Cursos avanzados de trading cripto cubren estrategias como day trading, arbitraje y uso de indicadores. Plataformas como Udemy, Coursera y QuantInsti ofrecen cursos sobre ML para trading, desarrollo blockchain y gestión de riesgos. "
+        text: "Desarrollaremos este contenido próximamente en Financial Harmony."
       },
       "practical-tips": {
         title: "Consejos Prácticos",
-        text: "Consejos prácticos incluyen no invertir más de lo que puedes perder, investigar bien, usar wallets seguros, diversificar y estar al día con noticias. Para expertos, considera estrategias avanzadas como trading de opciones y bots algorítmicos. "
+        text: "Consejos prácticos incluyen no invertir más de lo que puedes perder, investigar bien, usar wallets seguros, diversificar y estar al día con noticias. Para expertos, considera estrategias avanzadas como trading de opciones y bots algorítmicos."
       }
     };
 
@@ -660,6 +722,22 @@
 
     window.onclick = (event) => {
       if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    // News Modal Logic
+    const newsModal = document.getElementById("news-modal");
+    const newsCloseBtn = document.getElementsByClassName("close-news")[0];
+
+    newsCloseBtn.onclick = () => {
+      newsModal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+      if (event.target == newsModal) {
+        newsModal.style.display = "none";
+      } else if (event.target == modal) {
         modal.style.display = "none";
       }
     };
