@@ -35,9 +35,10 @@
       animation: colorChange 60s infinite alternate;
     }
     @keyframes colorChange {
-      0% { background: linear-gradient(180deg, #F0F8FF 0%, #E0FFFF 50%, #BBFFFF 100%); }
-      50% { background: linear-gradient(180deg, #E0FFFF 0%, #AFEEEE 50%, #ADD8E6 100%); }
-      100% { background: linear-gradient(180deg, #BBFFFF 0%, #B0E0E6 50%, #AFEEEE 100%); }
+      0% { background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%); }
+      33% { background: linear-gradient(180deg, #E0FFFF 0%, #BBFFFF 50%, #AFEEEE 100%); }
+      66% { background: linear-gradient(180deg, #F0FFF0 0%, #E0FFE0 50%, #D0FFD0 100%); }
+      100% { background: linear-gradient(180deg, #F5FFFA 0%, #F0FFF0 50%, #E8F5E9 100%); }
     }
     body::before {
       content: '';
@@ -51,9 +52,9 @@
       background-position: top left;
       background-size: auto 100%;
       z-index: 0;
-      opacity: 0.2; /* Más suave */
+      opacity: 0.15; /* Más suave */
       animation: waveFlow 60s linear infinite;
-      filter: hue-rotate(60deg); /* Ajustar a turquesa */
+      filter: grayscale(100%) brightness(150%) contrast(80%); /* Blanco como hielo brillante */
     }
     @keyframes waveFlow {
       0% {
