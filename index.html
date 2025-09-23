@@ -2,622 +2,278 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Financial Harmony</title>
-  <!-- Favicon/logo -->
-  <link rel="icon" type="image/png" href="logo.png" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Crypto Harmony - Verificación y Noticias</title>
+  <link rel="icon" type="image/png" href="https://i.imgur.com/6Z2b4cV.png" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
-  <!-- RemixIcon for pro icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- TradingView Widget -->
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <!-- Auth0 SPA JS SDK -->
-  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1749b1;
-      --primary-light: #e0eaff;
-      --bg: #f7fafd;
-      --sidebar: #fff;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e5e7eb;
-      --card: #fff;
-      --accent: #f1f5f9;
+      --primary: #FFD700; /* Oro para crypto */
+      --primary-hover: #FFAC1C;
+      --primary-light: #FFFACD;
+      --bg: linear-gradient(135deg, #1E90FF, #00BFFF); /* Azul crypto vibrante */
+      --text: #000;
+      --muted: #333;
+      --border: #FFD700;
+      --card: #FFFFFF;
+      --accent: #F0E68C;
       --radius: 16px;
-      --shadow: 0 2px 8px #0001;
-      --transition: 0.2s;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      --transition: 0.3s;
     }
-    html, body { height: 100%; margin: 0; padding: 0; }
+
     body {
       font-family: 'Inter', Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      padding: 20px;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card);
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    h1, h2, h3 {
+      color: var(--primary);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* Ticker infinito */
+    .ticker {
+      background: #000;
+      color: #FFF;
+      padding: 10px 0;
       overflow: hidden;
-      transition: background .3s, color .3s;
+      white-space: nowrap;
+      margin-bottom: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
-    body.dark {
-      --primary: #60a5fa;
-      --primary-hover: #3b82f6;
-      --primary-light: #1e3a8a;
-      --bg: #0f172a;
-      --sidebar: #1e293b;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --border: #334155;
-      --card: #1e293b;
-      --accent: #475569;
-      --shadow: 0 2px 8px #0003;
-    }
-    body.dark .topbar {
-      background: linear-gradient(95deg, #1e3a8a 0%, #1e293b 90%);
-      border-bottom: 1px solid var(--border);
-    }
-    body.dark .help-panel { background: linear-gradient(160deg,#3b82f6 60%,#1e293b 120%); }
-    body.dark .help-bottom-bar { background: #1e293b; }
-    body.dark .help-links-list { background: #1e293b; border: 1px solid var(--border); }
-    body.dark .help-link-item:hover { background: #334155; }
-    body.dark .stat-card, body.dark .plan-card, body.dark .pay-modal, body.dark .chart-modal, body.dark .bot-modal, body.dark .help-modal, body.dark .exchange-modal { background: var(--card); }
-    body.dark .nav-tab.active, body.dark .nav-tab:hover { background: var(--primary-light); color: var(--primary); }
-    /* Sidebar */
-    .sidebar {
-      width: 80px;
-      background: var(--sidebar);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 0;
-      gap: 4px;
-      z-index: 2;
-      position: fixed;
-      height: 100vh;
-      transition: width var(--transition), background var(--transition);
-    }
-    .sidebar .logo {
-      width: 56px; height: 56px;
-      background: var(--primary-light);
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 18px;
+
+    .ticker ul {
+      display: inline-block;
+      animation: ticker 30s linear infinite;
+      list-style: none;
       padding: 0;
-      border: 2px solid var(--primary);
-      overflow: hidden;
+      margin: 0;
     }
-    .sidebar .logo img {
+
+    .ticker li {
+      display: inline-block;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Noticias */
+    .news-section {
+      margin-top: 40px;
+    }
+
+    .news-item {
+      background: var(--accent);
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .news-item h4 {
+      margin: 0 0 10px;
+      color: var(--primary-hover);
+    }
+
+    .news-item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .news-item a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Verificación y Cuestionario */
+    .social-list { list-style: none; padding: 0; margin: 0; }
+    .social-item { margin-bottom: 12px; display: flex; align-items: center; }
+    .social-item input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    .social-link { color: var(--primary); text-decoration: none; font-weight: bold; }
+    .quiz-question { margin-bottom: 18px; }
+    .quiz-option { display: block; margin-bottom: 6px; }
+    #telegram-link { display: none; background: var(--primary-light); padding: 16px; border-radius: var(--radius); margin-top: 24px; box-shadow: var(--shadow); }
+    #telegram-link a { color: var(--primary-hover); font-weight: 600; font-size: 1.2em; }
+
+    button#verify-quiz {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-weight: bold;
+      cursor: pointer;
+      transition: background var(--transition);
+      margin-top: 20px;
+    }
+
+    button#verify-quiz:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Temas crypto: agregar backgrounds o icons */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      border-radius: 16px;
+      background: url('https://source.unsplash.com/random/1920x1080/?crypto,bitcoin') no-repeat center/cover;
+      opacity: 0.1;
+      z-index: -1;
     }
-    .sidebar-item {
-      width: 56px; height: 56px;
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: background var(--transition), color var(--transition);
-      color: var(--muted);
-      position: relative;
-    }
-    .sidebar-item:hover {
-      background: var(--primary-light);
-      color: var(--primary);
-    }
-    .sidebar-item.active {
-      background: var(--primary-light);
-      color: var(--primary);
-    }
-    .sidebar-item i {
-      font-size: 24px;
-    }
-    .sidebar-item .tooltip {
-      position: absolute;
-      left: 80px;
-      background: var(--card);
-      padding: 8px 16px;
-      border-radius: 8px;
-      box-shadow: var(--shadow);
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--transition);
-      z-index: 3;
-      border: 1px solid var(--border);
-    }
-    .sidebar-item:hover .tooltip {
-      opacity: 1;
-    }
-    .sidebar-bottom {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .sidebar-bottom .sidebar-item {
-      width: 56px;
-      height: 56px;
-    }
-    .theme-toggle {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--muted);
-      transition: background var(--transition), color var(--transition);
-    }
-    .theme-toggle:hover {
-      background: var(--primary-light);
-      color: var(--primary);
-    }
-    .theme-toggle i {
-      font-size: 24px;
-    }
-    /* Topbar */
-    .topbar {
-      height: 80px;
-      background: linear-gradient(95deg, #2563eb 0%, #3b82f6 90%);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      position: fixed;
-      width: calc(100% - 80px);
-      left: 80px;
-      z-index: 1;
-      transition: background var(--transition);
-    }
-    .topbar-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-    }
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .topbar-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .nav-tabs {
-      display: flex;
-      gap: 8px;
-    }
-    .nav-tab {
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background var(--transition), color var(--transition);
-      color: #fff;
-      font-weight: 600;
-    }
-    .nav-tab:hover {
-      background: rgba(255,255,255,0.2);
-    }
-    .nav-tab.active {
-      background: #fff;
-      color: var(--primary);
-    }
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .search-bar {
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,0.2);
-      border-radius: 8px;
-      padding: 8px 16px;
-      gap: 8px;
-      width: 280px;
-      transition: background var(--transition);
-    }
-    .search-bar i {
-      color: #fff;
-      font-size: 18px;
-    }
-    .search-bar input {
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 14px;
-      width: 100%;
-      outline: none;
-    }
-    .search-bar input::placeholder {
-      color: rgba(255,255,255,0.7);
-    }
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-    }
-    .profile-pic {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 16px;
-    }
-    .profile-name {
-      font-weight: 600;
-      color: #fff;
-    }
-    .profile-arrow {
-      color: #fff;
-      font-size: 18px;
-    }
-    /* Main Content */
-    .main-content {
-      margin-left: 80px;
-      padding: 88px 24px 24px;
-      overflow-y: auto;
-      height: calc(100vh - 64px);
-      transition: margin-left var(--transition);
-    }
-    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .stat-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .stat-card .icon {
-      width: 40px;
-      height: 40px;
-      background: var(--primary-light);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      color: var(--primary);
-    }
-    .stat-card .label { font-size: 14px; color: var(--muted); }
-    .stat-card .value { font-size: 24px; font-weight: 700; }
-    .stat-card .change { font-size: 14px; color: #22c55e; display: flex; align-items: center; gap: 4px; }
-    .stat-card .change.down { color: #ef4444; }
-    .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .plan-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-    .plan-card.active { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
-    .plan-card .name { font-size: 20px; font-weight: 600; }
-    .plan-card .price { font-size: 32px; font-weight: 700; }
-    .plan-card .price span { font-size: 14px; color: var(--muted); }
-    .plan-card .features { list-style: none; padding: 0; gap: 8px; display: flex; flex-direction: column; }
-    .plan-card .features li { display: flex; align-items: center; gap: 8px; color: var(--muted); }
-    .plan-card .features li i { color: #22c55e; }
-    .plan-card button { margin-top: auto; }
-    .pay-modal, .chart-modal, .bot-modal, .help-modal, .exchange-modal { display: none; background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: 80%; max-width: 600px; }
-    .pay-modal.active, .chart-modal.active, .bot-modal.active, .help-modal.active, .exchange-modal.active { display: block; }
-    .modal-bg { display: none; display: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0005; z-index: 9; }
-    .modal-bg.active { display: block; }
-    .close-btn { position: absolute; top: 16px; right: 16px; cursor: pointer; color: var(--muted); font-size: 24px; }
-    .pay-modal form { display: flex; flex-direction: column; gap: 16px; }
-    .pay-modal input { padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
-    .chart-modal, .bot-modal { text-align: center; }
-    .chart-modal canvas { width: 100%; height: 300px; }
-    .bot-modal p { margin-bottom: 16px; }
-    .help-panel { background: linear-gradient(160deg,#2563eb 60%,#1749b1 120%); border-radius: var(--radius); padding: 32px; color: #fff; display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
-    .help-top { display: flex; align-items: center; gap: 16px; }
-    .help-icon { width: 48px; height: 48px; background: #fff3; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-    .help-title { font-size: 24px; font-weight: 700; }
-    .help-desc { font-size: 16px; opacity: 0.8; }
-    .help-bottom-bar { background: #fff3; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px; }
-    .help-bottom-bar input { flex: 1; padding: 12px; border: none; background: transparent; color: #fff; }
-    .help-bottom-bar input::placeholder { color: #fff; opacity: 0.6; }
-    .help-bottom-bar button { background: #fff; color: var(--primary); border-radius: 8px; padding: 8px 16px; font-weight: 600; }
-    .help-categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-    .help-category { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: var(--transition); }
-    .help-category:hover { transform: translateY(-2px); }
-    .help-category i { font-size: 24px; color: var(--primary); }
-    .help-category span { font-weight: 600; }
-    .help-modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0005; z-index: 9; }
-    .help-modal-bg.active { display: block; }
-    .help-modal { display: none; background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: 80%; max-width: 800px; }
-    .help-modal.active { display: block; }
-    .help-modal h2 { font-size: 24px; margin-bottom: 16px; }
-    .help-links-list { background: var(--accent); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
-    .help-link-item { padding: 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background var(--transition); }
-    .help-link-item:last-child { border-bottom: none; }
-    .help-link-item:hover { background: var(--accent); }
-    .help-link-item i { font-size: 20px; color: var(--primary); }
-    .help-link-item span { flex: 1; }
-    .help-link-item .arrow { color: var(--muted); }
-    .exchange-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .exchange-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; }
-    .exchange-card img { width: 64px; height: 64px; border-radius: 12px; }
-    .exchange-card .name { font-weight: 600; }
-    .exchange-card .desc { font-size: 14px; color: var(--muted); }
-    .exchange-modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0005; z-index: 9; }
-    .exchange-modal-bg.active { display: block; }
-    .exchange-modal { display: none; background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: 80%; max-width: 600px; }
-    .exchange-modal.active { display: block; }
-    .exchange-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .exchange-item { background: var(--accent); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: var(--transition); border: 1px solid var(--border); }
-    .exchange-item.active { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
-    .exchange-item img { width: 48px; height: 48px; }
-    .exchange-item span { font-weight: 600; }
-    .exchange-form { display: none; flex-direction: column; gap: 16px; }
-    .exchange-form.active { display: flex; }
-    .exchange-form input { padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
-    .exchange-form button { background: var(--primary); color: #fff; }
-    .watchlist-section { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 32px; }
-    .watchlist-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-    .watchlist-search { display: flex; align-items: center; gap: 8px; flex: 1; background: var(--accent); border-radius: 8px; padding: 8px 16px; border: 1px solid var(--border); }
-    .watchlist-search i { color: var(--muted); }
-    .watchlist-search input { background: transparent; border: none; flex: 1; outline: none; }
-    .watchlist-add { background: var(--primary); color: #fff; border-radius: 8px; padding: 8px 16px; font-weight: 600; cursor: pointer; transition: var(--transition); }
-    .watchlist-add:hover { background: var(--primary-hover); }
-    .watchlist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .watchlist-column { display: flex; flex-direction: column; gap: 8px; }
-    .watchlist-list { list-style: none; padding: 0; background: var(--accent); border-radius: 12px; border: 1px solid var(--border); min-height: 200px; }
-    .watchlist-item { padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
-    .watchlist-item:last-child { border-bottom: none; }
-    .watchlist-item span { flex: 1; font-weight: 600; }
-    .remove-watchlist { background: #ef4444; color: #fff; border-radius: 6px; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: var(--transition); }
-    .remove-watchlist:hover { background: #dc2626; }
-    .available-coins { list-style: none; padding: 0; background: var(--accent); border-radius: 12px; border: 1px solid var(--border); min-height: 200px; }
-    .available-coins li { padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background var(--transition); }
-    .available-coins li:hover { background: var(--primary-light); }
-    .available-coins li:last-child { border-bottom: none; }
-    .available-coins li span { flex: 1; font-weight: 600; }
-    .available-coins li i { color: var(--muted); cursor: pointer; transition: color var(--transition); }
-    .available-coins li i.active { color: var(--primary); }
-    .steps { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 32px; }
-    label { display: block; margin-bottom: 10px; }
-    button { background: var(--primary); color: #fff; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; }
-    button:hover { background: var(--primary-hover); }
-    #quiz, #telegram-link { display: none; margin-top: 20px; }
   </style>
-  <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
 </head>
 <body>
-  <div class="sidebar">
-    <div class="logo">
-      <img src="logo.png" alt="Financial Harmony Logo">
+  <div class="container">
+    <h1>Crypto Harmony - Verificación para Acceso al Curso BTC</h1>
+    <p>Para acceder al curso, sigue todos los perfiles en redes sociales a continuación y marca las casillas una vez que lo hayas hecho. Luego, responde correctamente al cuestionario. Una vez completadas todas las tareas, se revelará el enlace de Telegram.</p>
+
+    <ul class="social-list">
+      <li class="social-item">
+        <input type="checkbox" class="follow-check" data-social="x">
+        Sigue en X: <a href="https://x.com/financialharmon" target="_blank" class="social-link">@financialharmon</a>
+      </li>
+      <li class="social-item">
+        <input type="checkbox" class="follow-check" data-social="youtube">
+        Sigue en YouTube: <a href="https://www.youtube.com/@FinancialHarmony-z1n" target="_blank" class="social-link">@FinancialHarmony-z1n</a>
+      </li>
+      <li class="social-item">
+        <input type="checkbox" class="follow-check" data-social="instagram">
+        Sigue en Instagram: <a href="https://www.instagram.com/jrfinancialharmony" target="_blank" class="social-link">jrfinancialharmony</a>
+      </li>
+      <li class="social-item">
+        <input type="checkbox" class="follow-check" data-social="tiktok">
+        Sigue en TikTok: <a href="https://www.tiktok.com/@financial.harmony0" target="_blank" class="social-link">financial.harmony0</a>
+      </li>
+    </ul>
+
+    <h3>Cuestionario BTC</h3>
+    <div class="quiz-question">
+      <p>1. ¿Qué significa BTC?</p>
+      <label class="quiz-option"><input type="radio" name="q1" value="a"> a) Bitcoin</label>
+      <label class="quiz-option"><input type="radio" name="q1" value="b"> b) Bytecoin</label>
+      <label class="quiz-option"><input type="radio" name="q1" value="c"> c) Bitcash</label>
+    </div>
+    <div class="quiz-question">
+      <p>2. ¿Quién creó Bitcoin?</p>
+      <label class="quiz-option"><input type="radio" name="q2" value="a"> a) Elon Musk</label>
+      <label class="quiz-option"><input type="radio" name="q2" value="b"> b) Satoshi Nakamoto</label>
+      <label class="quiz-option"><input type="radio" name="q2" value="c"> c) Vitalik Buterin</label>
+    </div>
+    <div class="quiz-question">
+      <p>3. ¿Cuál es el suministro máximo de BTC?</p>
+      <label class="quiz-option"><input type="radio" name="q3" value="a"> a) 21 millones</label>
+      <label class="quiz-option"><input type="radio" name="q3" value="b"> b) Ilimitado</label>
+      <label class="quiz-option"><input type="radio" name="q3" value="c"> c) 100 millones</label>
+    </div>
+    <div class="quiz-question">
+      <p>4. ¿Qué es el halving de Bitcoin?</p>
+      <label class="quiz-option"><input type="radio" name="q4" value="a"> a) Reducción a la mitad de la recompensa por minado</label>
+      <label class="quiz-option"><input type="radio" name="q4" value="b"> b) Duplicación de la recompensa</label>
+      <label class="quiz-option"><input type="radio" name="q4" value="c"> c) Cambio en el algoritmo</label>
+    </div>
+    <div class="quiz-question">
+      <p>5. ¿En qué año se creó Bitcoin?</p>
+      <label class="quiz-option"><input type="radio" name="q5" value="a"> a) 2009</label>
+      <label class="quiz-option"><input type="radio" name="q5" value="b"> b) 2010</label>
+      <label class="quiz-option"><input type="radio" name="q5" value="c"> c) 2008</label>
+    </div>
+
+    <button id="verify-quiz">Verificar y Revelar Enlace</button>
+    <div id="telegram-link">
+      <p>¡Felicidades! Aquí está el enlace de Telegram: <a href="https://t.me/yourgroup" target="_blank">Unirse al Grupo</a></p>
     </div>
   </div>
-  <div class="topbar">
-    <div class="topbar-content">
-      <div class="topbar-left">
-        <div class="topbar-title">Financial Harmony</div>
-      </div>
-      <div class="topbar-right">
-        <div class="profile">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Pic">
-          <div>
-            <div class="name">John Doe</div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+  <!-- Ticker Infinito -->
+  <div class="ticker">
+    <ul id="ticker-list"></ul>
   </div>
-  <div class="main-content">
-    <div id="login" style="display: block;">
-      <button id="login-button">Iniciar Sesión con Auth0</button>
-    </div>
-    <div id="dashboard" style="display: none;">
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="icon"><i class="ri-coin-line"></i></div>
-          <div class="label">Saldo Total</div>
-          <div class="value">$12,345.67</div>
-          <div class="change">+5.2% <i class="ri-arrow-up-line"></i></div>
-        </div>
-        <div class="stat-card">
-          <div class="icon"><i class="ri-line-chart-line"></i></div>
-          <div class="label">Ganancias/Pérdidas</div>
-          <div class="value">+$1,234.56</div>
-          <div class="change">+3.8% <i class="ri-arrow-up-line"></i></div>
-        </div>
-      </div>
-      <div class="section">
-        <h3>Precios Principales de Criptomonedas</h3>
-        <table id="prices-table">
-          <thead><tr><th>Moneda</th><th>Precio (USD)</th><th>Cambio 24h</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="section">
-        <h3>Noticias Crypto Actualizadas</h3>
-        <ul id="news-feed"></ul>
-      </div>
-      <div class="section">
-        <h3>Información sobre Bitcoin</h3>
-        <p id="btc-info">Cargando...</p>
-      </div>
-      <div class="section">
-        <h3>Gráfico de Precios (TradingView)</h3>
-        <div id="tradingview-widget" style="height: 400px; width: 100%;"></div>
-      </div>
-      <!-- Flujo de Pasos -->
-      <div id="steps" class="steps">
-        <h3>Paso 1: Sigue las Redes Sociales</h3>
-        <label><input type="checkbox" id="follow1"> Sigue Twitter/X de BTC</label><br>
-        <label><input type="checkbox" id="follow2"> Sigue Instagram de Crypto</label><br>
-        <label><input type="checkbox" id="follow3"> Sigue YouTube de Trading</label><br>
-        <button id="next-follow">Siguiente</button>
-        
-        <div id="quiz" style="display:none;">
-          <h3>Paso 2: Cuestionario - Curso de BTC</h3>
-          <p>1. ¿Qué es Bitcoin? <input type="text" id="q1"></p>
-          <p>2. ¿Quién creó BTC? <input type="text" id="q2"></p>
-          <p>3. ¿Qué es Blockchain? <input type="text" id="q3"></p>
-          <button id="submit-quiz">Finalizar</button>
-        </div>
-        
-        <div id="telegram-link" style="display:none;">
-          <h3>¡Listo! Únete al Grupo de Telegram</h3>
-          <a href="https://t.me/tu_grupo_telegram" target="_blank">Ir al Curso en Telegram</a>
-        </div>
-      </div>
-      <button id="logout-button">Cerrar Sesión</button>
-    </div>
+
+  <!-- Sección de Noticias -->
+  <div class="container news-section">
+    <h2>Noticias de Criptomonedas</h2>
+    <div id="news-list"></div>
   </div>
+
   <script>
-    let auth0Client;
-    let userProfile;
+    // Verificación del Curso
+    const followChecks = document.querySelectorAll('.follow-check');
+    const verifyButton = document.getElementById('verify-quiz');
+    const telegramLink = document.getElementById('telegram-link');
 
-    async function initAuth0() {
-      auth0Client = await createAuth0Client({
-        domain: 'TU_DOMAIN_AUTH0',
-        clientId: 'TU_CLIENT_ID',
-        authorizationParams: {
-          redirect_uri: window.location.origin
-        }
-      });
+    verifyButton.addEventListener('click', () => {
+      const allChecked = Array.from(followChecks).every(c => c.checked);
+      const q1 = document.querySelector('input[name="q1"]:checked')?.value === 'a';
+      const q2 = document.querySelector('input[name="q2"]:checked')?.value === 'b';
+      const q3 = document.querySelector('input[name="q3"]:checked')?.value === 'a';
+      const q4 = document.querySelector('input[name="q4"]:checked')?.value === 'a';
+      const q5 = document.querySelector('input[name="q5"]:checked')?.value === 'a';
 
-      if (location.search.includes("code=") && location.search.includes("state=")) {
-        await auth0Client.handleRedirectCallback();
-        window.history.replaceState({}, document.title, "/");
+      if (allChecked && q1 && q2 && q3 && q4 && q5) {
+        telegramLink.style.display = 'block';
+      } else {
+        alert('Por favor, completa todas las tareas sociales y responde correctamente al cuestionario.');
       }
-
-      const isAuthenticated = await auth0Client.isAuthenticated();
-      updateUI(isAuthenticated);
-
-      if (isAuthenticated) {
-        userProfile = await auth0Client.getUser();
-        updateUI(isAuthenticated);
-      }
-    }
-
-    function updateUI(isAuthenticated) {
-      document.getElementById('login').style.display = isAuthenticated ? 'none' : 'block';
-      document.getElementById('dashboard').style.display = isAuthenticated ? 'block' : 'none';
-
-      if (isAuthenticated) {
-        loadPrices();
-        loadNews();
-        loadBtcInfo();
-        setInterval(loadNews, 30000); 
-        document.querySelector('.profile .name').textContent = userProfile.name || 'User';
-        document.querySelector('.profile img').src = userProfile.picture || 'https://randomuser.me/api/portraits/men/32.jpg';
-      }
-    }
-
-    document.getElementById('login-button').addEventListener('click', async () => {
-      await auth0Client.loginWithRedirect();
     });
 
-    document.getElementById('logout-button').addEventListener('click', async () => {
-      await auth0Client.logout({
-        logoutParams: {
-          returnTo: window.location.origin
-        }
-      });
-    });
-
-    initAuth0();
-
-    // Cargar Precios
-    function loadPrices() {
-      fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,solana&order=market_cap_desc')
-        .then(res => res.json())
-        .then(data => {
-          const tbody = document.querySelector('#prices-table tbody');
-          tbody.innerHTML = '';
-          data.forEach(coin => {
-            const row = `<tr><td>${coin.name}</td><td>$${coin.current_price.toFixed(2)}</td><td>${coin.price_change_percentage_24h.toFixed(2)}%</td></tr>`;
-            tbody.innerHTML += row;
-          });
-        }).catch(err => console.error('Error loading prices:', err));
-      setTimeout(loadPrices, 30000);
-    }
-
-    // Cargar Noticias
-    function loadNews() {
-      const apiKey = '6a2f3e0ca4454b59a566896f49560316';
-      fetch(`https://newsapi.org/v2/everything?q=bitcoin OR crypto&sortBy=publishedAt&language=es&pageSize=10&apiKey=${apiKey}`)
-        .then(res => res.json())
-        .then(data => {
-          const feed = document.getElementById('news-feed');
-          feed.innerHTML = '';
-          if (data.articles && data.articles.length > 0) {
-            data.articles.forEach(article => {
-              const date = new Date(article.publishedAt).toLocaleString('es-ES');
-              feed.innerHTML += `<li><a href="${article.url}" target="_blank">${article.title}</a> - ${article.source.name} (${date})</li>`;
-            });
-          } else {
-            feed.innerHTML = '<li>No hay noticias disponibles en este momento.</li>';
-          }
-        }).catch(err => {
-          console.error('Error fetching news:', err);
-          document.getElementById('news-feed').innerHTML = '<li>Error al cargar noticias. Verifica tu API key o conexión.</li>';
+    // Fetch Top 10 por Volumen para Ticker
+    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=10&page=1')
+      .then(r => r.json())
+      .then(data => {
+        const tickerList = document.getElementById('ticker-list');
+        data.forEach(coin => {
+          const li = document.createElement('li');
+          li.textContent = `${coin.symbol.toUpperCase()}: $${coin.current_price.toFixed(2)} (${coin.price_change_percentage_24h.toFixed(2)}%)`;
+          tickerList.appendChild(li);
         });
-    }
+        // Duplicar para efecto infinito
+        tickerList.innerHTML += tickerList.innerHTML;
+      });
 
-    // Info BTC
-    function loadBtcInfo() {
-      fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById('btc-info').innerHTML = `Precio: $${data.market_data.current_price.usd.toFixed(2)}<br>Market Cap: $${data.market_data.market_cap.usd.toLocaleString()}<br>Dominance: ${data.market_data.market_cap_change_percentage_24h_in_currency.usd.toFixed(2)}%`;
-        }).catch(err => console.error('Error loading BTC info:', err));
-    }
-
-    // Gráfico TradingView
-    new TradingView.widget({
-      "width": "100%",
-      "height": 400,
-      "symbol": "BINANCE:BTCUSDT",
-      "interval": "D",
-      "timezone": "Etc/UTC",
-      "theme": "light",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true,
-      "studies": ["MACD"],
-      "container_id": "tradingview-widget"
-    });
-
-    // Flujo de Pasos
-    document.getElementById('next-follow').addEventListener('click', () => {
-      if (document.querySelectorAll('input[type="checkbox"]:checked').length === 3) {
-        document.getElementById('quiz').style.display = 'block';
-      } else {
-        alert('Debes seguir todas las redes.');
-      }
-    });
-
-    document.getElementById('submit-quiz').addEventListener('click', () => {
-      if (document.getElementById('q1').value && document.getElementById('q2').value && document.getElementById('q3').value) {
-        document.getElementById('telegram-link').style.display = 'block';
-      } else {
-        alert('Responde todas las preguntas.');
-      }
-    });
+    // Fetch Noticias (usando una API de noticias crypto, aquí uso placeholder con CoinGecko news si disponible, o alternativa)
+    // Nota: CoinGecko no tiene /news directo, uso una alternativa como CryptoPanic API
+    fetch('https://cryptopanic.com/api/v1/posts/?auth_token=your_token_if_needed&public=true&kind=news') // Reemplaza con tu API key si es necesario
+      .then(r => r.json())
+      .then(data => {
+        const newsList = document.getElementById('news-list');
+        data.results.slice(0, 5).forEach(news => { // Mostrar 5 noticias
+          const div = document.createElement('div');
+          div.classList.add('news-item');
+          div.innerHTML = `
+            <h4>${news.title}</h4>
+            <p>${news.published_at} - <a href="${news.url}" target="_blank">Leer más</a></p>
+          `;
+          newsList.appendChild(div);
+        });
+      })
+      .catch(() => {
+        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde.</p>';
+      });
   </script>
 </body>
 </html>
