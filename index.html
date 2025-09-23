@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Financial Harmony - BTC Courses</title>
+  <title>Financial Harmony - Cursos BTC</title>
   <link rel="shortcut icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
   <link rel="icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
@@ -76,11 +76,20 @@
       font-weight: bold;
       font-size: 1.5em;
       color: #388E3C;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: auto;
+      height: 50px; /* Ajustado para preservar proporción y tamaño adecuado */
     }
 
     .menu {
       display: flex;
       gap: 20px;
+      align-items: center;
     }
 
     .menu a {
@@ -359,13 +368,16 @@
 </head>
 <body>
   <nav class="header">
-    <div class="logo">💎 harmony</div>
+    <div class="logo">
+      <img src="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/logo.png" alt="Financial Harmony Logo">
+      Financial Harmony
+    </div>
     <div class="menu">
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Actions</a>
-      <a href="#">Contact</a>
-      <a href="#">Contact C.</a>
+      <a href="#">Inicio</a>
+      <a href="#">Sobre Nosotros</a>
+      <a href="#">Acciones</a>
+      <a href="#">Contacto</a>
+      <a href="#">Contacto Completo</a>
       <button id="login">Iniciar Sesión</button>
       <button id="logout" style="display: none;">Cerrar Sesión</button>
       <div id="profile" style="display: none;"></div>
@@ -375,9 +387,9 @@
   <section class="hero-section">
     <h1 class="hero-title">Financial Harmony</h1>
     <p class="hero-subtitle">Conéctate con la Economía Cripto, fomenta habilidades financieras y retira tus ganancias con confianza.</p>
-    <button class="hero-button" id="hero-login">Enun Now</button>
+    <button class="hero-button" id="hero-login">Empezar Ahora</button>
     <div class="hero-content">
-      <img src="https://pngimg.com/uploads/bitcoin/small/bitcoin_PNG48.png" alt="Bitcoin Coin">
+      <img src="https://pngimg.com/uploads/bitcoin/small/bitcoin_PNG48.png" alt="Moneda Bitcoin">
     </div>
     <div class="ticker">
       <ul id="ticker-list"></ul>
@@ -392,41 +404,41 @@
   </section>
 
   <section class="section-hamines">
-    <div class="hamines-logo">💎 Hamines</div>
+    <div class="hamines-logo">Financial Harmony</div>
     <h2 class="section-title">Financial Harmony de Fruittinos</h2>
     <p class="section-text">Aprende los fundamentos del mundo de las criptomonedas y cómo Bitcoin está revolucionando las finanzas.</p>
   </section>
 
   <section class="grid-section">
-    <div class="grid-item">
-      <h3>Tosk</h3>
-      <p>Conéctate con la Economía Cripto</p>
+    <div class="grid-item" data-section="crypto-economy">
+      <h3>Conéctate con la Economía Cripto</h3>
+      <p>Aprende los fundamentos del mundo de las criptomonedas.</p>
       <button class="more-info-btn">Más Info</button>
     </div>
-    <div class="grid-item">
-      <h3>Dercs</h3>
-      <p>Fomentando Habilidades Financieras</p>
+    <div class="grid-item" data-section="financial-skills">
+      <h3>Fomentando Habilidades Financieras</h3>
+      <p>Desarrolla estrategias para invertir en BTC de manera segura.</p>
       <button class="more-info-btn">Más Info</button>
     </div>
-    <div class="grid-item">
-      <h3>Fome</h3>
-      <p>Retira tus Ganancias con Confianza</p>
+    <div class="grid-item" data-section="withdraw-earnings">
+      <h3>Retira tus Ganancias con Confianza</h3>
+      <p>Guías paso a paso para manejar tus activos.</p>
       <button class="more-info-btn">Más Info</button>
     </div>
-    <div class="grid-item">
-      <h3>Bons</h3>
-      <p>Descubre BTC</p>
+    <div class="grid-item" data-section="discover-btc">
+      <h3>Descubre BTC</h3>
+      <p>Explora la historia y tecnología detrás de Bitcoin.</p>
       <button class="more-info-btn">Más Info</button>
     </div>
-    <div class="grid-item">
-      <h3>Bous</h3>
-      <p>Continúa Aprendiendo</p>
+    <div class="grid-item" data-section="continue-learning">
+      <h3>Continúa Aprendiendo</h3>
+      <p>Cursos avanzados sobre trading y análisis.</p>
       <button class="more-info-btn">Más Info</button>
     </div>
   </section>
 
   <section class="bomotel-section">
-    <h2>Bomotel Illemme denu Rouulation</h2>
+    <h2>Tendencias</h2>
     <div class="slider" id="news-slider"></div>
     <div id="new-listings"></div>
     <div class="wave-divider">
@@ -442,10 +454,10 @@
     <h2>Financial Harmony</h2>
     <div class="list-column">
       <ul>
-        <li>Top Canta</li>
-        <li>Governomna</li>
-        <li>Our Nerfae</li>
-        <li>One O</li>
+        <li>Conéctate con la Economía Cripto</li>
+        <li>Gobierno y Regulación</li>
+        <li>Nuestro Enfoque</li>
+        <li>Uno O</li>
         <li>Bem Enlit</li>
       </ul>
     </div>
@@ -460,8 +472,9 @@
   </section>
 
   <section class="tont-section">
-    <h2>Tont Misons</h2>
-    <p>Consejos prácticos para principiantes y expertos en crypto.</p>
+    <h2>Consejos Prácticos</h2>
+    <p>Tips para principiantes y expertos en crypto.</p>
+    <button class="more-info-btn" data-section="practical-tips">Más Info</button>
   </section>
 
   <section class="news-section">
@@ -470,14 +483,14 @@
   </section>
 
   <section class="charts-section">
-    <h2>Mercado Crypto</h2>
+    <h2>Mercado de Criptomonedas</h2>
     <div id="btc-chart"></div>
     <div id="eth-chart"></div>
     <div id="sol-chart"></div>
   </section>
 
   <section class="verification-section" id="verification-section">
-    <h2>BTC Courses - Verificación</h2>
+    <h2>Cursos BTC - Verificación</h2>
     <p>Para acceder al curso, sigue todos los perfiles en redes sociales a continuación y marca las casillas una vez que lo hayas hecho. Luego, responde correctamente al cuestionario. Una vez completadas todas las tareas, se revelará el enlace de Telegram.</p>
     <ul class="social-list">
       <li class="social-item">
