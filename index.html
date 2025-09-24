@@ -32,135 +32,33 @@
       margin: 0;
       overflow-x: hidden;
       position: relative;
-      background: #000; /* Fondo oscuro para resaltar los bloques */
+      background: #000; /* Fondo negro */
     }
-    .blockchain-bg {
+    .fluorescent-cubes {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
-      opacity: 0.5; /* Ajusta para visibilidad */
       overflow: hidden;
+      z-index: -1;
     }
-    .blockchain-bg .container {
+    .cube {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transform-style: preserve-3d;
-      perspective: 2000px;
-      transform: rotateX(-30deg) rotateY(-45deg);
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+      animation: moveCube linear infinite;
     }
-
-    .holder {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transform-style: preserve-3d;
-      transform: translate3d(0em, 3em, 1.5em);
-    }
-    .holder:last-child {
-      transform: rotateY(-90deg) rotateX(90deg) translate3d(0, 3em, 1.5em);
-    }
-    .holder:first-child {
-      transform: rotateZ(-90deg) rotateX(-90deg) translate3d(0, 3em, 1.5em);
-    }
-    .holder:nth-child(1) .box {
-      background-color: #1FBCD3;
-    }
-    .holder:nth-child(1) .box:before {
-      background-color: #126d7a;
-    }
-    .holder:nth-child(1) .box:after {
-      background-color: #1894a7;
-    }
-    .holder:nth-child(2) .box {
-      background-color: #CBE2B4;
-    }
-    .holder:nth-child(2) .box:before {
-      background-color: #98c66a;
-    }
-    .holder:nth-child(2) .box:after {
-      background-color: #b2d48f;
-    }
-    .holder:nth-child(3) .box {
-      background-color: #F6B6CA;
-    }
-    .holder:nth-child(3) .box:before {
-      background-color: #eb5b88;
-    }
-    .holder:nth-child(3) .box:after {
-      background-color: #f089a9;
-    }
-
-    .box {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transform-style: preserve-3d;
-      animation: ani-box 6s infinite;
-      width: 3em;
-      height: 3em;
-    }
-    .box:before, .box:after {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      content: "";
-    }
-    .box:before {
-      left: 100%;
-      bottom: 0;
-      transform: rotateY(90deg);
-      transform-origin: 0 50%;
-    }
-    .box:after {
-      left: 0;
-      bottom: 100%;
-      transform: rotateX(90deg);
-      transform-origin: 0 100%;
-    }
-
-    @keyframes ani-box {
-      8.33% {
-        transform: translate3d(-50%, -50%, 0) scaleZ(2);
-      }
-      16.7% {
-        transform: translate3d(-50%, -50%, -3em) scaleZ(1);
-      }
-      25% {
-        transform: translate3d(-50%, -100%, -3em) scaleY(2);
-      }
-      33.3% {
-        transform: translate3d(-50%, -150%, -3em) scaleY(1);
-      }
-      41.7% {
-        transform: translate3d(-100%, -150%, -3em) scaleX(2);
-      }
-      50% {
-        transform: translate3d(-150%, -150%, -3em) scaleX(1);
-      }
-      58.3% {
-        transform: translate3d(-150%, -150%, 0) scaleZ(2);
-      }
-      66.7% {
-        transform: translate3d(-150%, -150%, 0) scaleZ(1);
-      }
-      75% {
-        transform: translate3d(-150%, -100%, 0) scaleY(2);
-      }
-      83.3% {
-        transform: translate3d(-150%, -50%, 0) scaleY(1);
-      }
-      91.7% {
-        transform: translate3d(-100%, -50%, 0) scaleX(2);
+    @keyframes moveCube {
+      0% {
+        transform: translate(0, 0);
+        opacity: 1;
       }
       100% {
-        transform: translate3d(-50%, -50%, 0) scaleX(1);
+        transform: translate(var(--dx), var(--dy));
+        opacity: 0.5;
       }
     }
     .hero {
@@ -421,13 +319,7 @@
   </style>
 </head>
 <body>
-  <div class="blockchain-bg">
-    <div class="container">
-      <div class="holder"><div class="box"></div></div>
-      <div class="holder"><div class="box"></div></div>
-      <div class="holder"><div class="box"></div></div>
-    </div>
-  </div>
+  <div class="fluorescent-cubes"></div>
   <div class="hero">
     <nav>
       <div class="left">
@@ -816,6 +708,26 @@
         modal.style.display = "none";
       }
     };
+  </script>
+  <script>
+    // Script para crear cubos fluorescentes moviéndose independientemente
+    const colors = ['#00FFFF', '#00FF00', '#FF00FF', '#FFFF00']; // Colores fluorescentes
+    const cubeContainer = document.querySelector('.fluorescent-cubes');
+    const numCubes = 50; // Número de cubos
+
+    for (let i = 0; i < numCubes; i++) {
+      const cube = document.createElement('div');
+      cube.classList.add('cube');
+      cube.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      cube.style.left = `${Math.random() * 100}vw`;
+      cube.style.top = `${Math.random() * 100}vh`;
+      cube.style.width = `${Math.random() * 10 + 10}px`; // Tamaño entre 10-20px
+      cube.style.height = cube.style.width;
+      cube.style.animationDuration = `${Math.random() * 10 + 5}s`; // Duración random 5-15s
+      cube.style.--dx = `${(Math.random() - 0.5) * 200}vw`; // Movimiento horizontal random
+      cube.style.--dy = `${(Math.random() - 0.5) * 200}vh`; // Movimiento vertical random
+      cubeContainer.appendChild(cube);
+    }
   </script>
 </body>
 </html>
