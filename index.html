@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Financial Harmony - BTC Courses</title>
   <link rel="shortcut icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
   <link rel="icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
@@ -199,7 +199,9 @@
       font-size: 0.9em;
     }
     #new-listings {
-      display: none; /* Quitamos "Próximos Listados" */
+      margin-top: 10px;
+      font-size: 0.8em;
+      color: #4CAF50;
     }
     .news-section, .charts-section, .verification-section {
       background: var(--card);
@@ -352,6 +354,7 @@
       <div class="more-card" id="trends-card" data-section="trends">
         <h3>Tendencias</h3>
         <div class="slider" id="news-slider"></div>
+        <div id="new-listings"></div>
       </div>
       <div class="more-card" data-section="practical-tips">
         <h3>Consejos Prácticos</h3>
@@ -602,6 +605,17 @@
         console.error('Error fetching news:', error);
         document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde.</p>';
       });
+    // New Listings
+    fetch('https://api.coingecko.com/api/v3/coins/list/new')
+      .then(r => r.json())
+      .then(data => {
+        const newListings = document.getElementById('new-listings');
+        newListings.innerHTML = '<h4>Listados Nuevos:</h4>';
+        data.slice(0, 5).forEach(coin => {
+          newListings.innerHTML += `<p>${coin.id} (${coin.symbol.toUpperCase()})</p>`;
+        });
+      })
+      .catch(error => console.error('Error fetching new listings:', error));
     // Gráficos en tiempo real
     new TradingView.widget({
       "container_id": "btc-chart",
@@ -681,4 +695,34 @@
         const section = btn.parentElement.dataset.section;
         const content = sectionContents[section];
         if (content) {
-          modalTitle.text
+          modalTitle.textContent = content.title;
+          modalText.innerHTML = content.text;
+          modal.style.display = "block";
+        }
+      });
+    });
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+    };
+    window.onclick = (event) => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+    // News Modal Logic
+    const newsModal = document.getElementById("news-modal");
+    const newsCloseBtn = document.getElementsByClassName("close-news")[0];
+    newsCloseBtn.onclick = () => {
+      newsModal.style.display = "none";
+    };
+    window.onclick = (event) => {
+      if (event.target == newsModal) {
+        newsModal.style.display = "none";
+      } else if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>
+
