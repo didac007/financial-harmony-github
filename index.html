@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ejemplo Ondas Suaves 1</title>
+  <title>Ejemplo Ondas Suaves 2</title>
   <style>
     body {
       margin: 0;
@@ -12,33 +12,39 @@
       overflow: hidden;
       position: relative;
     }
-    body::before {
-      content: '';
+    .wave {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 200%; /* Duplicado para loop infinito */
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(0, 255, 128, 0.3) 5%,
-        transparent 10%
-      );
-      animation: waves 10s linear infinite;
-      opacity: 0.5;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 255, 128, 0.5);
+      animation: expand 5s linear infinite;
+      transform: translate(-50%, -50%);
     }
-    @keyframes waves {
+    .wave:nth-child(2) { animation-delay: 1s; }
+    .wave:nth-child(3) { animation-delay: 2s; }
+    .wave:nth-child(4) { animation-delay: 3s; }
+    @keyframes expand {
       0% {
-        transform: translateY(0);
+        width: 0;
+        height: 0;
+        opacity: 1;
       }
       100% {
-        transform: translateY(-50%);
+        width: 200vw;
+        height: 200vw;
+        opacity: 0;
       }
     }
   </style>
 </head>
 <body>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
   <!-- Tu contenido web aquí -->
 </body>
 </html>
