@@ -32,41 +32,46 @@
       margin: 0;
       overflow-x: hidden;
       position: relative;
-      background: #fff; /* Fondo blanco fijo */
+      background: #000; /* Fondo oscuro para simular noche con aurora */
     }
     body::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(
-        from 0deg,
-        #00ff00 0deg 30deg,
-        #006400 30deg 60deg,
-        #00ff00 60deg 90deg,
-        #006400 90deg 120deg,
-        #00ff00 120deg 150deg,
-        #006400 150deg 180deg,
-        #00ff00 180deg 210deg,
-        #006400 210deg 240deg,
-        #00ff00 240deg 270deg,
-        #006400 270deg 300deg,
-        #00ff00 300deg 330deg,
-        #006400 330deg 360deg
-      );
-      opacity: 0.7; /* Opacidad para verde intenso visible pero no abrumador */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(0deg, rgba(0, 255, 0, 0.2) 0%, rgba(0, 128, 0, 0.5) 20%, rgba(0, 255, 128, 0.7) 40%, rgba(0, 200, 0, 0.5) 60%, rgba(0, 255, 0, 0.2) 80%, transparent 100%);
+      opacity: 0.6; /* Suave pero un poco intenso */
       z-index: -1;
-      animation: rotate-spiral 20s linear infinite;
-      transform-origin: center;
+      animation: auroraFlow 20s linear infinite;
     }
-    @keyframes rotate-spiral {
+    body::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(0, 255, 0, 0.1) 0%, rgba(0, 200, 0, 0.4) 50%, rgba(0, 255, 0, 0.1) 100%);
+      opacity: 0.4;
+      z-index: -1;
+      animation: auroraWave 15s ease-in-out infinite alternate;
+    }
+    @keyframes auroraFlow {
       0% {
-        transform: rotate(0deg);
+        transform: translateY(0);
       }
       100% {
-        transform: rotate(360deg);
+        transform: translateY(-50%);
+      }
+    }
+    @keyframes auroraWave {
+      0% {
+        transform: skewY(0deg) translateX(0);
+      }
+      100% {
+        transform: skewY(5deg) translateX(10%);
       }
     }
     .hero {
