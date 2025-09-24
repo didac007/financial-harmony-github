@@ -32,29 +32,41 @@
       margin: 0;
       overflow-x: hidden;
       position: relative;
-      background: #fff; /* Fondo blanco fijo, sin cambios de color */
+      background: #fff; /* Fondo blanco fijo */
     }
     body::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 200%; /* Para loop horizontal infinito */
-      height: 100%;
-      background-image: url('https://www.pngplay.com/wp-content/uploads/6/Green-Wave-Transparent-PNG.png'); /* Ola verde como en tu captura */
-      background-repeat: repeat-x;
-      background-position: top left;
-      background-size: auto 100%;
-      z-index: 0;
-      opacity: 0.3; /* Suave para tranquilidad y profesionalismo */
-      animation: waveFlow 60s linear infinite;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 0deg,
+        #00ff00 0deg 30deg,
+        #006400 30deg 60deg,
+        #00ff00 60deg 90deg,
+        #006400 90deg 120deg,
+        #00ff00 120deg 150deg,
+        #006400 150deg 180deg,
+        #00ff00 180deg 210deg,
+        #006400 210deg 240deg,
+        #00ff00 240deg 270deg,
+        #006400 270deg 300deg,
+        #00ff00 300deg 330deg,
+        #006400 330deg 360deg
+      );
+      opacity: 0.7; /* Opacidad para verde intenso visible pero no abrumador */
+      z-index: -1;
+      animation: rotate-spiral 20s linear infinite;
+      transform-origin: center;
     }
-    @keyframes waveFlow {
+    @keyframes rotate-spiral {
       0% {
-        transform: translateX(0);
+        transform: rotate(0deg);
       }
       100% {
-        transform: translateX(-50%);
+        transform: rotate(360deg);
       }
     }
     .hero {
@@ -535,30 +547,30 @@
         tickerList.innerHTML = content + content; // Duplicar para infinito
       })
       .catch(error => console.error('Error fetching ticker:', error));
-    // Noticias para slider en Tendencias y sección de noticias
-    fetch('https://newsapi.org/v2/everything?q=cryptocurrency&sortBy=publishedAt&apiKey=TU_CLAVE_NEWSAPI_AQUI') // <-- Reemplaza TU_CLAVE_NEWSAPI_AQUI con tu clave real
+    // Noticias para slider en Tendencias y sección de noticias (usando CryptoCompare API gratuita)
+    fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=ES')
       .then(r => r.json())
       .then(data => {
         const newsList = document.getElementById('news-list');
         const slider = document.getElementById('news-slider');
-        data.articles.slice(0, 5).forEach((news, index) => {
+        data.Data.slice(0, 5).forEach((news, index) => {
           // Sección de noticias
           const div = document.createElement('div');
           div.classList.add('news-item');
           div.innerHTML = `
             <h4>${news.title}</h4>
-            <p>${news.publishedAt} - <a href="${news.url}" target="_blank">Leer más</a></p>
+            <p>${new Date(news.published_on * 1000).toISOString().split('T')[0]} - <a href="${news.url}" target="_blank">Leer más</a></p>
           `;
           newsList.appendChild(div);
           // Slider en Tendencias
           const slide = document.createElement('div');
           slide.classList.add('slide');
           slide.dataset.title = news.title;
-          slide.dataset.text = news.publishedAt;
+          slide.dataset.text = new Date(news.published_on * 1000).toISOString().split('T')[0];
           slide.dataset.url = news.url;
           slide.innerHTML = `
             <h4>${news.title}</h4>
-            <p>${news.publishedAt}</p>
+            <p>${new Date(news.published_on * 1000).toISOString().split('T')[0]}</p>
           `;
           slider.appendChild(slide);
         });
@@ -584,7 +596,7 @@
       })
       .catch(error => {
         console.error('Error fetching news:', error);
-        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde o verifica tu API key.</p>';
+        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde.</p>';
       });
     // New Listings
     fetch('https://api.coingecko.com/api/v3/coins/list/new')
