@@ -32,7 +32,7 @@
       margin: 0;
       overflow-x: hidden;
       position: relative;
-      background: #fff;
+      background: #fff; /* Fondo blanco fijo, sin cambios de color */
     }
     body::before {
       content: '';
@@ -41,12 +41,12 @@
       left: 0;
       width: 200%; /* Para loop horizontal infinito */
       height: 100%;
-      background-image: url('https://www.pngplay.com/wp-content/uploads/6/Green-Wave-Transparent-PNG.png');
+      background-image: url('https://www.pngplay.com/wp-content/uploads/6/Green-Wave-Transparent-PNG.png'); /* Ola verde como en tu captura */
       background-repeat: repeat-x;
       background-position: top left;
       background-size: auto 100%;
       z-index: 0;
-      opacity: 0.5; /* Aumentado para visibilidad */
+      opacity: 0.3; /* Suave para tranquilidad y profesionalismo */
       animation: waveFlow 60s linear infinite;
     }
     @keyframes waveFlow {
@@ -536,7 +536,7 @@
       })
       .catch(error => console.error('Error fetching ticker:', error));
     // Noticias para slider en Tendencias y sección de noticias
-    fetch('https://newsapi.org/v2/everything?q=cryptocurrency&sortBy=publishedAt&apiKey=6a2f3e0ca4454b59a566896f49560316')
+    fetch('https://newsapi.org/v2/everything?q=cryptocurrency&sortBy=publishedAt&apiKey=6a2f3e0ca4454b59a566896f49560316') // <-- Reemplaza TU_CLAVE_NEWSAPI_AQUI con tu clave real
       .then(r => r.json())
       .then(data => {
         const newsList = document.getElementById('news-list');
@@ -584,7 +584,7 @@
       })
       .catch(error => {
         console.error('Error fetching news:', error);
-        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde.</p>';
+        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde o verifica tu API key.</p>';
       });
     // New Listings
     fetch('https://api.coingecko.com/api/v3/coins/list/new')
