@@ -32,7 +32,7 @@
       margin: 0;
       overflow-x: hidden;
       position: relative;
-      background: #000; /* Fondo oscuro para resaltar la lluvia de código */
+      background: #f0f0f0; /* Fondo más claro y agradable */
     }
     canvas {
       position: absolute;
@@ -67,7 +67,7 @@
     .left h1 {
       font-size: 2.5em;
       margin: 0;
-      color: var(--text);
+      color: #FFD700; /* Dorada para Financial Harmony */
     }
     .right {
       display: flex;
@@ -451,37 +451,6 @@
     </div>
   </div>
   <script>
-    // Script para la lluvia de código blockchain
-    const canvas = document.getElementById('matrix-rain');
-    const ctx = canvas.getContext('2d');
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-    const blockchainSymbols = '0123456789ABCDEF₿BLOCKCHAINHASHNONCEPROOF-OF-WORKMERKLETREE'; // Símbolos temáticos de blockchain
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = [];
-    for (let x = 0; x < columns; x++) {
-      drops[x] = 1;
-    }
-    let hue = 120; // Comienza en verde
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Desvanecimiento suave
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = `hsl(${hue}, 100%, 50%)`; // Colores suaves cambiando sigilosamente
-      ctx.font = `${fontSize}px monospace`;
-      for (let i = 0; i < drops.length; i++) {
-        const text = blockchainSymbols[Math.floor(Math.random() * blockchainSymbols.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-      hue += 0.1; // Cambio sigiloso de color (suave)
-      if (hue > 180) hue = 120; // Rango de verdes suaves a turquesa
-    }
-    setInterval(draw, 33); // Animación suave
-
     // Auth0 Integration
     auth0.createAuth0Client({
       domain: "dev-uig5oc4olpwf4aw6.eu.auth0.com",
