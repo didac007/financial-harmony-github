@@ -32,7 +32,7 @@
       margin: 0;
       overflow-x: hidden;
       position: relative;
-      background: #000; /* Fondo negro */
+      background: #000; /* Fondo negro sin otros elementos */
     }
     .fluorescent-cubes {
       position: absolute;
@@ -41,15 +41,15 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      z-index: -1;
+      z-index: -1; /* Fondo detrás del contenido */
     }
     .cube {
       position: absolute;
       width: 10px;
       height: 10px;
       border-radius: 2px;
-      box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-      animation: moveCube linear infinite;
+      box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; /* Efecto fluorescente */
+      animation: moveCube linear infinite, colorChange 5s infinite; /* Movimiento y cambio de color */
     }
     @keyframes moveCube {
       0% {
@@ -60,6 +60,13 @@
         transform: translate(var(--dx), var(--dy));
         opacity: 0.5;
       }
+    }
+    @keyframes colorChange {
+      0% { color: #00FF00; } /* Verde inicial */
+      25% { color: #00FF7F; } /* Verde primavera */
+      50% { color: #32CD32; } /* Verde lima */
+      75% { color: #3CB371; } /* Verde mar */
+      100% { color: #00FF00; } /* Vuelve a verde inicial */
     }
     .hero {
       position: relative;
@@ -521,213 +528,4 @@
         const q3 = document.querySelector('input[name="q3"]:checked')?.value === 'a';
         const q4 = document.querySelector('input[name="q4"]:checked')?.value === 'a';
         const q5 = document.querySelector('input[name="q5"]:checked')?.value === 'a';
-        if (allChecked && q1 && q2 && q3 && q4 && q5) {
-          telegramLink.style.display = 'block';
-        } else {
-          alert('Por favor, completa todas las tareas sociales y responde correctamente al cuestionario.');
-        }
-      });
-    }
-    // Ticker Infinito
-    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=10&page=1')
-      .then(r => r.json())
-      .then(data => {
-        const tickerList = document.getElementById('ticker-list');
-        let content = '';
-        data.forEach(coin => {
-          content += `<li>${coin.symbol.toUpperCase()}: $${coin.current_price.toFixed(2)} (${coin.price_change_percentage_24h.toFixed(2)}%)</li>`;
-        });
-        tickerList.innerHTML = content + content; // Duplicar para infinito
-      })
-      .catch(error => console.error('Error fetching ticker:', error));
-    // Noticias para slider en Tendencias y sección de noticias (usando CryptoCompare API gratuita)
-    fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=ES')
-      .then(r => r.json())
-      .then(data => {
-        const newsList = document.getElementById('news-list');
-        const slider = document.getElementById('news-slider');
-        data.Data.slice(0, 5).forEach((news, index) => {
-          // Sección de noticias
-          const div = document.createElement('div');
-          div.classList.add('news-item');
-          div.innerHTML = `
-            <h4>${news.title}</h4>
-            <p>${new Date(news.published_on * 1000).toISOString().split('T')[0]} - <a href="${news.url}" target="_blank">Leer más</a></p>
-          `;
-          newsList.appendChild(div);
-          // Slider en Tendencias
-          const slide = document.createElement('div');
-          slide.classList.add('slide');
-          slide.dataset.title = news.title;
-          slide.dataset.text = new Date(news.published_on * 1000).toISOString().split('T')[0];
-          slide.dataset.url = news.url;
-          slide.innerHTML = `
-            <h4>${news.title}</h4>
-            <p>${new Date(news.published_on * 1000).toISOString().split('T')[0]}</p>
-          `;
-          slider.appendChild(slide);
-        });
-        let currentSlide = 0;
-        const slides = slider.querySelectorAll('.slide');
-        const slideCount = slides.length;
-        function showSlide(index) {
-          slider.style.transform = `translateX(-${index * 100}%)`;
-        }
-        setInterval(() => {
-          currentSlide = (currentSlide + 1) % slideCount;
-          showSlide(currentSlide);
-        }, 5000); // Cambia cada 5 segundos
-        // Click en slide para modal
-        slides.forEach(slide => {
-          slide.addEventListener('click', () => {
-            document.getElementById('news-modal-title').textContent = slide.dataset.title;
-            document.getElementById('news-modal-text').textContent = slide.dataset.text;
-            document.getElementById('news-modal-link').href = slide.dataset.url;
-            document.getElementById('news-modal').style.display = 'block';
-          });
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching news:', error);
-        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde.</p>';
-      });
-    // New Listings
-    fetch('https://api.coingecko.com/api/v3/coins/list/new')
-      .then(r => r.json())
-      .then(data => {
-        const newListings = document.getElementById('new-listings');
-        newListings.innerHTML = '<h4>Listados Nuevos:</h4>';
-        data.slice(0, 5).forEach(coin => {
-          newListings.innerHTML += `<p>${coin.id} (${coin.symbol.toUpperCase()})</p>`;
-        });
-      })
-      .catch(error => console.error('Error fetching new listings:', error));
-    // Gráficos en tiempo real
-    new TradingView.widget({
-      "container_id": "btc-chart",
-      "width": "100%",
-      "height": "300",
-      "symbol": "BINANCE:BTCUSDT",
-      "interval": "1",
-      "timezone": "Etc/UTC",
-      "theme": "light",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true
-    });
-    new TradingView.widget({
-      "container_id": "eth-chart",
-      "width": "100%",
-      "height": "300",
-      "symbol": "BINANCE:ETHUSDT",
-      "interval": "1",
-      "timezone": "Etc/UTC",
-      "theme": "light",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true
-    });
-    new TradingView.widget({
-      "container_id": "sol-chart",
-      "width": "100%",
-      "height": "300",
-      "symbol": "BINANCE:SOLUSDT",
-      "interval": "1",
-      "timezone": "Etc/UTC",
-      "theme": "light",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true
-    });
-    // Modal Logic para info
-    const modal = document.getElementById("info-modal");
-    const modalTitle = document.getElementById("modal-title");
-    const modalText = document.getElementById("modal-text");
-    const closeBtn = document.getElementsByClassName("close")[0];
-    const sectionContents = {
-      "crypto-economy": {
-        title: "Conéctate con la Economía Cripto",
-        text: "La economía cripto se basa en monedas digitales como Bitcoin, que utilizan criptografía para transacciones seguras. Operan en redes descentralizadas con tecnología blockchain. Incluye comercio, minería, DeFi y NFTs, ofreciendo inclusión financiera e innovación global."
-      },
-      "financial-skills": {
-        title: "Fomentando Habilidades Financieras",
-        text: "Desarrollar habilidades financieras para invertir en cripto implica entender la gestión de riesgos, diversificación, análisis técnico y investigación fundamental. Estrategias clave incluyen promedio de costo en dólares, órdenes stop-loss y mantenerse informado sobre tendencias del mercado."
-      },
-      "withdraw-earnings": {
-        title: "Retira tus Ganancias con Confianza",
-        text: "Para retirar ganancias de cripto de manera segura, usa exchanges confiables como Coinbase, habilita 2FA, almacena en wallets de hardware y verifica direcciones. Considera implicaciones fiscales y usa transferencias bancarias o tarjetas de débito cripto."
-      },
-      "discover-btc": {
-        title: "Descubre BTC",
-        text: "Bitcoin fue inventado en 2008 por Satoshi Nakamoto y lanzado en 2009. Es una criptomoneda descentralizada que usa blockchain para transacciones P2P sin intermediarios. Características clave: consenso proof-of-work, suministro limitado de 21 millones y eventos de halving. Puedes descargar el whitepaper original en español aquí: <a href='https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf' target='_blank'>Descargar PDF</a>"
-      },
-      "continue-learning": {
-        title: "Continúa Aprendiendo",
-        text: "Desarrollaremos este contenido próximamente en Financial Harmony."
-      },
-      "practical-tips": {
-        title: "Consejos Prácticos",
-        text: "Consejos prácticos incluyen no invertir más de lo que puedes perder, investigar bien, usar wallets seguros, diversificar y estar al día con noticias. Para expertos, considera estrategias avanzadas como trading de opciones y bots algorítmicos."
-      }
-    };
-    document.querySelectorAll('.more-info-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const section = btn.parentElement.dataset.section;
-        const content = sectionContents[section];
-        if (content) {
-          modalTitle.textContent = content.title;
-          modalText.innerHTML = content.text;
-          modal.style.display = "block";
-        }
-      });
-    });
-    closeBtn.onclick = () => {
-      modal.style.display = "none";
-    };
-    window.onclick = (event) => {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-    // News Modal Logic
-    const newsModal = document.getElementById("news-modal");
-    const newsCloseBtn = document.getElementsByClassName("close-news")[0];
-    newsCloseBtn.onclick = () => {
-      newsModal.style.display = "none";
-    };
-    window.onclick = (event) => {
-      if (event.target == newsModal) {
-        newsModal.style.display = "none";
-      } else if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-  </script>
-  <script>
-    // Script para crear cubos fluorescentes moviéndose independientemente
-    const colors = ['#00FFFF', '#00FF00', '#FF00FF', '#FFFF00']; // Colores fluorescentes
-    const cubeContainer = document.querySelector('.fluorescent-cubes');
-    const numCubes = 50; // Número de cubos
-
-    for (let i = 0; i < numCubes; i++) {
-      const cube = document.createElement('div');
-      cube.classList.add('cube');
-      cube.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      cube.style.left = `${Math.random() * 100}vw`;
-      cube.style.top = `${Math.random() * 100}vh`;
-      cube.style.width = `${Math.random() * 10 + 10}px`; // Tamaño entre 10-20px
-      cube.style.height = cube.style.width;
-      cube.style.animationDuration = `${Math.random() * 10 + 5}s`; // Duración random 5-15s
-      cube.style.--dx = `${(Math.random() - 0.5) * 200}vw`; // Movimiento horizontal random
-      cube.style.--dy = `${(Math.random() - 0.5) * 200}vh`; // Movimiento vertical random
-      cubeContainer.appendChild(cube);
-    }
-  </script>
-</body>
-</html>
+        if (allChecked && q1 && q
