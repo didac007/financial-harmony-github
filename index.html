@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Financial Harmony - BTC Courses</title>
   <link rel="shortcut icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
   <link rel="icon" href="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/favicon.ico" type="image/x-icon">
@@ -32,39 +32,16 @@
       margin: 0;
       overflow-x: hidden;
       position: relative;
-      background: transparent; /* Fondo transparente para la niebla */
+      background: #000; /* Fondo oscuro para resaltar la lluvia de código */
     }
-    .smoke-bg {
+    canvas {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
       z-index: -1;
-    }
-    .smoke {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(144, 238, 144, 0.3) 0%, rgba(173, 216, 230, 0.2) 70%, transparent 100%);
-      animation: floatSmoke 15s infinite ease-in-out, fadeSmoke 10s infinite ease-in-out;
-      filter: blur(20px);
-    }
-    .smoke:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-    .smoke:nth-child(2) { top: 30%; left: 70%; animation-delay: 2s; }
-    .smoke:nth-child(3) { top: 60%; left: 20%; animation-delay: 4s; }
-    .smoke:nth-child(4) { top: 80%; left: 60%; animation-delay: 6s; }
-    @keyframes floatSmoke {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(-20px, -20px) scale(1.2); }
-      100% { transform: translate(0, 0) scale(1); }
-    }
-    @keyframes fadeSmoke {
-      0% { opacity: 0.3; }
-      50% { opacity: 0.6; }
-      100% { opacity: 0.3; }
+      opacity: 0.5; /* Suave para no distraer */
     }
     .hero {
       position: relative;
@@ -324,12 +301,7 @@
   </style>
 </head>
 <body>
-  <div class="smoke-bg">
-    <div class="smoke"></div>
-    <div class="smoke"></div>
-    <div class="smoke"></div>
-    <div class="smoke"></div>
-  </div>
+  <canvas id="matrix-rain"></canvas> <!-- Canvas para la lluvia de código -->
   <div class="hero">
     <nav>
       <div class="left">
@@ -433,4 +405,322 @@
       </div>
       <div class="quiz-question">
         <p>2. ¿Quién creó Bitcoin?</p>
-        <label class="quiz-option"><input type="radio" name="
+        <label class="quiz-option"><input type="radio" name="q2" value="a"> a) Elon Musk</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="b"> b) Satoshi Nakamoto</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="c"> c) Vitalik Buterin</label>
+      </div>
+      <div class="quiz-question">
+        <p>3. ¿Cuál es el suministro máximo de BTC?</p>
+        <label class="quiz-option"><input type="radio" name="q3" value="a"> a) 21 millones</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="b"> b) Ilimitado</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="c"> c) 100 millones</label>
+      </div>
+      <div class="quiz-question">
+        <p>4. ¿Qué es el halving de Bitcoin?</p>
+        <label class="quiz-option"><input type="radio" name="q4" value="a"> a) Reducción a la mitad de la recompensa por minado</label>
+        <label class="quiz-option"><input type="radio" name="q4" value="b"> b) Duplicación de la recompensa</label>
+        <label class="quiz-option"><input type="radio" name="q4" value="c"> c) Cambio en el algoritmo</label>
+      </div>
+      <div class="quiz-question">
+        <p>5. ¿En qué año se creó Bitcoin?</p>
+        <label class="quiz-option"><input type="radio" name="q5" value="a"> a) 2009</label>
+        <label class="quiz-option"><input type="radio" name="q5" value="b"> b) 2010</label>
+        <label class="quiz-option"><input type="radio" name="q5" value="c"> c) 2008</label>
+      </div>
+      <button id="verify-quiz">Verificar y Revelar Enlace</button>
+      <div id="telegram-link">
+        <p>¡Felicidades! Aquí está el enlace de Telegram: <a href="https://t.me/yourgroup" target="_blank">Unirse al Grupo</a></p>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div id="info-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modal-title"></h2>
+      <p id="modal-text"></p>
+    </div>
+  </div>
+  <!-- News Modal -->
+  <div id="news-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-news">&times;</span>
+      <h2 id="news-modal-title"></h2>
+      <p id="news-modal-text"></p>
+      <a id="news-modal-link" target="_blank">Leer más</a>
+    </div>
+  </div>
+  <script>
+    // Script para la lluvia de código blockchain
+    const canvas = document.getElementById('matrix-rain');
+    const ctx = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    const blockchainSymbols = '0123456789ABCDEF₿BLOCKCHAINHASHNONCEPROOF-OF-WORKMERKLETREE'; // Símbolos temáticos de blockchain
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    for (let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+    let hue = 120; // Comienza en verde
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Desvanecimiento suave
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = `hsl(${hue}, 100%, 50%)`; // Colores suaves cambiando sigilosamente
+      ctx.font = `${fontSize}px monospace`;
+      for (let i = 0; i < drops.length; i++) {
+        const text = blockchainSymbols[Math.floor(Math.random() * blockchainSymbols.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      hue += 0.1; // Cambio sigiloso de color (suave)
+      if (hue > 180) hue = 120; // Rango de verdes suaves a turquesa
+    }
+    setInterval(draw, 33); // Animación suave
+
+    // Auth0 Integration
+    auth0.createAuth0Client({
+      domain: "dev-uig5oc4olpwf4aw6.eu.auth0.com",
+      clientId: "6NLcS9SdNQWYPOFNlRYBQawxLQ1YiKxq",
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }).then(async (auth0Client) => {
+      const loginButton = document.getElementById("login");
+      loginButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth0Client.loginWithRedirect();
+      });
+      if (location.search.includes("state=") && (location.search.includes("code=") || location.search.includes("error="))) {
+        await auth0Client.handleRedirectCallback();
+        window.history.replaceState({}, document.title, "/");
+      }
+      const logoutButton = document.getElementById("logout");
+      logoutButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth0Client.logout();
+      });
+      const isAuthenticated = await auth0Client.isAuthenticated();
+      const userProfile = await auth0Client.getUser();
+      const profileElement = document.getElementById("profile");
+      const verificationSection = document.getElementById("verification-section");
+      loginButton.style.display = isAuthenticated ? "none" : "inline-block";
+      logoutButton.style.display = isAuthenticated ? "inline-block" : "none";
+      if (isAuthenticated) {
+        profileElement.style.display = "inline-block";
+        profileElement.innerHTML = `
+          <p>${userProfile.name}</p>
+          <img src="${userProfile.picture}" style="width: 40px; border-radius: 50%;" />
+        `;
+        verificationSection.style.display = "block";
+      } else {
+        profileElement.style.display = "none";
+        verificationSection.style.display = "none";
+      }
+    });
+    // Verificación del Curso
+    const followChecks = document.querySelectorAll('.follow-check');
+    const verifyButton = document.getElementById('verify-quiz');
+    const telegramLink = document.getElementById('telegram-link');
+    if (verifyButton) {
+      verifyButton.addEventListener('click', () => {
+        const allChecked = Array.from(followChecks).every(c => c.checked);
+        const q1 = document.querySelector('input[name="q1"]:checked')?.value === 'a';
+        const q2 = document.querySelector('input[name="q2"]:checked')?.value === 'b';
+        const q3 = document.querySelector('input[name="q3"]:checked')?.value === 'a';
+        const q4 = document.querySelector('input[name="q4"]:checked')?.value === 'a';
+        const q5 = document.querySelector('input[name="q5"]:checked')?.value === 'a';
+        if (allChecked && q1 && q2 && q3 && q4 && q5) {
+          telegramLink.style.display = 'block';
+        } else {
+          alert('Por favor, completa todas las tareas sociales y responde correctamente al cuestionario.');
+        }
+      });
+    }
+    // Ticker Infinito
+    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=10&page=1')
+      .then(r => r.json())
+      .then(data => {
+        const tickerList = document.getElementById('ticker-list');
+        let content = '';
+        data.forEach(coin => {
+          content += `<li>${coin.symbol.toUpperCase()}: $${coin.current_price.toFixed(2)} (${coin.price_change_percentage_24h.toFixed(2)}%)</li>`;
+        });
+        tickerList.innerHTML = content + content; // Duplicar para infinito
+      })
+      .catch(error => console.error('Error fetching ticker:', error));
+    // Noticias para slider en Tendencias y sección de noticias (usando CryptoCompare API gratuita)
+    fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=ES')
+      .then(r => r.json())
+      .then(data => {
+        const newsList = document.getElementById('news-list');
+        const slider = document.getElementById('news-slider');
+        data.Data.slice(0, 5).forEach((news, index) => {
+          // Sección de noticias
+          const div = document.createElement('div');
+          div.classList.add('news-item');
+          div.innerHTML = `
+            <h4>${news.title}</h4>
+            <p>${new Date(news.published_on * 1000).toISOString().split('T')[0]} - <a href="${news.url}" target="_blank">Leer más</a></p>
+          `;
+          newsList.appendChild(div);
+          // Slider en Tendencias
+          const slide = document.createElement('div');
+          slide.classList.add('slide');
+          slide.dataset.title = news.title;
+          slide.dataset.text = new Date(news.published_on * 1000).toISOString().split('T')[0];
+          slide.dataset.url = news.url;
+          slide.innerHTML = `
+            <h4>${news.title}</h4>
+            <p>${new Date(news.published_on * 1000).toISOString().split('T')[0]}</p>
+          `;
+          slider.appendChild(slide);
+        });
+        let currentSlide = 0;
+        const slides = slider.querySelectorAll('.slide');
+        const slideCount = slides.length;
+        function showSlide(index) {
+          slider.style.transform = `translateX(-${index * 100}%)`;
+        }
+        setInterval(() => {
+          currentSlide = (currentSlide + 1) % slideCount;
+          showSlide(currentSlide);
+        }, 5000); // Cambia cada 5 segundos
+        // Click en slide para modal
+        slides.forEach(slide => {
+          slide.addEventListener('click', () => {
+            document.getElementById('news-modal-title').textContent = slide.dataset.title;
+            document.getElementById('news-modal-text').textContent = slide.dataset.text;
+            document.getElementById('news-modal-link').href = slide.dataset.url;
+            document.getElementById('news-modal').style.display = 'block';
+          });
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching news:', error);
+        document.getElementById('news-list').innerHTML = '<p>No se pudieron cargar las noticias. Intenta más tarde.</p>';
+      });
+    // New Listings
+    fetch('https://api.coingecko.com/api/v3/coins/list/new')
+      .then(r => r.json())
+      .then(data => {
+        const newListings = document.getElementById('new-listings');
+        newListings.innerHTML = '<h4>Listados Nuevos:</h4>';
+        data.slice(0, 5).forEach(coin => {
+          newListings.innerHTML += `<p>${coin.id} (${coin.symbol.toUpperCase()})</p>`;
+        });
+      })
+      .catch(error => console.error('Error fetching new listings:', error));
+    // Gráficos en tiempo real
+    new TradingView.widget({
+      "container_id": "btc-chart",
+      "width": "100%",
+      "height": "300",
+      "symbol": "BINANCE:BTCUSDT",
+      "interval": "1",
+      "timezone": "Etc/UTC",
+      "theme": "light",
+      "style": "1",
+      "locale": "es",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "allow_symbol_change": true
+    });
+    new TradingView.widget({
+      "container_id": "eth-chart",
+      "width": "100%",
+      "height": "300",
+      "symbol": "BINANCE:ETHUSDT",
+      "interval": "1",
+      "timezone": "Etc/UTC",
+      "theme": "light",
+      "style": "1",
+      "locale": "es",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "allow_symbol_change": true
+    });
+    new TradingView.widget({
+      "container_id": "sol-chart",
+      "width": "100%",
+      "height": "300",
+      "symbol": "BINANCE:SOLUSDT",
+      "interval": "1",
+      "timezone": "Etc/UTC",
+      "theme": "light",
+      "style": "1",
+      "locale": "es",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "allow_symbol_change": true
+    });
+    // Modal Logic para info
+    const modal = document.getElementById("info-modal");
+    const modalTitle = document.getElementById("modal-title");
+    const modalText = document.getElementById("modal-text");
+    const closeBtn = document.getElementsByClassName("close")[0];
+    const sectionContents = {
+      "crypto-economy": {
+        title: "Conéctate con la Economía Cripto",
+        text: "La economía cripto se basa en monedas digitales como Bitcoin, que utilizan criptografía para transacciones seguras. Operan en redes descentralizadas con tecnología blockchain. Incluye comercio, minería, DeFi y NFTs, ofreciendo inclusión financiera e innovación global."
+      },
+      "financial-skills": {
+        title: "Fomentando Habilidades Financieras",
+        text: "Desarrollar habilidades financieras para invertir en cripto implica entender la gestión de riesgos, diversificación, análisis técnico y investigación fundamental. Estrategias clave incluyen promedio de costo en dólares, órdenes stop-loss y mantenerse informado sobre tendencias del mercado."
+      },
+      "withdraw-earnings": {
+        title: "Retira tus Ganancias con Confianza",
+        text: "Para retirar ganancias de cripto de manera segura, usa exchanges confiables como Coinbase, habilita 2FA, almacena en wallets de hardware y verifica direcciones. Considera implicaciones fiscales y usa transferencias bancarias o tarjetas de débito cripto."
+      },
+      "discover-btc": {
+        title: "Descubre BTC",
+        text: "Bitcoin fue inventado en 2008 por Satoshi Nakamoto y lanzado en 2009. Es una criptomoneda descentralizada que usa blockchain para transacciones P2P sin intermediarios. Características clave: consenso proof-of-work, suministro limitado de 21 millones y eventos de halving. Puedes descargar el whitepaper original en español aquí: <a href='https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf' target='_blank'>Descargar PDF</a>"
+      },
+      "continue-learning": {
+        title: "Continúa Aprendiendo",
+        text: "Desarrollaremos este contenido próximamente en Financial Harmony."
+      },
+      "practical-tips": {
+        title: "Consejos Prácticos",
+        text: "Consejos prácticos incluyen no invertir más de lo que puedes perder, investigar bien, usar wallets seguros, diversificar y estar al día con noticias. Para expertos, considera estrategias avanzadas como trading de opciones y bots algorítmicos."
+      }
+    };
+    document.querySelectorAll('.more-info-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.parentElement.dataset.section;
+        const content = sectionContents[section];
+        if (content) {
+          modalTitle.textContent = content.title;
+          modalText.innerHTML = content.text;
+          modal.style.display = "block";
+        }
+      });
+    });
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+    };
+    window.onclick = (event) => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+    // News Modal Logic
+    const newsModal = document.getElementById("news-modal");
+    const newsCloseBtn = document.getElementsByClassName("close-news")[0];
+    newsCloseBtn.onclick = () => {
+      newsModal.style.display = "none";
+    };
+    window.onclick = (event) => {
+      if (event.target == newsModal) {
+        newsModal.style.display = "none";
+      } else if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>
