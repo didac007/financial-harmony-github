@@ -350,7 +350,7 @@
     };
   </script>
 
-  <!-- Animación de fondo: cubos dorados con circuitos, conexiones, bokeh azul/dorado, movimiento lento infinito sin superposiciones, ahora con rotación 3D simulada -->
+  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento lento infinito sin superposiciones, rotación 3D, sin bokeh -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -467,8 +467,8 @@
         // Proyectar a 2D
         const projected = rotatedPoints.map(p => project(p));
 
-        // Dibujar aristas con gradiente dorado
-        ctx.strokeStyle = '#FFD700';
+        // Dibujar aristas con gradiente dorado transparente
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)'; // Transparente
         ctx.lineWidth = 2;
         ctx.shadowBlur = 10;
         ctx.shadowColor = '#FFD700';
@@ -480,8 +480,8 @@
           ctx.stroke();
         });
 
-        // Añadir circuitos simples en caras visibles (simplificado)
-        ctx.strokeStyle = '#B8860B';
+        // Añadir circuitos simples en caras visibles (simplificado, transparente)
+        ctx.strokeStyle = 'rgba(184, 134, 11, 0.5)'; // DarkGoldenrod transparente
         ctx.lineWidth = 1;
         for (let i = 0; i < 4; i++) {
           ctx.beginPath();
@@ -495,45 +495,13 @@
       }
     }
 
-    class Bokeh {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.radius = Math.random() * 10 + 5;
-        this.color = Math.random() < 0.5 ? 'rgba(0, 191, 255, 0.3)' : 'rgba(255, 215, 0, 0.3)'; // Azul o dorado
-        this.vx = (Math.random() - 0.5) * 0.1;
-        this.vy = (Math.random() - 0.5) * 0.1;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-      }
-    }
-
     let cubes = [];
-    let bokehs = [];
     function init() {
       cubes = [];
-      bokehs = [];
       const numCubes = window.innerWidth > 768 ? 30 : 15;
-      const numBokehs = window.innerWidth > 768 ? 100 : 50;
 
       for (let i = 0; i < numCubes; i++) {
         cubes.push(new Cube());
-      }
-      for (let i = 0; i < numBokehs; i++) {
-        bokehs.push(new Bokeh());
       }
     }
 
@@ -591,11 +559,6 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       repel();
-
-      bokehs.forEach(bokeh => {
-        bokeh.update();
-        bokeh.draw();
-      });
 
       cubes.forEach(cube => {
         cube.update();
