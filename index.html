@@ -31,16 +31,14 @@
       position: relative;
       overflow-x: hidden;
     }
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1932&q=80');
-      background-size: cover;
-      background-position: center;
-      opacity: 0.3;
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: -1;
+      pointer-events: none;
     }
     .top-bar {
       display: flex;
@@ -138,7 +136,7 @@
     .lower-item:hover {
       text-decoration: underline;
     }
-    /* Modal general (reutilizado y ampliado) */
+    /* Modal general */
     .modal {
       display: none;
       position: fixed;
@@ -172,21 +170,18 @@
       color: var(--primary);
       margin-top: 0;
     }
-    /* Resto de estilos originales adaptados al tema oscuro */
-    .ticker, .info-card, .container {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .ticker {
+    .container {
       max-width: 1200px;
-      margin: 30px auto;
-      padding: 15px;
-      background: rgba(255,215,0,0.1);
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+
+  <!-- Canvas para la animación de bloques blockchain en movimiento -->
+  <canvas id="bg-canvas"></canvas>
 
   <div class="top-bar">
     <a href="#">Disclaimer</a>
@@ -229,15 +224,13 @@
     <div class="lower-item" data-section="careers">Careers</div>
   </div>
 
-  <!-- Aquí puedes añadir el resto del contenido original (ticker, gráficos, noticias, etc.) -->
-  <!-- Ejemplo placeholder para el contenido principal -->
-  <div class="container" style="max-width:1200px;margin:40px auto;padding:20px;text-align:center;">
+  <div class="container">
     <h2 style="color:var(--primary);">Bienvenido a Financial Harmony</h2>
-    <p>Explora los apartados haciendo clic en los botones superiores para obtener información detallada.</p>
-    <!-- Aquí irían los TradingView widgets, ticker, secciones de noticias, etc. del código original -->
+    <p>Explora los apartados haciendo clic en los botones para obtener información detallada.</p>
+    <!-- Aquí puedes añadir tus gráficos TradingView, ticker, noticias, etc. -->
   </div>
 
-  <!-- Modal único reutilizado para todos los apartados -->
+  <!-- Modal para las secciones -->
   <div id="section-modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -247,7 +240,7 @@
   </div>
 
   <script>
-    // Contenido detallado y correcto para cada apartado (en español, educativo y preciso)
+    // Contenido de las secciones (igual que antes)
     const sectionContents = {
       "academia": {
         title: "Academia",
@@ -331,16 +324,15 @@
       }
     };
 
-    // Modal logic
+    // Lógica del modal
     const modal = document.getElementById("section-modal");
     const modalTitle = document.getElementById("modal-title");
     const modalText = document.getElementById("modal-text");
     const closeBtn = document.querySelector(".close");
 
-    // Listener para todos los elementos con data-section (menú principal, iconos y lower)
     document.querySelectorAll('[data-section]').forEach(item => {
       item.addEventListener('click', (e) => {
-        e.preventDefault(); // Evita navegación si es <a>
+        e.preventDefault();
         const section = item.dataset.section;
         const content = sectionContents[section];
         if (content) {
@@ -355,8 +347,113 @@
     window.onclick = (event) => {
       if (event.target === modal) modal.style.display = "none";
     };
+  </script>
 
-    // Aquí puedes mantener los scripts originales (TradingView, noticias, etc.)
+  <!-- Animación de fondo: bloques blockchain que se mueven, se conectan (montan cadena) y se desconectan (desmontan) infinitamente -->
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
+    });
+
+    class Block {
+      constructor() {
+        this.reset();
+        this.text = Math.random() < 0.3 ? '₿' : 'BLOCK';
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Wrap around para movimiento infinito suave
+        if (this.x < -100) this.x = canvas.width + 100;
+        if (this.x > canvas.width + 100) this.x = -100;
+        if (this.y < -100) this.y = canvas.height + 100;
+        if (this.y > canvas.height + 100) this.y = -100;
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+
+        // Bloque oscuro con borde oro
+        ctx.fillStyle = 'rgba(30, 30, 30, 0.9)';
+        ctx.fillRect(-40, -20, 80, 40);
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(-40, -20, 80, 40);
+
+        // Texto oro
+        ctx.fillStyle = '#FFD700';
+        ctx.font = 'bold 20px Inter';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(this.text, 0, 0);
+
+        ctx.restore();
+      }
+    }
+
+    let blocks = [];
+    function init() {
+      blocks = [];
+      const numberOfBlocks = window.innerWidth > 768 ? 40 : 20;
+      for (let i = 0; i < numberOfBlocks; i++) {
+        blocks.push(new Block());
+      }
+    }
+
+    function connect() {
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#FFD700';
+
+      for (let i = 0; i < blocks.length; i++) {
+        for (let j = i + 1; j < blocks.length; j++) {
+          const dx = blocks[i].x - blocks[j].x;
+          const dy = blocks[i].y - blocks[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 180) {
+            ctx.beginPath();
+            ctx.moveTo(blocks[i].x, blocks[i].y);
+            ctx.lineTo(blocks[j].x, blocks[j].y);
+            ctx.strokeStyle = `rgba(255, 215, 0, ${0.8 * (1 - distance / 180)})`;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.shadowBlur = 0;
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      blocks.forEach(block => {
+        block.update();
+        block.draw();
+      });
+
+      connect();
+
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
   </script>
 </body>
 </html>
