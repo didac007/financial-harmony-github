@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -349,7 +350,7 @@
     };
   </script>
 
-  <!-- Animación de fondo: bloques blockchain que se mueven, se conectan (montan cadena) y se desconectan (desmontan) infinitamente -->
+  <!-- Animación de fondo: bloques blockchain que se mueven, se conectan (montan cadena) y se desconectan (desmontan) infinitamente, sin sobreponerse -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -415,6 +416,30 @@
       }
     }
 
+    function repel() {
+      const minDist = 120; // Distancia mínima para evitar sobreposición (ajustado para bloques de 80x40)
+      const repulsionStrength = 0.05;
+
+      for (let i = 0; i < blocks.length; i++) {
+        for (let j = i + 1; j < blocks.length; j++) {
+          const dx = blocks[i].x - blocks[j].x;
+          const dy = blocks[i].y - blocks[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < minDist && distance > 0) {
+            const force = (minDist - distance) * repulsionStrength / distance;
+            const fx = dx * force;
+            const fy = dy * force;
+
+            blocks[i].vx += fx;
+            blocks[i].vy += fy;
+            blocks[j].vx -= fx;
+            blocks[j].vy -= fy;
+          }
+        }
+      }
+    }
+
     function connect() {
       ctx.shadowBlur = 15;
       ctx.shadowColor = '#FFD700';
@@ -442,6 +467,8 @@
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      repel(); // Aplicar repulsión para evitar sobreposiciones
+
       blocks.forEach(block => {
         block.update();
         block.draw();
@@ -457,3 +484,4 @@
   </script>
 </body>
 </html>
+```
