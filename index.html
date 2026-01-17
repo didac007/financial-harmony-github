@@ -538,12 +538,12 @@
           const dy = cubes[i].y - cubes[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 200) {
+          if (distance < 1000) {
             ctx.beginPath();
             ctx.moveTo(cubes[i].x, cubes[i].y);
             ctx.lineTo(cubes[j].x, cubes[j].y);
             ctx.strokeStyle = `rgba(255, 215, 0, ${0.7 * (1 - distance / 200)})`;
-            ctx.lineWidth = 19.5;
+            ctx.lineWidth = 1.5;
             ctx.stroke();
           }
         }
@@ -574,6 +574,7 @@
   </script>
 </body>
 </html>
+
 
 
 
