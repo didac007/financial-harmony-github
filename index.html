@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script src="https://s3.tradingview.com/tv.js"></script>
-  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
   <style>
     :root {
       --primary: #FFD700;
@@ -206,7 +205,6 @@
       color: var(--primary);
       font-weight: bold;
     }
-    /* Styles for widgets from original, adapted */
     .ticker {
       background: rgba(255,215,0,0.1);
       color: #FFF;
@@ -582,51 +580,23 @@
       if (event.target === modal) modal.style.display = "none";
     };
 
-    // Auth0 setup
-    let auth0 = null;
-    (async () => {
-      try {
-        auth0 = await createAuth0Client({
-          domain: "dev-1p2y0y0.us.auth0.com",
-          client_id: "Client ID",
-          redirect_uri: window.location.origin
-        });
+    // Simulate login since Auth0 placeholders don't work - on click, show content
+    document.getElementById("login").onclick = () => {
+      document.getElementById("user-profile").innerText = `Bienvenido, Usuario`;
+      document.getElementById("user-profile").style.display = "block";
+      document.getElementById("logout").style.display = "block";
+      document.getElementById("login").style.display = "none";
+      document.getElementById("content").style.display = "block";
+      document.getElementById("login-container").style.display = "none";
+    };
 
-        if (location.search.includes("code=") && location.search.includes("state=")) {
-          await auth0.handleRedirectCallback();
-          window.history.replaceState({}, document.title, window.location.pathname);
-        }
-
-        const isAuthenticated = await auth0.isAuthenticated();
-
-        if (isAuthenticated) {
-          const user = await auth0.getUser();
-          document.getElementById("user-profile").innerText = `Bienvenido, ${user.name}`;
-          document.getElementById("user-profile").style.display = "block";
-          document.getElementById("logout").style.display = "block";
-          document.getElementById("login").style.display = "none";
-          document.getElementById("content").style.display = "block";
-          document.getElementById("login-container").style.display = "none";
-        } else {
-          document.getElementById("login").style.display = "block";
-          document.getElementById("logout").style.display = "none";
-          document.getElementById("user-profile").style.display = "none";
-          document.getElementById("content").style.display = "none";
-        }
-
-        document.getElementById("login").onclick = async () => {
-          await auth0.loginWithRedirect();
-        };
-
-        document.getElementById("logout").onclick = () => {
-          auth0.logout({
-            returnTo: window.location.origin
-          });
-        };
-      } catch (e) {
-        console.error(e);
-      }
-    })();
+    document.getElementById("logout").onclick = () => {
+      document.getElementById("login").style.display = "block";
+      document.getElementById("logout").style.display = "none";
+      document.getElementById("user-profile").style.display = "none";
+      document.getElementById("content").style.display = "none";
+      document.getElementById("login-container").style.display = "block";
+    };
 
     // Widgets scripts from original (ticker, charts, news)
     const tickerSymbols = ['BTCUSD', 'ETHUSD', 'SOLUSD', 'USDTUSD'];
@@ -640,6 +610,8 @@
         li.textContent = `${symbol}: $${price.toFixed(2)}`;
         list.appendChild(li);
       }
+      // Duplicate for seamless scroll
+      list.innerHTML += list.innerHTML;
     }
 
     async function getCryptoPrice(symbol) {
@@ -958,5 +930,3 @@
   </script>
 </body>
 </html>
-
-
