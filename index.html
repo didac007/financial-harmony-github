@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -306,6 +305,17 @@
     }
     .more-info-btn:hover {
       background: var(--primary-hover);
+    }
+    /* Responsive adjustments for nav on smartphones */
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      nav a {
+        padding: 8px 20px;
+        font-size: 0.9em;
+      }
     }
   </style>
 </head>
@@ -624,6 +634,7 @@
       document.getElementById("content").style.display = "none";
       document.getElementById("login-container").style.display = "block";
     };
+
     // Widgets scripts from original (ticker, charts, news)
     const tickerSymbols = ['BTCUSD', 'ETHUSD', 'SOLUSD', 'USDTUSD'];
 
@@ -647,6 +658,7 @@
 
     setInterval(updateTicker, 60000);
     updateTicker();
+
     // TradingView widgets
     new TradingView.widget({
       "container_id": "btc-chart",
@@ -730,7 +742,7 @@
     loadNews();
   </script>
 
-  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento muy lento infinito sin superposiciones, rotación 3D, sin bokeh -->
+  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento lento infinito sin superposiciones, rotación 3D, sin bokeh -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -787,7 +799,7 @@
         this.rx = 0;
         this.ry = 0;
         this.rz = 0;
-        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación muy lenta
+        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación lenta
         this.vry = (Math.random() - 0.5) * 0.01;
         this.vrz = (Math.random() - 0.5) * 0.01;
 
@@ -886,7 +898,7 @@
     }
 
     function repel() {
-      const minDist = 50;
+      const minDist = 100;
       const repulsionStrength = 0.03;
 
       for (let i = 0; i < cubes.length; i++) {
@@ -955,7 +967,3 @@
   </script>
 </body>
 </html>
-
-
-
-
