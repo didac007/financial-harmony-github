@@ -392,7 +392,7 @@
     }
 
     // Proyectar 3D a 2D (perspectiva simple)
-    function project(point, scale = 1, focalLength = 200) {
+    function project(point, scale = 2, focalLength = 200) {
       const factor = focalLength / (focalLength + point.z + 200); // Ajuste para profundidad
       return {
         x: point.x * factor * scale,
@@ -574,6 +574,7 @@
   </script>
 </body>
 </html>
+
 
 
 
