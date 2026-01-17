@@ -19,7 +19,7 @@
       --card: rgba(20, 20, 20, 0.8);
       --radius: 16px;
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      --transition: 30000h;
+      --transition: 0.3s;
     }
     body {
       font-family: 'Inter', Arial, sans-serif;
@@ -27,9 +27,10 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: url('https://media.istockphoto.com/id/1137077624/vector/high-detailed-copper-textured-world-map-vector-illustration.jpg?s=612x612&w=0&k=20&c=iXyE1MX7WVyWSA-2Bg6LBAvg4EMMlAE5dEuOfAdPSE0=') repeat center center/cover;
+      background: url('https://img.freepik.com/free-vector/circuit-board-background-with-world-map_23-2148706905.jpg') no-repeat center center/cover;
+      background-attachment: fixed;
       position: relative;
-      overflow-x: relative;
+      overflow-x: hidden;
     }
     #bg-canvas {
       position: fixed;
@@ -45,7 +46,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 20px;
-      background: rgba(1, 1, 1, 1.8);
+      background: rgba(0, 0, 0, 0.8);
     }
     .logo {
       display: flex;
@@ -229,7 +230,7 @@
     }
     .ticker ul {
       display: inline-block;
-      animation: ticker 30s linear infinite;
+      animation: ticker 60s linear infinite;
       list-style: none;
       padding: 0;
       margin: 0;
@@ -743,7 +744,7 @@
     loadNews();
   </script>
 
-  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento muy  lento infinito sin superposiciones, rotación 3D, sin bokeh -->
+  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento lento infinito sin superposiciones, rotación 3D, sin bokeh -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -800,9 +801,9 @@
         this.rx = 0;
         this.ry = 0;
         this.rz = 0;
-        this.vrx = (Math.random() - 0.9) * 0.01; // Velocidad de muy rotación lenta
-        this.vry = (Math.random() - 0.9) * 0.01;
-        this.vrz = (Math.random() - 0.9) * 0.01;
+        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación lenta
+        this.vry = (Math.random() - 0.5) * 0.01;
+        this.vrz = (Math.random() - 0.5) * 0.01;
 
         // Puntos 3D del cubo (-halfSize a halfSize)
         const s = 20; // Tamaño medio del cubo
@@ -816,7 +817,8 @@
           {x: s, y: s, z: s},
           {x: -s, y: s, z: s}
         ];
-// Aristas del cubo
+
+        // Aristas del cubo
         this.edges = [
           [0, 1], [1, 2], [2, 3], [3, 0], // Cara frontal
           [4, 5], [5, 6], [6, 7], [7, 4], // Cara trasera
@@ -862,7 +864,7 @@
         // Dibujar aristas con gradiente dorado transparente
         ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)'; // Transparente
         ctx.lineWidth = 2;
-        ctx.shadowBlur = 5;
+        ctx.shadowBlur = 10;
         ctx.shadowColor = '#FFD700';
 
         this.edges.forEach(([i, j]) => {
@@ -898,7 +900,7 @@
     }
 
     function repel() {
-      const minDist = 50;
+      const minDist = 100;
       const repulsionStrength = 0.03;
 
       for (let i = 0; i < cubes.length; i++) {
@@ -947,7 +949,7 @@
 
     function animate() {
       // Limpieza con trail para efecto glow, reduced opacity for longer lasting lines
-      ctx.fillStyle = 'rgba(0, 0, 10, 0.05)'; // Less opaque for longer trails
+      ctx.fillStyle = 'rgba(0, 0, 20, 0.05)'; // Less opaque for longer trails
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       repel();
@@ -967,7 +969,6 @@
   </script>
 </body>
 </html>
-
 
 
 
