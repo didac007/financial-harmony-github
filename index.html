@@ -511,7 +511,7 @@
     }
 
     function repel() {
-      const minDist = 100;
+      const minDist = 10;
       const repulsionStrength = 0.03;
 
       for (let i = 0; i < cubes.length; i++) {
@@ -549,7 +549,7 @@
             ctx.moveTo(cubes[i].x, cubes[i].y);
             ctx.lineTo(cubes[j].x, cubes[j].y);
             ctx.strokeStyle = `rgba(255, 215, 0, ${0.7 * (1 - distance / 200)})`;
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = 1.5;
             ctx.stroke();
           }
         }
@@ -580,6 +580,7 @@
   </script>
 </body>
 </html>
+
 
 
 
