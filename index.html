@@ -1,3 +1,9 @@
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -406,7 +412,7 @@
         this.rx = 0;
         this.ry = 0;
         this.rz = 0;
-        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación muy lenta
+        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación lenta
         this.vry = (Math.random() - 0.5) * 0.01;
         this.vrz = (Math.random() - 0.5) * 0.01;
 
@@ -422,7 +428,14 @@
           {x: s, y: s, z: s},
           {x: -s, y: s, z: s}
         ];
-        
+
+        // Aristas del cubo
+        this.edges = [
+          [0, 1], [1, 2], [2, 3], [3, 0], // Cara frontal
+          [4, 5], [5, 6], [6, 7], [7, 4], // Cara trasera
+          [0, 4], [1, 5], [2, 6], [3, 7]  // Conexiones laterales
+        ];
+      }
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
@@ -474,7 +487,7 @@
 
         // Añadir circuitos simples en caras visibles (simplificado, transparente)
         ctx.strokeStyle = 'rgba(184, 134, 11, 0.5)'; // DarkGoldenrod transparente
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 1;
         for (let i = 0; i < 4; i++) {
           ctx.beginPath();
           ctx.moveTo(projected[0].x + Math.random()*10 - 5, projected[0].y + Math.random()*10 - 5);
@@ -498,8 +511,8 @@
     }
 
     function repel() {
-      const minDist = 30;
-      const repulsionStrength = 0.05
+      const minDist = 100;
+      const repulsionStrength = 0.03;
 
       for (let i = 0; i < cubes.length; i++) {
         for (let j = i + 1; j < cubes.length; j++) {
@@ -531,7 +544,7 @@
           const dy = cubes[i].y - cubes[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 1000) {
+          if (distance < 200) {
             ctx.beginPath();
             ctx.moveTo(cubes[i].x, cubes[i].y);
             ctx.lineTo(cubes[j].x, cubes[j].y);
@@ -567,18 +580,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
