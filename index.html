@@ -29,7 +29,7 @@
       min-height: 100vh;
       background: url('https://media.istockphoto.com/id/1137077624/vector/high-detailed-copper-textured-world-map-vector-illustration.jpg?s=612x612&w=0&k=20&c=iXyE1MX7WVyWSA-2Bg6LBAvg4EMMlAE5dEuOfAdPSE0=') no-repeat center center/cover;
       position: relative;
-      overflow-x: hidden;
+      overflow-x: relative;
     }
     #bg-canvas {
       position: fixed;
@@ -800,9 +800,9 @@
         this.rx = 0;
         this.ry = 0;
         this.rz = 0;
-        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de muy rotación lenta
-        this.vry = (Math.random() - 0.5) * 0.01;
-        this.vrz = (Math.random() - 0.5) * 0.01;
+        this.vrx = (Math.random() - 0.9) * 0.01; // Velocidad de muy rotación lenta
+        this.vry = (Math.random() - 0.9) * 0.01;
+        this.vrz = (Math.random() - 0.9) * 0.01;
 
         // Puntos 3D del cubo (-halfSize a halfSize)
         const s = 20; // Tamaño medio del cubo
@@ -968,4 +968,5 @@
   </script>
 </body>
 </html>
+
 
