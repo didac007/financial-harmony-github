@@ -40,19 +40,11 @@
       z-index: -1;
       pointer-events: none;
     }
-    .top-bar {
-      display: flex;
-      justify-content: flex-end;
-      padding: 10px 20px;
-      font-size: 0.9em;
-    }
-    .top-bar a {
-      color: var(--muted);
-      margin-left: 20px;
-      text-decoration: none;
-    }
-    .top-bar a:hover {
-      color: var(--primary);
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 20px;
     }
     header {
       display: flex;
@@ -176,6 +168,50 @@
       padding: 20px;
       text-align: center;
     }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: rgba(0,0,0,0.8);
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+    footer .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    footer a:hover {
+      color: var(--primary);
+    }
+    #login-container {
+      text-align: center;
+      padding: 100px 20px;
+    }
+    #content {
+      display: none;
+    }
+    #login, #logout {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    #login:hover, #logout:hover {
+      background: var(--primary-hover);
+    }
+    #user-profile {
+      color: var(--primary);
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -183,17 +219,22 @@
   <!-- Canvas para la animación de fondo inspirada en la imagen -->
   <canvas id="bg-canvas"></canvas>
 
-  <div class="top-bar">
-    <a href="#">Disclaimer</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms and Conditions</a>
-  </div>
-
   <header>
     <div class="logo">
       <img src="https://raw.githubusercontent.com/didac007/financial-harmony-github/main/logo.png" alt="Financial Harmony Logo">
       <h1>Financial Harmony</h1>
     </div>
+  </header>
+
+  <!-- Inicio de sesión -->
+  <div id="login-container">
+    <button id="login">Iniciar Sesión</button>
+    <div id="user-profile" style="display: none;"></div>
+    <button id="logout" style="display: none;">Cerrar Sesión</button>
+  </div>
+
+  <!-- Contenido principal, mostrado después de login -->
+  <div id="content">
     <nav>
       <a data-section="academia">Academia</a>
       <a data-section="harmony-club">Harmony Club</a>
@@ -201,34 +242,43 @@
       <a data-section="about-us">About Us</a>
       <a data-section="contact-us">Contact Us</a>
     </nav>
-  </header>
 
-  <div class="sub-menu">
-    <div class="menu-item" data-section="courses"><i class="ri-line-chart-line"></i><span>Courses</span></div>
-    <div class="menu-item" data-section="workshops"><i class="ri-group-line"></i><span>Workshops</span></div>
-    <div class="menu-item" data-section="webinars"><i class="ri-webcam-line"></i><span>Webinars</span></div>
-    <div class="menu-item" data-section="articles"><i class="ri-article-line"></i><span>Articles</span></div>
-    <div class="menu-item" data-section="videos"><i class="ri-video-line"></i><span>Videos</span></div>
-    <div class="menu-item" data-section="podcasts"><i class="ri-mic-line"></i><span>Podcasts</span></div>
-    <div class="menu-item" data-section="resources"><i class="ri-book-open-line"></i><span>Resources</span></div>
-    <div class="menu-item" data-section="community"><i class="ri-team-line"></i><span>Community</span></div>
-    <div class="menu-item" data-section="events"><i class="ri-calendar-event-line"></i><span>Events</span></div>
-    <div class="menu-item" data-section="forum"><i class="ri-chat-smile-line"></i><span>Forum</span></div>
+    <div class="sub-menu">
+      <div class="menu-item" data-section="courses"><i class="ri-line-chart-line"></i><span>Courses</span></div>
+      <div class="menu-item" data-section="workshops"><i class="ri-group-line"></i><span>Workshops</span></div>
+      <div class="menu-item" data-section="webinars"><i class="ri-webcam-line"></i><span>Webinars</span></div>
+      <div class="menu-item" data-section="articles"><i class="ri-article-line"></i><span>Articles</span></div>
+      <div class="menu-item" data-section="videos"><i class="ri-video-line"></i><span>Videos</span></div>
+      <div class="menu-item" data-section="podcasts"><i class="ri-mic-line"></i><span>Podcasts</span></div>
+      <div class="menu-item" data-section="resources"><i class="ri-book-open-line"></i><span>Resources</span></div>
+      <div class="menu-item" data-section="community"><i class="ri-team-line"></i><span>Community</span></div>
+      <div class="menu-item" data-section="events"><i class="ri-calendar-event-line"></i><span>Events</span></div>
+      <div class="menu-item" data-section="forum"><i class="ri-chat-smile-line"></i><span>Forum</span></div>
+    </div>
+
+    <div class="lower-menu">
+      <div class="lower-item" data-section="faq">FAQ</div>
+      <div class="lower-item" data-section="testimonials">Testimonials</div>
+      <div class="lower-item" data-section="team">Team</div>
+      <div class="lower-item" data-section="partners">Partners</div>
+      <div class="lower-item" data-section="careers">Careers</div>
+    </div>
+
+    <div class="container">
+      <h2 style="color:var(--primary);">Bienvenido a Financial Harmony</h2>
+      <p>Explora los apartados haciendo clic en los botones para obtener información detallada.</p>
+      <!-- Aquí puedes añadir tus gráficos TradingView, ticker, noticias, etc. -->
+    </div>
   </div>
 
-  <div class="lower-menu">
-    <div class="lower-item" data-section="faq">FAQ</div>
-    <div class="lower-item" data-section="testimonials">Testimonials</div>
-    <div class="lower-item" data-section="team">Team</div>
-    <div class="lower-item" data-section="partners">Partners</div>
-    <div class="lower-item" data-section="careers">Careers</div>
-  </div>
-
-  <div class="container">
-    <h2 style="color:var(--primary);">Bienvenido a Financial Harmony</h2>
-    <p>Explora los apartados haciendo clic en los botones para obtener información detallada.</p>
-    <!-- Aquí puedes añadir tus gráficos TradingView, ticker, noticias, etc. -->
-  </div>
+  <!-- Pie de página -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">Disclaimer</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms and Conditions</a>
+    </div>
+  </footer>
 
   <!-- Modal para las secciones -->
   <div id="section-modal" class="modal">
@@ -347,6 +397,55 @@
     window.onclick = (event) => {
       if (event.target === modal) modal.style.display = "none";
     };
+
+    // Auth0 setup from original code
+    let auth0;
+    (async () => {
+      auth0 = await createAuth0Client({
+        domain: 'dev-1p2y0y0.us.auth0.com', // Reemplaza con tu dominio Auth0
+        client_id: 'Client ID', // Reemplaza con tu Client ID
+        redirect_uri: window.location.origin
+      });
+
+      const isAuthenticated = await auth0.isAuthenticated();
+      if (isAuthenticated) {
+        const user = await auth0.getUser();
+        document.getElementById('user-profile').innerText = `Bienvenido, ${user.name}`;
+        document.getElementById('user-profile').style.display = 'block';
+        document.getElementById('logout').style.display = 'block';
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        document.getElementById('login-container').style.display = 'none';
+      } else {
+        document.getElementById('login').style.display = 'block';
+        document.getElementById('logout').style.display = 'none';
+        document.getElementById('user-profile').style.display = 'none';
+        document.getElementById('content').style.display = 'none';
+      }
+
+      document.getElementById('login').onclick = async () => {
+        await auth0.loginWithRedirect();
+      };
+
+      document.getElementById('logout').onclick = async () => {
+        await auth0.logout({
+          returnTo: window.location.origin
+        });
+      };
+
+      // Manejar redirección después de login
+      if (window.location.search.includes("code=")) {
+        await auth0.handleRedirectCallback();
+        window.history.replaceState({}, document.title, "/");
+        const user = await auth0.getUser();
+        document.getElementById('user-profile').innerText = `Bienvenido, ${user.name}`;
+        document.getElementById('user-profile').style.display = 'block';
+        document.getElementById('logout').style.display = 'block';
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        document.getElementById('login-container').style.display = 'none';
+      }
+    })();
   </script>
 
   <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento lento infinito sin superposiciones, rotación 3D, sin bokeh -->
@@ -574,6 +673,3 @@
   </script>
 </body>
 </html>
-
-
-
