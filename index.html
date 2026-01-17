@@ -63,17 +63,15 @@
     nav {
       display: flex;
       gap: 15px;
-      justify-content: center;
-      flex-grow: 1;
+      justify-content: flex-end;
     }
     nav a {
       color: var(--primary);
       text-decoration: none;
-      padding: 8px 20px; /* Smaller padding for smaller size */
+      padding: 12px 28px;
       border-radius: 50px;
       background: rgba(255, 215, 0, 0.1);
       font-weight: 600;
-      font-size: 0.9em; /* Smaller font size */
       transition: var(--transition);
       cursor: pointer;
     }
@@ -235,18 +233,6 @@
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-    .charts {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    .chart-container {
-      background: var(--card);
-      border-radius: var(--radius);
-      height: 400px;
-      box-shadow: var(--shadow);
-    }
     .news {
       margin-bottom: 40px;
     }
@@ -355,22 +341,6 @@
       <p>Explora los apartados haciendo clic en los botones para obtener información detallada.</p>
       <div class="ticker">
         <ul id="ticker-list"></ul>
-      </div>
-      <div class="charts">
-        <h2>Gráficos en Tiempo Real</h2>
-        <div class="chart-container" id="btc-chart"></div>
-        <div class="chart-container" id="eth-chart"></div>
-        <div class="chart-container" id="sol-chart"></div>
-        <div class="chart-container" id="usdt-chart"></div>
-        <div class="chart-container" id="bnb-chart"></div>
-        <div class="chart-container" id="xrp-chart"></div>
-        <div class="chart-container" id="ada-chart"></div>
-        <div class="chart-container" id="dogecoin-chart"></div>
-        <div class="chart-container" id="avax-chart"></div>
-        <div class="chart-container" id="dot-chart"></div>
-        <div class="chart-container" id="trx-chart"></div>
-        <div class="chart-container" id="link-chart"></div>
-        <div class="chart-container" id="matic-chart"></div>
       </div>
       <div class="news">
         <h2>Noticias de Criptomonedas</h2>
@@ -635,67 +605,6 @@
     setInterval(updateTicker, 60000);
     updateTicker();
 
-    // TradingView widgets
-    new TradingView.widget({
-      "container_id": "btc-chart",
-      "autosize": true,
-      "symbol": "BINANCE:BTCUSDT",
-      "interval": "D",
-      "timezone": "exchange",
-      "theme": "dark",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true,
-      "studies": ["MACD@tv-basicstudies"]
-    });
-
-    new TradingView.widget({
-      "container_id": "eth-chart",
-      "autosize": true,
-      "symbol": "BINANCE:ETHUSDT",
-      "interval": "D",
-      "timezone": "exchange",
-      "theme": "dark",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true,
-      "studies": ["MACD@tv-basicstudies"]
-    });
-
-    new TradingView.widget({
-      "container_id": "sol-chart",
-      "autosize": true,
-      "symbol": "BINANCE:SOLUSDT",
-      "interval": "D",
-      "timezone": "exchange",
-      "theme": "dark",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true,
-      "studies": ["MACD@tv-basicstudies"]
-    });
-
-    new TradingView.widget({
-      "container_id": "usdt-chart",
-      "autosize": true,
-      "symbol": "BINANCE:USDTUSD",
-      "interval": "D",
-      "timezone": "exchange",
-      "theme": "dark",
-      "style": "1",
-      "locale": "es",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "allow_symbol_change": true,
-      "studies": ["MACD@tv-basicstudies"]
-    });
-
     // Load news
     async function loadNews() {
       const rssUrl = 'https://www.coindesk.com/arc/outboundfeeds/rss/';
@@ -943,4 +852,3 @@
   </script>
 </body>
 </html>
-
