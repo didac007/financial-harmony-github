@@ -535,7 +535,7 @@
     }
 
     function connect() {
-      ctx.shadowBlur = 2;
+      ctx.shadowBlur = 1;
       ctx.shadowColor = '#FFD700';
 
       for (let i = 0; i < cubes.length; i++) {
@@ -544,7 +544,7 @@
           const dy = cubes[i].y - cubes[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 1000) {
+          if (distance < 10) {
             ctx.beginPath();
             ctx.moveTo(cubes[i].x, cubes[i].y);
             ctx.lineTo(cubes[j].x, cubes[j].y);
@@ -580,6 +580,7 @@
   </script>
 </body>
 </html>
+
 
 
 
