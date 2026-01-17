@@ -229,7 +229,7 @@
     }
     .ticker ul {
       display: inline-block;
-      animation: ticker 3000s linear infinite;
+      animation: ticker 30s linear infinite;
       list-style: none;
       padding: 0;
       margin: 0;
@@ -819,9 +819,9 @@
 
         // Aristas del cubo
         this.edges = [
-          [0, 1], [1, 2], [2, 3], [3, 0], // Cara frontal
-          [4, 5], [5, 6], [6, 7], [7, 4], // Cara trasera
-          [0, 4], [1, 5], [2, 6], [3, 7]  // Conexiones laterales
+          [0, 1], [1, 1], [1, 1], [1, 0], // Cara frontal
+          [1, 1], [1, 1], [1, 1], [1, 1], // Cara trasera
+          [0, 1], [1, 1], [1, 1], [1, 1]  // Conexiones laterales
         ];
       }
       reset() {
@@ -968,6 +968,7 @@
   </script>
 </body>
 </html>
+
 
 
 
