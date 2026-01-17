@@ -349,7 +349,7 @@
     };
   </script>
 
-  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento lento infinito sin superposiciones, rotación 3D, sin bokeh -->
+  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento muy lento infinito sin superposiciones, rotación 3D, sin bokeh -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -406,7 +406,7 @@
         this.rx = 0;
         this.ry = 0;
         this.rz = 0;
-        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación lenta
+        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación muy lenta
         this.vry = (Math.random() - 0.5) * 0.01;
         this.vrz = (Math.random() - 0.5) * 0.01;
 
@@ -479,7 +479,7 @@
           ctx.stroke();
         });
 
-        // Añadir circuitos simples en caras visibles (simplificado, transparente)
+        // Añadir circuitos definidos en caras visibles (simplificado, transparente)
         ctx.strokeStyle = 'rgba(184, 134, 11, 0.5)'; // DarkGoldenrod transparente
         ctx.lineWidth = 1;
         for (let i = 0; i < 4; i++) {
@@ -574,4 +574,5 @@
   </script>
 </body>
 </html>
+
 
