@@ -549,7 +549,7 @@
             ctx.moveTo(cubes[i].x, cubes[i].y);
             ctx.lineTo(cubes[j].x, cubes[j].y);
             ctx.strokeStyle = `rgba(255, 215, 0, ${0.7 * (1 - distance / 200)})`;
-            ctx.lineWidth = 10.5;
+            ctx.lineWidth = 1.5;
             ctx.stroke();
           }
         }
@@ -560,7 +560,7 @@
 
     function animate() {
       // Limpieza con trail para efecto glow
-      ctx.fillStyle = 'rgba(0, 0, 0.1, 0.1)'; // Fondo azul oscuro suave
+      ctx.fillStyle = 'rgba(0, 0, 50, 0.1)'; // Fondo azul oscuro suave
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       repel();
@@ -580,6 +580,7 @@
   </script>
 </body>
 </html>
+
 
 
 
