@@ -544,7 +544,7 @@
           const dy = cubes[i].y - cubes[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 200) {
+          if (distance < 1000) {
             ctx.beginPath();
             ctx.moveTo(cubes[i].x, cubes[i].y);
             ctx.lineTo(cubes[j].x, cubes[j].y);
@@ -560,7 +560,7 @@
 
     function animate() {
       // Limpieza con trail para efecto glow
-      ctx.fillStyle = 'rgba(0, 0, 50, 0.1)'; // Fondo azul oscuro suave
+      ctx.fillStyle = 'rgba(0, 0, 20, 0.1)'; // Fondo azul oscuro suave
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       repel();
@@ -580,6 +580,7 @@
   </script>
 </body>
 </html>
+
 
 
 
