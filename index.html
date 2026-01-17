@@ -21,6 +21,16 @@
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       --transition: 0.3s;
 }
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+      overflow-x: hidden;
+      position: relative;
+      background: #000000; /* Fondo negro */
+    }
     body::before {
       content: '';
       position: absolute;
@@ -31,7 +41,7 @@
       background-image: url('https://media.istockphoto.com/id/1137077624/vector/high-detailed-copper-textured-world-map-vector-illustration.jpg?s=612x612&w=0&k=20&c=iXyE1MX7WVyWSA-2Bg6LBAvg4EMMlAE5dEuOfAdPSE0=');
       background-size: cover;
       background-position: center;
-      opacity: 10; /* Suave para no distraer */
+      opacity: 0.3; /* Suave para no distraer */
       z-index: -1;
     }
     #bg-canvas {
@@ -577,6 +587,7 @@
   </script>
 </body>
 </html>
+
 
 
 
