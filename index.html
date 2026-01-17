@@ -183,6 +183,16 @@
     footer a:hover {
       color: var(--primary);
     }
+    footer .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+    footer .social-links a {
+      color: var(--primary);
+      font-size: 1.5em;
+    }
     #login-container {
       text-align: center;
       padding: 100px 20px;
@@ -232,6 +242,18 @@
     @keyframes ticker {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
+    }
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .chart-container {
+      background: var(--card);
+      border-radius: var(--radius);
+      height: 400px;
+      box-shadow: var(--shadow);
     }
     .news {
       margin-bottom: 40px;
@@ -342,6 +364,21 @@
       <div class="ticker">
         <ul id="ticker-list"></ul>
       </div>
+      <div class="charts">
+        <div class="chart-container" id="btc-chart"></div>
+        <div class="chart-container" id="eth-chart"></div>
+        <div class="chart-container" id="sol-chart"></div>
+        <div class="chart-container" id="usdt-chart"></div>
+        <div class="chart-container" id="bnb-chart"></div>
+        <div class="chart-container" id="xrp-chart"></div>
+        <div class="chart-container" id="ada-chart"></div>
+        <div class="chart-container" id="dogecoin-chart"></div>
+        <div class="chart-container" id="avax-chart"></div>
+        <div class="chart-container" id="dot-chart"></div>
+        <div class="chart-container" id="trx-chart"></div>
+        <div class="chart-container" id="link-chart"></div>
+        <div class="chart-container" id="matic-chart"></div>
+      </div>
       <div class="news">
         <h2>Noticias de Criptomonedas</h2>
         <div class="news-list" id="news-list"></div>
@@ -387,6 +424,13 @@
       <a href="#">Disclaimer</a>
       <a href="#">Privacy Policy</a>
       <a href="#">Terms and Conditions</a>
+    </div>
+    <div class="social-links">
+      <a href="https://facebook.com" target="_blank"><i class="ri-facebook-fill"></i></a>
+      <a href="https://twitter.com" target="_blank"><i class="ri-twitter-fill"></i></a>
+      <a href="https://instagram.com" target="_blank"><i class="ri-instagram-line"></i></a>
+      <a href="https://linkedin.com" target="_blank"><i class="ri-linkedin-fill"></i></a>
+      <a href="https://youtube.com" target="_blank"><i class="ri-youtube-fill"></i></a>
     </div>
   </footer>
 
@@ -604,6 +648,67 @@
 
     setInterval(updateTicker, 60000);
     updateTicker();
+
+    // TradingView widgets
+    new TradingView.widget({
+      "container_id": "btc-chart",
+      "autosize": true,
+      "symbol": "BINANCE:BTCUSDT",
+      "interval": "D",
+      "timezone": "exchange",
+      "theme": "dark",
+      "style": "1",
+      "locale": "es",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "allow_symbol_change": true,
+      "studies": ["MACD@tv-basicstudies"]
+    });
+
+    new TradingView.widget({
+      "container_id": "eth-chart",
+      "autosize": true,
+      "symbol": "BINANCE:ETHUSDT",
+      "interval": "D",
+      "timezone": "exchange",
+      "theme": "dark",
+      "style": "1",
+      "locale": "es",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "allow_symbol_change": true,
+      "studies": ["MACD@tv-basicstudies"]
+    });
+
+    new TradingView.widget({
+      "container_id": "sol-chart",
+      "autosize": true,
+      "symbol": "BINANCE:SOLUSDT",
+      "interval": "D",
+      "timezone": "exchange",
+      "theme": "dark",
+      "style": "1",
+      "locale": "es",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "allow_symbol_change": true,
+      "studies": ["MACD@tv-basicstudies"]
+    });
+
+    new TradingView.widget({
+      "container_id": "usdt-chart",
+      "autosize": true,
+      "symbol": "BINANCE:USDTUSD",
+      "interval": "D",
+      "timezone": "exchange",
+      "theme": "dark",
+      "style": "1",
+      "locale": "es",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "allow_symbol_change": true,
+      "studies": ["MACD@tv-basicstudies"]
+    });
 
     // Load news
     async function loadNews() {
