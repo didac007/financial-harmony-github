@@ -63,14 +63,17 @@
     nav {
       display: flex;
       gap: 15px;
+      justify-content: center;
+      flex-grow: 1;
     }
     nav a {
       color: var(--primary);
       text-decoration: none;
-      padding: 12px 28px;
+      padding: 8px 20px; /* Smaller padding for smaller size */
       border-radius: 50px;
       background: rgba(255, 215, 0, 0.1);
       font-weight: 600;
+      font-size: 0.9em; /* Smaller font size */
       transition: var(--transition);
       cursor: pointer;
     }
@@ -363,6 +366,11 @@
         <div class="chart-container" id="xrp-chart"></div>
         <div class="chart-container" id="ada-chart"></div>
         <div class="chart-container" id="dogecoin-chart"></div>
+        <div class="chart-container" id="avax-chart"></div>
+        <div class="chart-container" id="dot-chart"></div>
+        <div class="chart-container" id="trx-chart"></div>
+        <div class="chart-container" id="link-chart"></div>
+        <div class="chart-container" id="matic-chart"></div>
       </div>
       <div class="news">
         <h2>Noticias de Criptomonedas</h2>
@@ -935,3 +943,4 @@
   </script>
 </body>
 </html>
+
