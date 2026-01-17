@@ -165,7 +165,7 @@
     footer {
       text-align: center;
       padding: 10px;
-      background: #8B4513; /* Marrón como en la imagen */
+      background: #8B4513;
       position: relative;
       bottom: 0;
       width: 100%;
@@ -284,9 +284,8 @@
   </div>
 
   <script>
-    // Contenido de las secciones (igual que antes)
     const sectionContents = {
-      "academia": {
+      academia: {
         title: "Academia",
         text: "La Academia de Financial Harmony es el núcleo educativo de nuestra plataforma. Ofrecemos formación estructurada en criptomonedas, Bitcoin, blockchain y finanzas descentralizadas. Nuestros programas están diseñados para todos los niveles, desde principiantes hasta inversores avanzados, con certificación al finalizar."
       },
@@ -294,7 +293,7 @@
         title: "Harmony Club",
         text: "Harmony Club es nuestra comunidad premium. Los miembros obtienen acceso exclusivo a señales de trading, análisis avanzado, sesiones privadas con expertos, descuentos en cursos y eventos VIP. Únete para maximizar tu potencial en el mundo cripto."
       },
-      "blog": {
+      blog: {
         title: "Blog",
         text: "En nuestro blog encontrarás artículos actualizados sobre noticias del mercado cripto, análisis de Bitcoin, tendencias en DeFi, regulación global y estrategias de inversión. Publicamos contenido semanal escrito por expertos para mantenerte informado."
       },
@@ -306,63 +305,63 @@
         title: "Contact Us",
         text: "Estamos aquí para ayudarte. Contáctanos por email, formulario o redes sociales para consultas sobre cursos, soporte técnico o colaboraciones. Respuesta garantizada en menos de 24 horas."
       },
-      "courses": {
+      courses: {
         title: "Courses",
         text: "<strong>Cursos estructurados y completos</strong><br><br>Nuestros cursos cubren:<ul><li>Fundamentos de Bitcoin y Blockchain</li><li>Análisis técnico y fundamental</li><li>Estrategias de trading (day trading, swing, HODL)</li><li>Seguridad: wallets, 2FA, almacenamiento frío</li><li>DeFi, staking y yield farming</li><li>NFTs y metaverso</li></ul>Todos incluyen videos, ejercicios prácticos, quizzes y certificado digital."
       },
-      "workshops": {
+      workshops: {
         title: "Workshops",
         text: "<strong>Talleres prácticos en vivo</strong><br><br>Sesiones interactivas donde practicas en tiempo real: configuración de wallets, ejecución de trades, análisis de gráficos y resolución de casos reales. Ideales para aplicar lo aprendido y recibir feedback directo de instructores expertos."
       },
-      "webinars": {
+      webinars: {
         title: "Webinars",
         text: "<strong>Webinars gratuitos y premium</strong><br><br>Eventos en directo con invitados especiales (analistas, traders reconocidos). Temas actuales: halving de Bitcoin, actualizaciones de Ethereum, macroeconomía y cripto, sesiones de Q&A en vivo."
       },
-      "articles": {
+      articles: {
         title: "Articles",
         text: "<strong>Artículos detallados</strong><br><br>Biblioteca de guías profundas: cómo comprar Bitcoin de forma segura, impuestos en criptomonedas, historia del dinero digital, comparativas de exchanges y mucho más. Actualizado constantemente."
       },
-      "videos": {
+      videos: {
         title: "Videos",
         text: "<strong>Biblioteca de videos educativos</strong><br><br>Tutoriales paso a paso, entrevistas con expertos, resúmenes de eventos cripto importantes y lecciones grabadas de cursos. Disponible 24/7 para aprender a tu ritmo."
       },
-      "podcasts": {
+      podcasts: {
         title: "Podcasts",
         text: "<strong>Podcasts semanales</strong><br><br>Conversaciones profundas sobre Bitcoin, economía descentralizada, adopción institucional y futuro financiero. Perfecto para escuchar mientras conduces o hace ejercicio."
       },
-      "resources": {
+      resources: {
         title: "Resources",
         text: "<strong>Recursos gratuitos</strong><br><br>Descarga whitepapers (incluido el original de Bitcoin), plantillas de seguimiento de cartera, checklists de seguridad, glosario cripto y herramientas recomendadas."
       },
-      "community": {
+      community: {
         title: "Community",
         text: "<strong>Comunidad activa</strong><br><br>Conecta con miles de miembros apasionados por las cripto. Comparte experiencias, recibe soporte, participa en desafíos y encuentra oportunidades de networking."
       },
-      "events": {
+      events: {
         title: "Events",
         text: "<strong>Eventos exclusivos</strong><br><br>Meetups virtuales y presenciales, conferencias, AMA con expertos y celebraciones de hitos cripto (como halvings). Algunos exclusivos para miembros Harmony Club."
       },
-      "forum": {
+      forum: {
         title: "Forum",
         text: "<strong>Foro de discusión</strong><br><br>Espacio organizado por temas para hacer preguntas, debatir estrategias, compartir análisis y ayudar a otros miembros. Moderado para mantener un ambiente respetuoso y útil."
       },
-      "faq": {
+      faq: {
         title: "FAQ",
         text: "<strong>Preguntas frecuentes</strong><br><br>Respuestas claras a dudas comunes: cómo registrarse, métodos de pago, política de reembolsos, requisitos técnicos, seguridad de la plataforma y preguntas generales sobre criptomonedas."
       },
-      "testimonials": {
+      testimonials: {
         title: "Testimonials",
         text: "<strong>Testimonios reales</strong><br><br>Lee experiencias de alumnos que han mejorado su conocimiento y resultados gracias a Financial Harmony. Incluye casos de éxito en trading y gestión de cartera."
       },
-      "team": {
+      team: {
         title: "Team",
         text: "<strong>Nuestro equipo</strong><br><br>Expertos en blockchain, traders profesionales, educadores financieros y desarrolladores con trayectoria verificable. Comprometidos con la educación transparente y de calidad."
       },
-      "partners": {
+      partners: {
         title: "Partners",
         text: "<strong>Socios estratégicos</strong><br><br>Colaboramos con exchanges confiables, proyectos blockchain y herramientas líderes para ofrecerte los mejores recursos y descuentos exclusivos."
       },
-      "careers": {
+      careers: {
         title: "Careers",
         text: "<strong>Oportunidades laborales</strong><br><br>Buscamos talento apasionado por las cripto: instructores, creadores de contenido, desarrolladores y especialistas en marketing. Envía tu CV si quieres formar parte del equipo."
       }
@@ -397,39 +396,45 @@
     (async () => {
       try {
         auth0 = await createAuth0Client({
-          domain: "dev-1p2y0y0.us.auth0.com", // Copiado del placeholder en el documento original
-          client_id: "Client ID", // Reemplaza con el Client ID real si está disponible
+          domain: "dev-1p2y0y0.us.auth0.com",
+          client_id: "Client ID",
           redirect_uri: window.location.origin
         });
 
-        // Handle the callback from Auth0
-        if (location.search.includes("code=") && !location.search.includes("state=")) {
+        if (window.location.search.includes("code=")) {
           await auth0.handleRedirectCallback();
           window.history.replaceState({}, document.title, "/");
+          const user = await auth0.getUser();
+          document.getElementById('user-profile').innerText = `Bienvenido, ${user.name}`;
+          document.getElementById('user-profile').style.display = 'block';
+          document.getElementById('logout').style.display = 'block';
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('content').style.display = 'block';
+          document.getElementById('login-container').style.display = 'none';
         }
 
         const isAuthenticated = await auth0.isAuthenticated();
 
         if (isAuthenticated) {
           const user = await auth0.getUser();
-          document.getElementById("user-profile").innerText = `Bienvenido, ${user.name}`;
-          document.getElementById("user-profile").style.display = "block";
-          document.getElementById("logout").style.display = "block";
-          document.getElementById("login").style.display = "none";
-          document.getElementById("content").style.display = "block";
-          document.getElementById("login-container").style.display = "none";
+          document.getElementById('user-profile').innerText = `Bienvenido, ${user.name}`;
+          document.getElementById('user-profile').style.display = 'block';
+          document.getElementById('logout').style.display = 'block';
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('content').style.display = 'block';
+          document.getElementById('login-container').style.display = 'none';
         } else {
-          document.getElementById("login").style.display = "block";
-          document.getElementById("logout").style.display = "none";
-          document.getElementById("user-profile").style.display = "none";
-          document.getElementById("content").style.display = "none";
+          document.getElementById('login').style.display = 'block';
+          document.getElementById('logout').style.display = 'none';
+          document.getElementById('user-profile').style.display = 'none';
+          document.getElementById('content').style.display = 'none';
         }
 
-        document.getElementById("login").onclick = async () => {
+        document.getElementById('login').onclick = async () => {
           await auth0.loginWithRedirect();
         };
 
-        document.getElementById("logout").onclick = () => {
+        document.getElementById('logout').onclick = () => {
           auth0.logout({
             returnTo: window.location.origin
           });
