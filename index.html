@@ -446,8 +446,8 @@
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * -0,03;
-        this.vy = (Math.random() - 0.5) * -0,03; 
+        this.vx = (Math.random() - 0.5) * 0,03;
+        this.vy = (Math.random() - 0.5) * 0,03; 
       }
       update() {
         this.x += this.vx;
@@ -481,8 +481,8 @@
 
         // Dibujar aristas con gradiente dorado transparente
         ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)'; // Transparente
-        ctx.lineWidth = 5;
-        ctx.shadowBlur = 5;
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 2;
         ctx.shadowColor = '#FFD700';
 
         this.edges.forEach(([i, j]) => {
@@ -587,6 +587,7 @@
   </script>
 </body>
 </html>
+
 
 
 
