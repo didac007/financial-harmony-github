@@ -816,12 +816,11 @@
           {x: s, y: s, z: s},
           {x: -s, y: s, z: s}
         ];
-
-        // Aristas del cubo
+// Aristas del cubo
         this.edges = [
-          [0, 1], [1, 1], [1, 1], [1, 0], // Cara frontal
-          [1, 1], [1, 1], [1, 1], [1, 1], // Cara trasera
-          [0, 1], [1, 1], [1, 1], [1, 1]  // Conexiones laterales
+          [0, 1], [1, 2], [2, 3], [3, 0], // Cara frontal
+          [4, 5], [5, 6], [6, 7], [7, 4], // Cara trasera
+          [0, 4], [1, 5], [2, 6], [3, 7]  // Conexiones laterales
         ];
       }
       reset() {
@@ -968,6 +967,7 @@
   </script>
 </body>
 </html>
+
 
 
 
