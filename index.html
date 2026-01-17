@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -40,17 +41,12 @@
       z-index: -1;
       pointer-events: none;
     }
-    .hero {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 20px;
-    }
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 20px;
+      background: rgba(0, 0, 0, 0.8);
     }
     .logo {
       display: flex;
@@ -171,7 +167,7 @@
     footer {
       text-align: center;
       padding: 10px;
-      background: rgba(0,0,0,0.8);
+      background: #8B4513; /* Marrón como en la imagen */
       position: relative;
       bottom: 0;
       width: 100%;
@@ -398,52 +394,50 @@
       if (event.target === modal) modal.style.display = "none";
     };
 
-    // Auth0 setup from original code
-    let auth0;
+    // Auth0 setup from original code (copied and adapted)
+    let auth0 = null;
     (async () => {
-      auth0 = await createAuth0Client({
-        domain: 'dev-1p2y0y0.us.auth0.com', // Reemplaza con tu dominio Auth0
-        client_id: 'Client ID', // Reemplaza con tu Client ID
-        redirect_uri: window.location.origin
-      });
-
-      const isAuthenticated = await auth0.isAuthenticated();
-      if (isAuthenticated) {
-        const user = await auth0.getUser();
-        document.getElementById('user-profile').innerText = `Bienvenido, ${user.name}`;
-        document.getElementById('user-profile').style.display = 'block';
-        document.getElementById('logout').style.display = 'block';
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-        document.getElementById('login-container').style.display = 'none';
-      } else {
-        document.getElementById('login').style.display = 'block';
-        document.getElementById('logout').style.display = 'none';
-        document.getElementById('user-profile').style.display = 'none';
-        document.getElementById('content').style.display = 'none';
-      }
-
-      document.getElementById('login').onclick = async () => {
-        await auth0.loginWithRedirect();
-      };
-
-      document.getElementById('logout').onclick = async () => {
-        await auth0.logout({
-          returnTo: window.location.origin
+      try {
+        auth0 = await createAuth0Client({
+          domain: "dev-1p2y0y0.us.auth0.com", // Copiado del placeholder en el documento original
+          client_id: "Client ID", // Reemplaza con el Client ID real si está disponible
+          redirect_uri: window.location.origin
         });
-      };
 
-      // Manejar redirección después de login
-      if (window.location.search.includes("code=")) {
-        await auth0.handleRedirectCallback();
-        window.history.replaceState({}, document.title, "/");
-        const user = await auth0.getUser();
-        document.getElementById('user-profile').innerText = `Bienvenido, ${user.name}`;
-        document.getElementById('user-profile').style.display = 'block';
-        document.getElementById('logout').style.display = 'block';
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-        document.getElementById('login-container').style.display = 'none';
+        // Handle the callback from Auth0
+        if (location.search.includes("code=") && !location.search.includes("state=")) {
+          await auth0.handleRedirectCallback();
+          window.history.replaceState({}, document.title, "/");
+        }
+
+        const isAuthenticated = await auth0.isAuthenticated();
+
+        if (isAuthenticated) {
+          const user = await auth0.getUser();
+          document.getElementById("user-profile").innerText = `Bienvenido, ${user.name}`;
+          document.getElementById("user-profile").style.display = "block";
+          document.getElementById("logout").style.display = "block";
+          document.getElementById("login").style.display = "none";
+          document.getElementById("content").style.display = "block";
+          document.getElementById("login-container").style.display = "none";
+        } else {
+          document.getElementById("login").style.display = "block";
+          document.getElementById("logout").style.display = "none";
+          document.getElementById("user-profile").style.display = "none";
+          document.getElementById("content").style.display = "none";
+        }
+
+        document.getElementById("login").onclick = async () => {
+          await auth0.loginWithRedirect();
+        };
+
+        document.getElementById("logout").onclick = () => {
+          auth0.logout({
+            returnTo: window.location.origin
+          });
+        };
+      } catch (e) {
+        console.error(e);
       }
     })();
   </script>
@@ -662,7 +656,7 @@
         cube.update();
         cube.draw();
       });
-
+      
       connect();
 
       requestAnimationFrame(animate);
@@ -673,3 +667,4 @@
   </script>
 </body>
 </html>
+```
