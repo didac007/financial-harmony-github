@@ -1,3 +1,14 @@
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,29 +31,16 @@
       --radius: 16px;
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       --transition: 0.3s;
-}
+    }
     body {
       font-family: 'Inter', Arial, sans-serif;
       color: var(--text);
-      min-height: 100vh;
-      padding: 0;
       margin: 0;
-      overflow-x: relative;
+      padding: 0;
+      min-height: 100vh;
+      background: #000000 url('https://media.istockphoto.com/id/1137077624/vector/high-detailed-copper-textured-world-map-vector-illustration.jpg?s=612x612&w=0&k=20&c=iXyE1MX7WVyWSA-2Bg6LBAvg4EMMlAE5dEuOfAdPSE0=') no-repeat center center/cover;
       position: relative;
-      background: #000005; /* Fondo blanco */
-    }
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('https://media.istockphoto.com/id/1137077624/vector/high-detailed-copper-textured-world-map-vector-illustration.jpg?s=612x612&w=0&k=20&c=iXyE1MX7WVyWSA-2Bg6LBAvg4EMMlAE5dEuOfAdPSE0=');
-      background-size: cover;
-      background-position: center;
-      opacity: 9000; /* Suave para no distraer */
-      z-index: -1;
+      overflow-x: hidden;
     }
     #bg-canvas {
       position: fixed;
@@ -362,7 +360,7 @@
     };
   </script>
 
-  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento muy lento infinito sin superposiciones, rotación 3D, sin bokeh -->
+  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento lento infinito sin superposiciones, rotación 3D, sin bokeh -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -419,12 +417,12 @@
         this.rx = 0;
         this.ry = 0;
         this.rz = 0;
-        this.vrx = (Math.random() - 0.3) * 0.01; // Velocidad de rotación muy lenta
-        this.vry = (Math.random() - 0.3) * 0.01;
-        this.vrz = (Math.random() - 0.3) * 0.01;
+        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación lenta
+        this.vry = (Math.random() - 0.5) * 0.01;
+        this.vrz = (Math.random() - 0.5) * 0.01;
 
         // Puntos 3D del cubo (-halfSize a halfSize)
-        const s = 10; // Tamaño medio del cubo
+        const s = 20; // Tamaño medio del cubo
         this.points = [
           {x: -s, y: -s, z: -s},
           {x: s, y: -s, z: -s},
@@ -446,8 +444,8 @@
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0,03;
-        this.vy = (Math.random() - 0.5) * 0,03; 
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
       }
       update() {
         this.x += this.vx;
@@ -482,7 +480,7 @@
         // Dibujar aristas con gradiente dorado transparente
         ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)'; // Transparente
         ctx.lineWidth = 2;
-        ctx.shadowBlur = 2;
+        ctx.shadowBlur = 10;
         ctx.shadowColor = '#FFD700';
 
         this.edges.forEach(([i, j]) => {
@@ -567,7 +565,7 @@
 
     function animate() {
       // Limpieza con trail para efecto glow
-      ctx.fillStyle = 'rgba(0, 0, 20, 0.1)'; // 
+      ctx.fillStyle = 'rgba(0, 0, 20, 0.1)'; // Fondo azul oscuro suave
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       repel();
@@ -587,31 +585,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
