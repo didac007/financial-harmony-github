@@ -20,16 +20,16 @@
       --radius: 16px;
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       --transition: 0.3s;
+      --footer-bg: rgba(0, 0, 0, 0.8); /* Fondo negro semi-transparente para footer */
     }
-  }
     body {
       font-family: 'Inter', Arial, sans-serif;
       color: var(--text);
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: url('https://thumbs.dreamstime.com/b/golden-world-map-integrated-futuristic-circuit-board-technology-detailed-relief-intricately-embedded-vibrant-400253654.jpg') no-repeat center center/cover;
-      background-attachment: fixed; /* Fixed background */
+      background: url('https://img.freepik.com/premium-photo/golden-world-map-integrated-futuristic-circuit-board-technology-detailed-relief-intricately-embedded-vibrant-400253654.jpg') no-repeat center center/cover;
+      background-attachment: fixed; /* Fondo fijo */
       position: relative;
       overflow-x: hidden;
     }
@@ -168,7 +168,7 @@
     footer {
       text-align: center;
       padding: 10px;
-      background: #8B4513;
+      background: var(--footer-bg); /* Fondo negro semi-transparente */
       position: relative;
       bottom: 0;
       width: 100%;
@@ -179,11 +179,11 @@
       gap: 15px;
     }
     footer a {
-      color: var(--muted);
+      color: var(--text); /* Letras doradas */
       text-decoration: none;
     }
     footer a:hover {
-      color: var(--primary);
+      color: var(--primary-hover);
     }
     footer .social-links {
       display: flex;
@@ -192,7 +192,7 @@
       margin-top: 10px;
     }
     footer .social-links a {
-      color: var(--primary);
+      color: var(--text); /* Iconos dorados */
       font-size: 1.5em;
     }
     #login-container {
@@ -970,9 +970,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
