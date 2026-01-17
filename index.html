@@ -27,7 +27,7 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: #000000 url('https://media.istockphoto.com/id/1137077624/vector/high-detailed-copper-textured-world-map-vector-illustration.jpg?s=612x612&w=0&k=20&c=iXyE1MX7WVyWSA-2Bg6LBAvg4EMMlAE5dEuOfAdPSE0=') no-repeat center center/cover;
+      background: url('https://media.istockphoto.com/id/1137077624/vector/high-detailed-copper-textured-world-map-vector-illustration.jpg?s=612x612&w=0&k=20&c=iXyE1MX7WVyWSA-2Bg6LBAvg4EMMlAE5dEuOfAdPSE0=') no-repeat center center/cover;
       position: relative;
       overflow-x: hidden;
     }
@@ -284,7 +284,7 @@
       },
       "podcasts": {
         title: "Podcasts",
-        text: "<strong>Podcasts semanales</strong><br><br>Conversaciones profundas sobre Bitcoin, economía descentralizada, adopción institucional y futuro financiero. Perfecto para escuchar mientras conduces o haces ejercicio."
+        text: "<strong>Podcasts semanales</strong><br><br>Conversaciones profundas sobre Bitcoin, economía descentralizada, adopción institucional y futuro financiero. Perfecto para escuchar mientras conduces o hace ejercicio."
       },
       "resources": {
         title: "Resources",
@@ -349,7 +349,7 @@
     };
   </script>
 
-  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento muy lento infinito sin superposiciones, rotación 3D, sin bokeh -->
+  <!-- Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento lento infinito sin superposiciones, rotación 3D, sin bokeh -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -406,7 +406,7 @@
         this.rx = 0;
         this.ry = 0;
         this.rz = 0;
-        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación muy lenta
+        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación lenta
         this.vry = (Math.random() - 0.5) * 0.01;
         this.vrz = (Math.random() - 0.5) * 0.01;
 
@@ -433,8 +433,8 @@
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.9) * 0.2;
-        this.vy = (Math.random() - 0.9) * 0.2;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
       }
       update() {
         this.x += this.vx;
@@ -479,7 +479,7 @@
           ctx.stroke();
         });
 
-        // Añadir circuitos definidos en caras visibles (simplificado, transparente)
+        // Añadir circuitos simples en caras visibles (simplificado, transparente)
         ctx.strokeStyle = 'rgba(184, 134, 11, 0.5)'; // DarkGoldenrod transparente
         ctx.lineWidth = 1;
         for (let i = 0; i < 4; i++) {
@@ -505,7 +505,7 @@
     }
 
     function repel() {
-      const minDist = 10;
+      const minDist = 100;
       const repulsionStrength = 0.03;
 
       for (let i = 0; i < cubes.length; i++) {
@@ -574,7 +574,6 @@
   </script>
 </body>
 </html>
-
 
 
 
