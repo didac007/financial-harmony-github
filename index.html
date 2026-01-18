@@ -10,26 +10,34 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script src="https://s3.tradingview.com/tv.js"></script>
   <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
-  <style>
-    :root {
-      --primary: #FFD700;
-      --primary-hover: #FFAC1C;
-      --text: #FFD700;
-      --muted: #AAAAAA;
-      --card: rgba(20, 20, 20, 0.8);
-      --radius: 16px;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      --transition: 0.3s;
-      --footer-bg: rgba(0, 0, 0, 0.8); /* Fondo negro semi-transparente para footer */
-    }
-   body {
+  /* Texto general dorado */
+* {
+  color: #FFD700 !important;         /* Fuerza dorado en casi todo el texto */
+}
+
+/* Ajustes específicos para que ciertos elementos no queden negros o grises */
+a, p, h1, h2, h3, h4, h5, h6, span, li, div {
+  color: #FFD700 !important;
+}
+
+/* Footer en dorado sobre fondo oscuro */
+footer, footer a {
+  color: #FFD700 !important;
+}
+
+nav a, .menu-item span, .lower-item, .ticker li {
+  color: #FFD700 !important;
+}
+ body {
   font-family: 'Inter', Arial, sans-serif;
-  color: var(--text);
+  color: #FFD700;                    /* Texto principal en dorado */
   margin: 0;
   padding: 0;
   min-height: 100vh;
   background: url('https://i.postimg.cc/x88WstL4/6b811299-f0b9-4db1-bb42-f83a380057b7.jpg') no-repeat center center/cover;
-  background-attachment: fixed; /* Fondo fijo que no desaparece al hacer scroll */
+  background-attachment: fixed;      /* Esto es lo que hace que NO desaparezca al hacer scroll */
+  background-size: cover;            /* Asegura que cubra toda la pantalla */
+  background-position: center;
   position: relative;
   overflow-x: hidden;
 }
@@ -970,6 +978,7 @@
   </script>
 </body>
 </html>
+
 
 
 
