@@ -743,7 +743,7 @@
 
     loadNews();
 
-    // Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento lento infinito sin superposiciones, rotación 3D, sin bokeh
+    // Animación de fondo: cubos dorados transparentes con circuitos, conexiones por líneas, movimiento muy lento infinito sin superposiciones, rotación 3D, sin bokeh
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -799,7 +799,7 @@
         this.rx = 0;
         this.ry = 0;
         this.rz = 0;
-        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación lenta
+        this.vrx = (Math.random() - 0.5) * 0.01; // Velocidad de rotación muy lenta
         this.vry = (Math.random() - 0.5) * 0.01;
         this.vrz = (Math.random() - 0.5) * 0.01;
 
@@ -898,7 +898,7 @@
     }
 
     function repel() {
-      const minDist = 100;
+      const minDist = 50;
       const repulsionStrength = 0.03;
 
       for (let i = 0; i < cubes.length; i++) {
@@ -922,7 +922,7 @@
     }
 
     function connect() {
-      ctx.shadowBlur = 20;
+      ctx.shadowBlur = 10;
       ctx.shadowColor = '#FFD700';
 
       for (let i = 0; i < cubes.length; i++) {
@@ -967,3 +967,4 @@
   </script>
 </body>
 </html>
+
